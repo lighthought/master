@@ -715,7 +715,7 @@
   .empty-state {
     padding: var(--spacing-xl) 0;
   }
-}
+
 
 // 响应式设计
 @media (max-width: 768px) {
