@@ -1,5 +1,9 @@
 <template>
   <div class="home-page">
+    <!-- 个性化欢迎区域 -->
+    <PersonalizedWelcome />
+    
+    <!-- 原有内容保留作为备用 -->
     <div class="welcome-section">
       <h1 class="welcome-title">{{ greeting }}</h1>
       <div class="user-info">
@@ -97,6 +101,7 @@
 import { computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { InfoFilled } from '@element-plus/icons-vue'
+import PersonalizedWelcome from '@/components/home/PersonalizedWelcome.vue'
 
 const authStore = useAuthStore()
 

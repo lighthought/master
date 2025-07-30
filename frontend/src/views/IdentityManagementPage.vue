@@ -233,6 +233,23 @@
         @submit-success="handleApprenticeCreated"
       />
     </el-dialog>
+    
+    <!-- 编辑身份信息对话框 -->
+    <el-dialog
+      v-model="showEditDialog"
+      title="编辑身份信息"
+      width="90%"
+      max-width="900px"
+      :close-on-click-modal="false"
+      :show-close="false"
+    >
+      <EditIdentityInfo
+        v-if="selectedIdentity"
+        :identity="selectedIdentity"
+        @cancel="showEditDialog = false"
+        @submit-success="handleIdentityUpdated"
+      />
+    </el-dialog>
   </div>
 </template>
 
@@ -243,6 +260,7 @@ import { useAuthStore } from '@/stores/auth'
 import { ElMessage } from 'element-plus'
 import CreateMasterIdentity from '@/components/identity/CreateMasterIdentity.vue'
 import CreateApprenticeIdentity from '@/components/identity/CreateApprenticeIdentity.vue'
+import EditIdentityInfo from '@/components/identity/EditIdentityInfo.vue'
 import type { Identity } from '@/stores/auth'
 
 const router = useRouter()
@@ -252,7 +270,9 @@ const authStore = useAuthStore()
 const showCreateDialog = ref(false)
 const showMasterDialog = ref(false)
 const showApprenticeDialog = ref(false)
+const showEditDialog = ref(false)
 const selectedIdentityType = ref<'master' | 'apprentice' | null>(null)
+const selectedIdentity = ref<Identity | null>(null)
 
 // 计算属性
 const currentIdentity = computed(() => authStore.currentIdentity)
@@ -317,6 +337,17 @@ const handleApprenticeCreated = async (identityData: any) => {
   }
 }
 
+// 处理身份信息更新成功
+const handleIdentityUpdated = async (identityData: any) => {
+  try {
+    await authStore.updateIdentityInfo(selectedIdentity.value!.id, identityData)
+    showEditDialog.value = false
+    ElMessage.success('身份信息更新成功！')
+  } catch (error) {
+    ElMessage.error('更新失败，请重试')
+  }
+}
+
 // 编辑当前身份
 const editCurrentIdentity = () => {
   if (currentIdentity.value) {
@@ -326,7 +357,8 @@ const editCurrentIdentity = () => {
 
 // 编辑身份
 const editIdentity = (identity: Identity) => {
-  ElMessage.info('编辑身份功能开发中...')
+  selectedIdentity.value = identity
+  showEditDialog.value = true
 }
 
 // 切换到指定身份

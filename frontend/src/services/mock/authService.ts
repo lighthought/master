@@ -1,4 +1,4 @@
-import type { User, Identity } from '@/stores/auth'
+import type { User, Identity } from '@/types/user'
 
 // 模拟用户数据
 const mockUsers: User[] = [
@@ -13,6 +13,12 @@ const mockUsers: User[] = [
         domain: '软件开发',
         name: '学习中的开发者',
         avatar: 'https://via.placeholder.com/80x80/4CAF50/FFFFFF?text=学徒',
+        bio: '正在学习前端开发技术，希望成为一名优秀的开发者',
+        skills: ['JavaScript', 'Vue', 'HTML', 'CSS'],
+        email: 'test@example.com',
+        background: '计算机专业毕业，有基础的编程知识',
+        learningGoals: ['掌握前端开发', '提升编程技能'],
+        learningPreferences: ['one-on-one', 'self-study'],
         isActive: true,
         isVerified: true,
         status: 'approved',
@@ -173,6 +179,23 @@ export const mockAuthService = {
     return {
       success: true,
       identity: newIdentity
+    }
+  },
+
+  // 更新身份信息
+  async updateIdentityInfo(userId: string, identityId: string, identityData: any) {
+    await delay(1500)
+    
+    // 模拟更新身份信息
+    const updatedIdentity = {
+      id: identityId,
+      ...identityData,
+      updatedAt: new Date().toISOString()
+    }
+    
+    return {
+      success: true,
+      identity: updatedIdentity
     }
   },
 

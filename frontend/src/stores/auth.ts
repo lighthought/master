@@ -1,28 +1,9 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { ApiService } from '@/services/api'
+import type { User, Identity, RegisterData } from '@/types/user'
 
-export interface User {
-  id: string
-  email: string
-  primaryIdentity: 'master' | 'apprentice'
-  identities: Identity[]
-  currentIdentityId?: string
-  createdAt: string
-  updatedAt: string
-}
 
-export interface Identity {
-  id: string
-  type: 'master' | 'apprentice'
-  domain: string
-  name: string
-  avatar?: string
-  isActive: boolean
-  isVerified?: boolean
-  status?: 'pending' | 'approved' | 'rejected'
-  createdAt: string
-}
 
 export const useAuthStore = defineStore('auth', () => {
   // 状态
@@ -169,6 +150,26 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  const updateIdentityInfo = async (identityId: string, identityData: any) => {
+    if (!user.value) return
+    
+    try {
+      const result = await ApiService.auth.updateIdentityInfo(user.value.id, identityId, identityData)
+      
+      // 更新用户身份列表中的对应身份
+      const identityIndex = user.value.identities.findIndex(id => id.id === identityId)
+      if (identityIndex !== -1) {
+        user.value.identities[identityIndex] = { ...user.value.identities[identityIndex], ...result.identity }
+        localStorage.setItem('user_data', JSON.stringify(user.value))
+      }
+      
+      return result.identity
+    } catch (error) {
+      console.error('更新身份信息失败:', error)
+      throw error
+    }
+  }
+
   const initializeAuth = () => {
     const savedToken = localStorage.getItem('auth_token')
     const savedUser = localStorage.getItem('user_data')
@@ -204,6 +205,7 @@ export const useAuthStore = defineStore('auth', () => {
     switchIdentity,
     createMasterIdentity,
     createApprenticeIdentity,
+    updateIdentityInfo,
     initializeAuth
   }
 })

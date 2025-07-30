@@ -1,4 +1,5 @@
 import { mockAuthService } from './mock/authService'
+import { mockUserStatsService } from './mock/userStatsService'
 
 // 环境配置
 const isDevelopment = import.meta.env.DEV
@@ -119,6 +120,15 @@ export class ApiService {
       return await response.json()
     },
 
+    // 更新身份信息
+    async updateIdentityInfo(userId: string, identityId: string, identityData: any) {
+      if (isDevelopment) {
+        return mockAuthService.updateIdentityInfo(userId, identityId, identityData)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+
     // 切换身份
     async switchIdentity(userId: string, identityId: string) {
       if (isDevelopment) {
@@ -161,6 +171,45 @@ export class ApiService {
       }
       
       return await response.json()
+    }
+  };
+
+  // 用户统计服务
+  static userStats = {
+    // 获取学习统计
+    async getLearningStats(userId: string) {
+      if (isDevelopment) {
+        return mockUserStatsService.getLearningStats(userId)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+
+    // 获取教学统计
+    async getTeachingStats(userId: string) {
+      if (isDevelopment) {
+        return mockUserStatsService.getTeachingStats(userId)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+
+    // 获取通用统计
+    async getGeneralStats(userId: string) {
+      if (isDevelopment) {
+        return mockUserStatsService.getGeneralStats(userId)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+
+    // 获取用户成就
+    async getUserAchievements(userId: string, identityType: 'master' | 'apprentice') {
+      if (isDevelopment) {
+        return mockUserStatsService.getUserAchievements(userId, identityType)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
     }
   }
 }
