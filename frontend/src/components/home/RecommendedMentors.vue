@@ -333,7 +333,7 @@ onMounted(() => {
   background: var(--bg-card);
   border-radius: var(--border-radius-large);
   box-shadow: var(--shadow-card);
-  margin-bottom: var(--spacing-xl);
+  margin-top: var(--spacing-xl);
 }
 
 .section-header {

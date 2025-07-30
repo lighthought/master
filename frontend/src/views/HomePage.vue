@@ -11,6 +11,9 @@
     
     <!-- 推荐课程展示区域（仅学徒身份显示） -->
     <RecommendedCourses v-if="authStore.isApprentice" />
+           
+    <!-- 推荐圈子展示区域 -->
+    <RecommendedCircles />
   </div>
 </template>
 
@@ -21,6 +24,7 @@ import PersonalizedWelcome from '@/components/home/PersonalizedWelcome.vue'
 import LearningPathSelector from '@/components/home/LearningPathSelector.vue'
 import RecommendedMentors from '@/components/home/RecommendedMentors.vue'
 import RecommendedCourses from '@/components/home/RecommendedCourses.vue'
+import RecommendedCircles from '@/components/home/RecommendedCircles.vue'
 
 const authStore = useAuthStore()
 </script>

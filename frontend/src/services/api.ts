@@ -5,6 +5,7 @@ import { mockMentorsService } from './mock/mentorsService'
 import { mockBookingsService } from './mock/bookingsService'
 import { mockCoursesService } from './mock/coursesService'
 import { mockLearningService } from './mock/learningService'
+import { mockCirclesService } from './mock/circlesService'
 
 // 环境配置
 const isDevelopment = import.meta.env.DEV
@@ -448,6 +449,66 @@ export class ApiService {
     async getLearningStats(userId: string, courseId: string) {
       if (isDevelopment) {
         return mockLearningService.getLearningStats(userId, courseId)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    }
+  };
+
+  // 圈子服务
+  static circles = {
+    // 获取圈子列表
+    async getCircles(params: any) {
+      if (isDevelopment) {
+        return mockCirclesService.getCircles(params)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+    // 获取圈子详情
+    async getCircleDetail(circleId: string) {
+      if (isDevelopment) {
+        return mockCirclesService.getCircleDetail(circleId)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+    // 加入圈子
+    async joinCircle(circleId: string, userId: string) {
+      if (isDevelopment) {
+        return mockCirclesService.joinCircle(circleId, userId)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+    // 退出圈子
+    async leaveCircle(circleId: string, userId: string) {
+      if (isDevelopment) {
+        return mockCirclesService.leaveCircle(circleId, userId)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+    // 获取用户加入的圈子
+    async getUserJoinedCircles(userId: string) {
+      if (isDevelopment) {
+        return mockCirclesService.getUserJoinedCircles(userId)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+    // 获取圈子分类
+    async getCircleCategories() {
+      if (isDevelopment) {
+        return mockCirclesService.getCircleCategories()
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+    // 搜索圈子
+    async searchCircles(query: string) {
+      if (isDevelopment) {
+        return mockCirclesService.searchCircles(query)
       }
       // TODO: 实现真实API调用
       throw new Error('API not implemented')

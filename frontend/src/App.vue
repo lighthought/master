@@ -99,7 +99,7 @@ const navItems = [
   { path: '/mentors', text: '大师', icon: 'User' },
   { path: '/bookings', text: '预约', icon: 'Calendar' },
   { path: '/courses', text: '课程', icon: 'Reading' },
-  { path: '/community', text: '社群', icon: 'ChatDotRound' },
+  { path: '/circles', text: '圈子', icon: 'ChatDotRound' },
   { path: '/profile', text: '我的', icon: 'UserFilled' }
 ]
 

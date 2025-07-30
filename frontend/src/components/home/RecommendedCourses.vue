@@ -7,8 +7,8 @@
           <el-icon><Refresh /></el-icon>
           刷新推荐
         </el-button>
-        <el-button type="text" @click="$router.push('/courses')">
-          <el-icon><MoreFilled /></el-icon>
+        <el-button type="primary" @click="$router.push('/courses')">
+          <el-icon><ArrowRight /></el-icon>
           查看更多
         </el-button>
       </div>
@@ -21,6 +21,7 @@
     </div>
     
     <div v-else-if="recommendedCourses.length > 0" class="courses-carousel">
+      <div class="courses-scroll">
       <div class="course-card-wrapper" v-for="course in recommendedCourses" :key="course.id">
         <div class="course-card" @click="viewCourseDetail(course.id)">
           <div class="course-cover">
@@ -56,6 +57,7 @@
           </div>
         </div>
       </div>
+    </div>
     </div>
     
     <div v-else class="no-courses">
@@ -121,7 +123,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { Refresh, MoreFilled } from '@element-plus/icons-vue'
+import { Refresh, ArrowRight } from '@element-plus/icons-vue'
 import { ApiService } from '@/services/api'
 import { useAuthStore } from '@/stores/auth'
 
@@ -216,11 +218,9 @@ onMounted(() => {
 }
 
 .header-actions {
-  .el-button {
-    color: var(--primary-color);
-    font-size: var(--font-size-small);
-    margin-left: var(--spacing-md);
-  }
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
 }
 
 .loading-container {
@@ -251,23 +251,45 @@ onMounted(() => {
   }
 }
 
+.courses-scroll {
+  display: flex;
+  gap: var(--spacing-md);
+  overflow-x: auto;
+  padding: var(--spacing-sm) 0;
+  
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 3px;
+  }
+}
+
 .course-card-wrapper {
   flex-shrink: 0;
   width: 300px;
 }
 
 .course-card {
+  flex-shrink: 0;
+  margin-top: 2px;
   background: var(--bg-secondary);
   border-radius: var(--border-radius-medium);
-  overflow: hidden;
-  box-shadow: var(--shadow-light);
-  transition: all var(--transition-normal);
   cursor: pointer;
-  height: 100%;
+  transition: all var(--transition-normal);
+  border: 1px solid transparent;
   
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-medium);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-light);
+    border-color: var(--primary-color);
   }
 }
 

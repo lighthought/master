@@ -76,6 +76,12 @@ const routes: RouteRecordRaw[] = [
     meta: { title: '课程学习', requiresAuth: true }
   },
   {
+    path: '/circles',
+    name: 'Circles',
+    component: () => import('@/views/CirclesPage.vue'),
+    meta: { title: '圈子', requiresAuth: true }
+  },
+  {
     path: '/community',
     name: 'Community',
     component: () => import('@/views/CommunityPage.vue'),
