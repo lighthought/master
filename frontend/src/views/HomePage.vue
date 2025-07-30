@@ -20,14 +20,41 @@
           <el-icon><User /></el-icon>
           身份管理
         </el-button>
-        <el-button type="success" @click="$router.push('/mentors')">
+        <el-button 
+          v-if="authStore.isApprentice"
+          type="success" 
+          @click="$router.push('/mentors')"
+        >
           <el-icon><User /></el-icon>
           浏览大师
         </el-button>
-        <el-button type="warning" @click="$router.push('/courses')">
+        <el-button 
+          v-if="authStore.isApprentice"
+          type="warning" 
+          @click="$router.push('/courses')"
+        >
           <el-icon><Reading /></el-icon>
           课程学习
         </el-button>
+        <el-button 
+          v-if="authStore.isMaster"
+          type="success" 
+          @click="$router.push('/mentors')"
+        >
+          <el-icon><User /></el-icon>
+          管理指导
+        </el-button>
+      </div>
+    </div>
+    
+    <!-- 身份切换提示 -->
+    <div v-if="userIdentities.length > 1" class="identity-tip">
+      <div class="tip-content">
+        <el-icon class="tip-icon"><InfoFilled /></el-icon>
+        <div class="tip-text">
+          <h4>多身份用户</h4>
+          <p>你拥有 {{ userIdentities.length }} 个身份，可以在顶部导航栏快速切换身份，体验不同的功能。</p>
+        </div>
       </div>
     </div>
     
@@ -69,6 +96,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { InfoFilled } from '@element-plus/icons-vue'
 
 const authStore = useAuthStore()
 
@@ -228,6 +256,37 @@ const getIdentityLabel = (type?: string) => {
   font-weight: var(--font-weight-bold);
   color: var(--primary-color);
   margin: 0;
+}
+
+.identity-tip {
+  margin-top: var(--spacing-xl);
+  padding: var(--spacing-lg);
+  background: linear-gradient(135deg, var(--primary-color), var(--apprentice-color));
+  border-radius: var(--border-radius-large);
+  color: white;
+}
+
+.tip-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.tip-icon {
+  font-size: var(--icon-size-lg);
+  flex-shrink: 0;
+}
+
+.tip-text h4 {
+  font-size: var(--font-size-h5);
+  font-weight: var(--font-weight-semibold);
+  margin: 0 0 var(--spacing-xs) 0;
+}
+
+.tip-text p {
+  font-size: var(--font-size-medium);
+  margin: 0;
+  opacity: 0.9;
 }
 
 // 响应式设计

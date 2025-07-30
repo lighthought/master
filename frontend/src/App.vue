@@ -34,6 +34,11 @@
               </el-badge>
             </div>
             
+            <!-- 身份切换器 -->
+            <div v-if="authStore.isAuthenticated && authStore.userIdentities.length > 1" class="identity-switcher-container">
+              <IdentitySwitcher @identity-changed="handleIdentityChanged" />
+            </div>
+            
             <div class="user-menu-container">
               <el-dropdown>
                 <el-avatar :size="40" src="" />
@@ -82,6 +87,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { ElMessage } from 'element-plus'
+import IdentitySwitcher from '@/components/identity/IdentitySwitcher.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -101,6 +107,12 @@ const handleLogout = () => {
   authStore.logout()
   ElMessage.success('已退出登录')
   router.push('/auth')
+}
+
+// 处理身份切换
+const handleIdentityChanged = (identity: any) => {
+  console.log('身份已切换:', identity)
+  // 可以在这里添加身份切换后的逻辑，比如更新页面内容等
 }
 
 // 组件挂载时初始化认证状态
@@ -164,6 +176,10 @@ onMounted(() => {
   align-items: center;
   gap: var(--spacing-md);
   flex-shrink: 0;
+}
+
+.identity-switcher-container {
+  margin-right: var(--spacing-md);
 }
 
 .notification-btn {
