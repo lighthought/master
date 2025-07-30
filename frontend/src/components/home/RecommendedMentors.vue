@@ -21,7 +21,7 @@
     <div v-if="loading" class="loading-container">
       <el-skeleton :rows="1" animated />
       <div class="skeleton-cards">
-        <el-skeleton-item v-for="i in 4" :key="i" variant="card" style="width: 280px; height: 200px; margin-right: 16px;" />
+        <el-skeleton-item v-for="i in 4" :key="i" variant="rect" style="width: 280px; height: 200px; margin-right: 16px;" />
       </div>
     </div>
     

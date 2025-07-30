@@ -6,6 +6,7 @@ import { mockBookingsService } from './mock/bookingsService'
 import { mockCoursesService } from './mock/coursesService'
 import { mockLearningService } from './mock/learningService'
 import { mockCirclesService } from './mock/circlesService'
+import { mockPostsService } from './mock/postsService'
 
 // 环境配置
 const isDevelopment = import.meta.env.DEV
@@ -552,5 +553,65 @@ export class ApiService {
       // TODO: 实现真实API调用
       throw new Error('API not implemented')
     }
-  }
+  };
+
+  // 动态服务
+  static posts = {
+    // 获取动态列表
+    async getPosts(params: any = {}) {
+      if (isDevelopment) {
+        return await mockPostsService.getPosts(params)
+      }
+      // TODO: 实现真实API调用
+      return await mockPostsService.getPosts(params)
+    },
+    // 发布动态
+    async createPost(postData: any) {
+      if (isDevelopment) {
+        return await mockPostsService.createPost(postData)
+      }
+      // TODO: 实现真实API调用
+      return await mockPostsService.createPost(postData)
+    },
+    // 点赞/取消点赞
+    async toggleLike(postId: string, userId: string) {
+      if (isDevelopment) {
+        return await mockPostsService.toggleLike(postId, userId)
+      }
+      // TODO: 实现真实API调用
+      return await mockPostsService.toggleLike(postId, userId)
+    },
+    // 添加评论
+    async addComment(postId: string, commentData: any) {
+      if (isDevelopment) {
+        return await mockPostsService.addComment(postId, commentData)
+      }
+      // TODO: 实现真实API调用
+      return await mockPostsService.addComment(postId, commentData)
+    },
+    // 获取动态详情
+    async getPostDetail(postId: string) {
+      if (isDevelopment) {
+        return await mockPostsService.getPostDetail(postId)
+      }
+      // TODO: 实现真实API调用
+      return await mockPostsService.getPostDetail(postId)
+    },
+    // 删除动态
+    async deletePost(postId: string, userId: string) {
+      if (isDevelopment) {
+        return await mockPostsService.deletePost(postId, userId)
+      }
+      // TODO: 实现真实API调用
+      return await mockPostsService.deletePost(postId, userId)
+    },
+    // 获取用户的动态列表
+    async getUserPosts(userId: string, params: any = {}) {
+      if (isDevelopment) {
+        return await mockPostsService.getUserPosts(userId, params)
+      }
+      // TODO: 实现真实API调用
+      return await mockPostsService.getUserPosts(userId, params)
+    }
+  };
 }

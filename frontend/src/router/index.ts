@@ -82,6 +82,12 @@ const routes: RouteRecordRaw[] = [
     meta: { title: '圈子', requiresAuth: true }
   },
   {
+    path: '/posts',
+    name: 'Posts',
+    component: () => import('@/views/PostsPage.vue'),
+    meta: { title: '动态', requiresAuth: true }
+  },
+  {
     path: '/community',
     name: 'Community',
     component: () => import('@/views/CommunityPage.vue'),

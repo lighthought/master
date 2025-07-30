@@ -100,6 +100,7 @@ const navItems = [
   { path: '/bookings', text: '预约', icon: 'Calendar' },
   { path: '/courses', text: '课程', icon: 'Reading' },
   { path: '/circles', text: '圈子', icon: 'ChatDotRound' },
+  { path: '/posts', text: '动态', icon: 'ChatDotRound' },
   { path: '/profile', text: '我的', icon: 'UserFilled' }
 ]
 

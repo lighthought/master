@@ -191,7 +191,7 @@
             <el-tag
               v-for="tag in selectedCircle.tags"
               :key="tag"
-              size="medium"
+              size="default"
               effect="light"
             >
               {{ tag }}
@@ -395,6 +395,13 @@ const leaveCircle = async (circle: any) => {
 
 // 查看圈子详情
 const viewCircleDetail = (circle: any) => {
+  // 如果已经加入圈子，跳转到动态页面
+  if (circle.isJoined) {
+    router.push('/posts')
+    return
+  }
+  
+  // 否则显示圈子详情对话框
   selectedCircle.value = circle
   showCircleDetail.value = true
 }
