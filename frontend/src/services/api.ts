@@ -4,6 +4,7 @@ import { mockUserPreferencesService } from './mock/userPreferencesService'
 import { mockMentorsService } from './mock/mentorsService'
 import { mockBookingsService } from './mock/bookingsService'
 import { mockCoursesService } from './mock/coursesService'
+import { mockLearningService } from './mock/learningService'
 
 // 环境配置
 const isDevelopment = import.meta.env.DEV
@@ -355,6 +356,98 @@ export class ApiService {
     async getUserEnrolledCourses(userId: string) {
       if (isDevelopment) {
         return mockCoursesService.getUserEnrolledCourses(userId)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    }
+  };
+
+  // 学习服务
+  static learning = {
+    // 获取用户学习记录
+    async getUserLearningRecords(userId: string, courseId: string) {
+      if (isDevelopment) {
+        return mockLearningService.getUserLearningRecords(userId, courseId)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+    // 更新学习进度
+    async updateLearningProgress(data: any) {
+      if (isDevelopment) {
+        return mockLearningService.updateLearningProgress(data)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+    // 标记课程完成
+    async markLessonCompleted(data: any) {
+      if (isDevelopment) {
+        return mockLearningService.markLessonCompleted(data)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+    // 获取课程笔记
+    async getCourseNotes(userId: string, courseId: string, lessonId?: string) {
+      if (isDevelopment) {
+        return mockLearningService.getCourseNotes(userId, courseId, lessonId)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+    // 添加笔记
+    async addNote(data: any) {
+      if (isDevelopment) {
+        return mockLearningService.addNote(data)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+    // 更新笔记
+    async updateNote(noteId: string, content: string) {
+      if (isDevelopment) {
+        return mockLearningService.updateNote(noteId, content)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+    // 删除笔记
+    async deleteNote(noteId: string) {
+      if (isDevelopment) {
+        return mockLearningService.deleteNote(noteId)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+    // 获取课程讨论
+    async getCourseDiscussions(courseId: string, lessonId?: string) {
+      if (isDevelopment) {
+        return mockLearningService.getCourseDiscussions(courseId, lessonId)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+    // 添加讨论
+    async addDiscussion(data: any) {
+      if (isDevelopment) {
+        return mockLearningService.addDiscussion(data)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+    // 点赞讨论
+    async likeDiscussion(discussionId: string) {
+      if (isDevelopment) {
+        return mockLearningService.likeDiscussion(discussionId)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+    // 获取学习统计
+    async getLearningStats(userId: string, courseId: string) {
+      if (isDevelopment) {
+        return mockLearningService.getLearningStats(userId, courseId)
       }
       // TODO: 实现真实API调用
       throw new Error('API not implemented')
