@@ -161,15 +161,36 @@
           管理指导
         </el-button>
         
-        <el-button 
-          type="warning" 
-          size="large"
-          @click="$router.push('/identity')"
-          class="action-btn"
-        >
-          <el-icon><Setting /></el-icon>
-          身份管理
-        </el-button>
+                       <el-button 
+                 type="warning" 
+                 size="large"
+                 @click="$router.push('/identity')"
+                 class="action-btn"
+               >
+                 <el-icon><Setting /></el-icon>
+                 身份管理
+               </el-button>
+               
+               <el-button 
+                 type="info" 
+                 size="large"
+                 @click="$router.push('/bookings')"
+                 class="action-btn"
+               >
+                 <el-icon><Calendar /></el-icon>
+                 我的预约
+               </el-button>
+               
+               <el-button 
+                 v-if="authStore.isMaster"
+                 type="warning" 
+                 size="large"
+                 @click="$router.push('/mentor-bookings')"
+                 class="action-btn"
+               >
+                 <el-icon><Setting /></el-icon>
+                 预约管理
+               </el-button>
       </div>
     </div>
     

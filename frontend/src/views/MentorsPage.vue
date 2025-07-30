@@ -627,7 +627,7 @@ const submitBooking = async () => {
   
   bookingLoading.value = true
   try {
-    await ApiService.bookings.createBooking({
+    const result = await ApiService.bookings.createBooking({
       mentorId: selectedMentor.value.id,
       userId: authStore.user.id,
       date: bookingForm.value.date,
@@ -639,13 +639,8 @@ const submitBooking = async () => {
     ElMessage.success('预约成功！大师会尽快确认你的预约')
     showBookingDialog.value = false
     
-    // 重置表单
-    bookingForm.value = {
-      date: '',
-      timeSlot: '',
-      method: 'video',
-      requirements: ''
-    }
+    // 跳转到预约成功页面
+    router.push(`/booking-success/${result.data.id}`)
   } catch (error) {
     ElMessage.error('预约失败，请重试')
   } finally {

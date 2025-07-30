@@ -97,6 +97,7 @@ const searchQuery = ref('')
 const navItems = [
   { path: '/', text: '首页', icon: 'House' },
   { path: '/mentors', text: '大师', icon: 'User' },
+  { path: '/bookings', text: '预约', icon: 'Calendar' },
   { path: '/courses', text: '课程', icon: 'Reading' },
   { path: '/community', text: '社群', icon: 'ChatDotRound' },
   { path: '/profile', text: '我的', icon: 'UserFilled' }

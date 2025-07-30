@@ -28,6 +28,24 @@ const routes: RouteRecordRaw[] = [
     meta: { title: '大师详情', requiresAuth: true }
   },
   {
+    path: '/bookings',
+    name: 'Bookings',
+    component: () => import('@/views/BookingsPage.vue'),
+    meta: { title: '我的预约', requiresAuth: true }
+  },
+  {
+    path: '/booking-success/:bookingId',
+    name: 'BookingSuccess',
+    component: () => import('@/views/BookingSuccessPage.vue'),
+    meta: { title: '预约成功', requiresAuth: true }
+  },
+  {
+    path: '/mentor-bookings',
+    name: 'MentorBookings',
+    component: () => import('@/views/MentorBookingsPage.vue'),
+    meta: { title: '预约管理', requiresAuth: true }
+  },
+  {
     path: '/courses',
     name: 'Courses',
     component: () => import('@/views/CoursesPage.vue'),
