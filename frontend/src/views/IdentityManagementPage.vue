@@ -218,6 +218,21 @@
         @submit-success="handleMasterCreated"
       />
     </el-dialog>
+    
+    <!-- 创建学徒身份对话框 -->
+    <el-dialog
+      v-model="showApprenticeDialog"
+      title="创建学徒身份"
+      width="90%"
+      max-width="900px"
+      :close-on-click-modal="false"
+      :show-close="false"
+    >
+      <CreateApprenticeIdentity
+        @cancel="showApprenticeDialog = false"
+        @submit-success="handleApprenticeCreated"
+      />
+    </el-dialog>
   </div>
 </template>
 
@@ -227,6 +242,7 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { ElMessage } from 'element-plus'
 import CreateMasterIdentity from '@/components/identity/CreateMasterIdentity.vue'
+import CreateApprenticeIdentity from '@/components/identity/CreateApprenticeIdentity.vue'
 import type { Identity } from '@/stores/auth'
 
 const router = useRouter()
@@ -235,6 +251,7 @@ const authStore = useAuthStore()
 // 对话框状态
 const showCreateDialog = ref(false)
 const showMasterDialog = ref(false)
+const showApprenticeDialog = ref(false)
 const selectedIdentityType = ref<'master' | 'apprentice' | null>(null)
 
 // 计算属性
@@ -273,8 +290,8 @@ const createIdentity = () => {
     showCreateDialog.value = false
     showMasterDialog.value = true
   } else if (selectedIdentityType.value === 'apprentice') {
-    // TODO: 实现创建学徒身份
-    ElMessage.info('创建学徒身份功能开发中...')
+    showCreateDialog.value = false
+    showApprenticeDialog.value = true
   }
 }
 
@@ -284,6 +301,17 @@ const handleMasterCreated = async (identityData: any) => {
     await authStore.createMasterIdentity(identityData)
     showMasterDialog.value = false
     ElMessage.success('大师身份创建成功！正在审核中，请耐心等待')
+  } catch (error) {
+    ElMessage.error('创建失败，请重试')
+  }
+}
+
+// 处理学徒身份创建成功
+const handleApprenticeCreated = async (identityData: any) => {
+  try {
+    await authStore.createApprenticeIdentity(identityData)
+    showApprenticeDialog.value = false
+    ElMessage.success('学徒身份创建成功！')
   } catch (error) {
     ElMessage.error('创建失败，请重试')
   }

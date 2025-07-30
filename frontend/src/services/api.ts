@@ -90,9 +90,13 @@ export class ApiService {
     async createApprenticeIdentity(userId: string, identityData: {
       name: string
       domain: string
-      learningGoals: string[]
       background: string
-      preferences: string[]
+      currentLevel: string
+      learningGoals: string[]
+      expectedDuration: string
+      learningPreferences: string[]
+      timePreferences: string[]
+      budgetRange: string
     }) {
       if (isDevelopment) {
         return await mockAuthService.createApprenticeIdentity(userId, identityData)

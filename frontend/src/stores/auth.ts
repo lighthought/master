@@ -142,6 +142,33 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  const createApprenticeIdentity = async (identityData: {
+    name: string
+    domain: string
+    background: string
+    currentLevel: string
+    learningGoals: string[]
+    expectedDuration: string
+    learningPreferences: string[]
+    timePreferences: string[]
+    budgetRange: string
+  }) => {
+    if (!user.value) return
+    
+    try {
+      const result = await ApiService.auth.createApprenticeIdentity(user.value.id, identityData)
+      
+      // 更新用户身份列表
+      user.value.identities.push(result.identity)
+      localStorage.setItem('user_data', JSON.stringify(user.value))
+      
+      return result.identity
+    } catch (error) {
+      console.error('创建学徒身份失败:', error)
+      throw error
+    }
+  }
+
   const initializeAuth = () => {
     const savedToken = localStorage.getItem('auth_token')
     const savedUser = localStorage.getItem('user_data')
@@ -176,6 +203,7 @@ export const useAuthStore = defineStore('auth', () => {
     logout,
     switchIdentity,
     createMasterIdentity,
+    createApprenticeIdentity,
     initializeAuth
   }
 })
