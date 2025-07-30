@@ -3,6 +3,7 @@ import { mockUserStatsService } from './mock/userStatsService'
 import { mockUserPreferencesService } from './mock/userPreferencesService'
 import { mockMentorsService } from './mock/mentorsService'
 import { mockBookingsService } from './mock/bookingsService'
+import { mockCoursesService } from './mock/coursesService'
 
 // 环境配置
 const isDevelopment = import.meta.env.DEV
@@ -306,6 +307,54 @@ export class ApiService {
     async getBookingDetail(bookingId: string) {
       if (isDevelopment) {
         return mockBookingsService.getBookingDetail(bookingId)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    }
+  };
+
+  // 课程服务
+  static courses = {
+    // 搜索课程
+    async searchCourses(params: any) {
+      if (isDevelopment) {
+        return mockCoursesService.searchCourses(params)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+
+    // 获取推荐课程
+    async getRecommendedCourses() {
+      if (isDevelopment) {
+        return mockCoursesService.getRecommendedCourses()
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+
+    // 获取课程详情
+    async getCourseDetail(courseId: string) {
+      if (isDevelopment) {
+        return mockCoursesService.getCourseDetail(courseId)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+
+    // 报名课程
+    async enrollCourse(enrollData: any) {
+      if (isDevelopment) {
+        return mockCoursesService.enrollCourse(enrollData)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+
+    // 获取用户已报名课程
+    async getUserEnrolledCourses(userId: string) {
+      if (isDevelopment) {
+        return mockCoursesService.getUserEnrolledCourses(userId)
       }
       // TODO: 实现真实API调用
       throw new Error('API not implemented')

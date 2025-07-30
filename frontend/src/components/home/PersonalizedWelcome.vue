@@ -182,6 +182,16 @@
                </el-button>
                
                <el-button 
+                 type="success" 
+                 size="large"
+                 @click="$router.push('/courses')"
+                 class="action-btn"
+               >
+                 <el-icon><Reading /></el-icon>
+                 浏览课程
+               </el-button>
+               
+               <el-button 
                  v-if="authStore.isMaster"
                  type="warning" 
                  size="large"
