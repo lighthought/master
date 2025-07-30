@@ -1,5 +1,6 @@
 import { mockAuthService } from './mock/authService'
 import { mockUserStatsService } from './mock/userStatsService'
+import { mockUserPreferencesService } from './mock/userPreferencesService'
 
 // 环境配置
 const isDevelopment = import.meta.env.DEV
@@ -211,5 +212,44 @@ export class ApiService {
       // TODO: 实现真实API调用
       throw new Error('API not implemented')
     }
-  }
+  };
+
+  // 用户偏好服务
+  static userPreferences = {
+    // 获取用户偏好
+    async getUserPreferences(userId: string) {
+      if (isDevelopment) {
+        return mockUserPreferencesService.getUserPreferences(userId)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+
+    // 保存用户偏好
+    async saveUserPreferences(userId: string, preferences: any) {
+      if (isDevelopment) {
+        return mockUserPreferencesService.saveUserPreferences(userId, preferences)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+
+    // 获取推荐学习路径
+    async getRecommendedLearningPath(userId: string) {
+      if (isDevelopment) {
+        return mockUserPreferencesService.getRecommendedLearningPath(userId)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+
+    // 获取学习路径统计
+    async getLearningPathStats() {
+      if (isDevelopment) {
+        return mockUserPreferencesService.getLearningPathStats()
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    }
+  };
 }
