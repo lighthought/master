@@ -1,75 +1,90 @@
 <template>
   <div id="app">
-    <!-- 顶部导航栏 -->
-    <header class="app-header">
-      <div class="header-content">
-        <div class="header-left">
-          <div class="logo">Master Guide</div>
-        </div>
-        
-        <div class="header-center">
-          <div class="search-container">
-            <el-input
-              v-model="searchQuery"
-              placeholder="搜索大师、课程、内容..."
-              prefix-icon="Search"
-              class="search-input"
-            />
-          </div>
-        </div>
-        
-        <div class="header-right">
-          <div class="notification-container">
-            <el-badge :value="3" class="notification-badge">
-              <el-button type="text" class="notification-btn">
-                <el-icon><Bell /></el-icon>
-              </el-button>
-            </el-badge>
+    <!-- 认证页面不需要导航栏 -->
+    <template v-if="$route.path === '/auth'">
+      <router-view />
+    </template>
+    
+    <!-- 主应用布局 -->
+    <template v-else>
+      <!-- 顶部导航栏 -->
+      <header class="app-header">
+        <div class="header-content">
+          <div class="header-left">
+            <div class="logo">Master Guide</div>
           </div>
           
-          <div class="user-menu-container">
-            <el-dropdown>
-              <el-avatar :size="40" src="" />
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item>个人中心</el-dropdown-item>
-                  <el-dropdown-item>设置</el-dropdown-item>
-                  <el-dropdown-item divided>退出登录</el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
+          <div class="header-center">
+            <div class="search-container">
+              <el-input
+                v-model="searchQuery"
+                placeholder="搜索大师、课程、内容..."
+                prefix-icon="Search"
+                class="search-input"
+              />
+            </div>
+          </div>
+          
+          <div class="header-right">
+            <div class="notification-container">
+              <el-badge :value="3" class="notification-badge">
+                <el-button type="text" class="notification-btn">
+                  <el-icon><Bell /></el-icon>
+                </el-button>
+              </el-badge>
+            </div>
+            
+            <div class="user-menu-container">
+              <el-dropdown>
+                <el-avatar :size="40" src="" />
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item @click="$router.push('/profile')">个人中心</el-dropdown-item>
+                    <el-dropdown-item @click="$router.push('/identity')">身份管理</el-dropdown-item>
+                    <el-dropdown-item>设置</el-dropdown-item>
+                    <el-dropdown-item divided @click="handleLogout">退出登录</el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </div>
           </div>
         </div>
-      </div>
-    </header>
-    
-    <!-- 主要内容区域 -->
-    <main class="app-main">
-      <router-view />
-    </main>
-    
-    <!-- 底部导航栏 -->
-    <nav class="app-bottom-nav">
-      <div class="nav-items">
-        <router-link 
-          v-for="item in navItems" 
-          :key="item.path"
-          :to="item.path"
-          class="nav-item"
-          :class="{ active: $route.path === item.path }"
-        >
-          <el-icon class="nav-icon">
-            <component :is="item.icon" />
-          </el-icon>
-          <span class="nav-text">{{ item.text }}</span>
-        </router-link>
-      </div>
-    </nav>
+      </header>
+      
+      <!-- 主要内容区域 -->
+      <main class="app-main">
+        <router-view />
+      </main>
+      
+      <!-- 底部导航栏 -->
+      <nav class="app-bottom-nav">
+        <div class="nav-items">
+          <router-link 
+            v-for="item in navItems" 
+            :key="item.path"
+            :to="item.path"
+            class="nav-item"
+            :class="{ active: $route.path === item.path }"
+          >
+            <el-icon class="nav-icon">
+              <component :is="item.icon" />
+            </el-icon>
+            <span class="nav-text">{{ item.text }}</span>
+          </router-link>
+        </div>
+      </nav>
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+import { ElMessage } from 'element-plus'
+
+const router = useRouter()
+const authStore = useAuthStore()
 
 const searchQuery = ref('')
 
@@ -80,6 +95,18 @@ const navItems = [
   { path: '/community', text: '社群', icon: 'ChatDotRound' },
   { path: '/profile', text: '我的', icon: 'UserFilled' }
 ]
+
+// 处理退出登录
+const handleLogout = () => {
+  authStore.logout()
+  ElMessage.success('已退出登录')
+  router.push('/auth')
+}
+
+// 组件挂载时初始化认证状态
+onMounted(() => {
+  authStore.initializeAuth()
+})
 </script>
 
 <style scoped lang="scss">

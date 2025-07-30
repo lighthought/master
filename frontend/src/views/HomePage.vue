@@ -1,398 +1,252 @@
 <template>
   <div class="home-page">
-    <!-- 欢迎区域 -->
-    <section class="welcome-section">
-      <div class="container">
-        <div class="welcome-content">
-          <h1 class="welcome-title">
-            <span class="title-main">Master Guide</span>
-            <span class="title-sub">大师指导平台</span>
-          </h1>
-          <p class="welcome-description">
-            连接各领域大师与学习者，提供专业技艺培养计划、教学课程和实时线上指导服务
-          </p>
-          <div class="welcome-actions">
-            <el-button type="primary" size="large" class="action-btn">
-              <el-icon><User /></el-icon>
-              开始学习
-            </el-button>
-            <el-button size="large" class="action-btn secondary">
-              <el-icon><Star /></el-icon>
-              成为大师
-            </el-button>
+    <div class="welcome-section">
+      <h1 class="welcome-title">{{ greeting }}</h1>
+      <div class="user-info">
+        <el-avatar :size="60" :src="currentIdentity?.avatar" />
+        <div class="user-details">
+          <h2 class="user-name">{{ currentIdentity?.name || '用户' }}</h2>
+          <el-tag :type="getIdentityType(currentIdentity?.type)" size="large">
+            {{ getIdentityLabel(currentIdentity?.type) }}
+          </el-tag>
+        </div>
+      </div>
+    </div>
+    
+    <div class="quick-actions">
+      <h3>快速操作</h3>
+      <div class="action-buttons">
+        <el-button type="primary" @click="$router.push('/identity')">
+          <el-icon><User /></el-icon>
+          身份管理
+        </el-button>
+        <el-button type="success" @click="$router.push('/mentors')">
+          <el-icon><User /></el-icon>
+          浏览大师
+        </el-button>
+        <el-button type="warning" @click="$router.push('/courses')">
+          <el-icon><Reading /></el-icon>
+          课程学习
+        </el-button>
+      </div>
+    </div>
+    
+    <div class="status-info">
+      <h3>状态信息</h3>
+      <div class="status-cards">
+        <div class="status-card">
+          <div class="status-icon">
+            <el-icon><User /></el-icon>
+          </div>
+          <div class="status-content">
+            <h4>身份数量</h4>
+            <p>{{ userIdentities.length }} 个</p>
+          </div>
+        </div>
+        <div class="status-card">
+          <div class="status-icon">
+            <el-icon><Check /></el-icon>
+          </div>
+          <div class="status-content">
+            <h4>已认证</h4>
+            <p>{{ verifiedIdentities.length }} 个</p>
+          </div>
+        </div>
+        <div class="status-card">
+          <div class="status-icon">
+            <el-icon><Clock /></el-icon>
+          </div>
+          <div class="status-content">
+            <h4>审核中</h4>
+            <p>{{ pendingIdentities.length }} 个</p>
           </div>
         </div>
       </div>
-    </section>
-
-    <!-- 学习路径区域 -->
-    <section class="learning-paths-section">
-      <div class="container">
-        <h2 class="section-title">选择你的学习路径</h2>
-        <div class="learning-paths-grid">
-          <div class="path-card" v-for="path in learningPaths" :key="path.id">
-            <div class="path-icon">
-              <el-icon :size="32">
-                <component :is="path.icon" />
-              </el-icon>
-            </div>
-            <h3 class="path-title">{{ path.title }}</h3>
-            <p class="path-description">{{ path.description }}</p>
-            <el-button type="text" class="path-action">
-              了解更多 <el-icon><ArrowRight /></el-icon>
-            </el-button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 推荐大师区域 -->
-    <section class="mentors-section">
-      <div class="container">
-        <h2 class="section-title">推荐大师</h2>
-        <div class="mentors-grid">
-          <div class="mentor-card" v-for="mentor in recommendedMentors" :key="mentor.id">
-            <div class="mentor-avatar">
-              <el-avatar :size="60" :src="mentor.avatar" />
-              <div class="online-status" :class="{ online: mentor.isOnline }"></div>
-            </div>
-            <div class="mentor-info">
-              <h3 class="mentor-name">{{ mentor.name }}</h3>
-              <p class="mentor-domain">{{ mentor.domain }}</p>
-              <div class="mentor-rating">
-                <el-rate v-model="mentor.rating" disabled />
-                <span class="student-count">{{ mentor.studentCount }} 学生</span>
-              </div>
-              <p class="mentor-price">¥{{ mentor.price }}/小时</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed } from 'vue'
+import { useAuthStore } from '@/stores/auth'
 
-// 学习路径数据
-const learningPaths = ref([
-  {
-    id: 1,
-    title: '1对1指导',
-    description: '直接预约大师进行一对一专业指导',
-    icon: 'User'
-  },
-  {
-    id: 2,
-    title: '结构化学习',
-    description: '报名大师设计的系统化课程',
-    icon: 'Reading'
-  },
-  {
-    id: 3,
-    title: '大师浏览',
-    description: '浏览和筛选平台上的大师',
-    icon: 'Search'
-  },
-  {
-    id: 4,
-    title: '其他学习方式',
-    description: '探索更多学习途径',
-    icon: 'More'
-  }
-])
+const authStore = useAuthStore()
 
-// 推荐大师数据
-const recommendedMentors = ref([
-  {
-    id: 1,
-    name: '张大师',
-    domain: '软件开发',
-    avatar: '',
-    rating: 4.8,
-    studentCount: 156,
-    price: 200,
-    isOnline: true
-  },
-  {
-    id: 2,
-    name: '李大师',
-    domain: 'UI设计',
-    avatar: '',
-    rating: 4.9,
-    studentCount: 89,
-    price: 180,
-    isOnline: false
-  },
-  {
-    id: 3,
-    name: '王大师',
-    domain: '数字营销',
-    avatar: '',
-    rating: 4.7,
-    studentCount: 234,
-    price: 150,
-    isOnline: true
-  }
-])
+// 计算属性
+const currentIdentity = computed(() => authStore.currentIdentity)
+const userIdentities = computed(() => authStore.userIdentities)
+
+const verifiedIdentities = computed(() => 
+  userIdentities.value.filter(id => id.isVerified)
+)
+
+const pendingIdentities = computed(() => 
+  userIdentities.value.filter(id => id.status === 'pending')
+)
+
+// 问候语
+const greeting = computed(() => {
+  const hour = new Date().getHours()
+  if (hour < 6) return '夜深了，注意休息'
+  if (hour < 12) return '早上好'
+  if (hour < 18) return '下午好'
+  return '晚上好'
+})
+
+// 获取身份类型标签
+const getIdentityType = (type?: string) => {
+  return type === 'master' ? 'warning' : 'success'
+}
+
+// 获取身份标签文本
+const getIdentityLabel = (type?: string) => {
+  return type === 'master' ? '大师' : '学徒'
+}
 </script>
 
 <style scoped lang="scss">
 .home-page {
-  min-height: 100vh;
-  background: var(--bg-primary);
-}
-
-.container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 var(--spacing-lg);
+  padding: var(--spacing-xl);
 }
 
-// 欢迎区域
 .welcome-section {
-  padding: var(--spacing-xxl) 0;
-  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
   text-align: center;
-}
-
-.welcome-content {
-  max-width: 800px;
-  margin: 0 auto;
+  margin-bottom: var(--spacing-xxl);
+  padding: var(--spacing-xl);
+  background: var(--bg-card);
+  border-radius: var(--border-radius-large);
+  box-shadow: var(--shadow-card);
 }
 
 .welcome-title {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
   margin-bottom: var(--spacing-lg);
-  
-  .title-main {
-    display: block;
-    font-size: var(--font-size-h1);
-    font-weight: var(--font-weight-bold);
-    color: var(--primary-color);
-    margin-bottom: var(--spacing-sm);
-  }
-  
-  .title-sub {
-    display: block;
-    font-size: var(--font-size-h3);
-    color: var(--text-secondary);
-  }
 }
 
-.welcome-description {
-  font-size: var(--font-size-large);
-  color: var(--text-secondary);
-  margin-bottom: var(--spacing-xl);
-  line-height: 1.6;
+.user-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-lg);
 }
 
-.welcome-actions {
+.user-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.user-name {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.quick-actions {
+  margin-bottom: var(--spacing-xxl);
+  padding: var(--spacing-xl);
+  background: var(--bg-card);
+  border-radius: var(--border-radius-large);
+  box-shadow: var(--shadow-card);
+}
+
+.quick-actions h3 {
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-lg);
+}
+
+.action-buttons {
   display: flex;
   gap: var(--spacing-md);
-  justify-content: center;
   flex-wrap: wrap;
 }
 
-.action-btn {
-  min-width: 160px;
-  
-  &.secondary {
-    background: var(--bg-tertiary);
-    border-color: var(--border-color);
-    color: var(--text-primary);
-    
-    &:hover {
-      background: var(--bg-card);
-      border-color: var(--primary-color);
-      color: var(--primary-color);
-    }
-  }
-}
-
-// 学习路径区域
-.learning-paths-section {
-  padding: var(--spacing-xxl) 0;
-  background: var(--bg-primary);
-}
-
-.section-title {
-  font-size: var(--font-size-h2);
-  font-weight: var(--font-weight-semibold);
-  text-align: center;
-  margin-bottom: var(--spacing-xl);
-  color: var(--text-primary);
-}
-
-.learning-paths-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--spacing-lg);
-}
-
-.path-card {
+.status-info {
+  padding: var(--spacing-xl);
   background: var(--bg-card);
   border-radius: var(--border-radius-large);
-  padding: var(--spacing-xl);
-  text-align: center;
-  transition: all var(--transition-normal);
-  border: 1px solid var(--border-color);
-  
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-medium);
-    border-color: var(--primary-color);
-  }
+  box-shadow: var(--shadow-card);
 }
 
-.path-icon {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto var(--spacing-lg);
-  background: var(--primary-color);
-  border-radius: var(--border-radius-full);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-primary);
-}
-
-.path-title {
+.status-info h3 {
   font-size: var(--font-size-h4);
   font-weight: var(--font-weight-semibold);
-  margin-bottom: var(--spacing-md);
   color: var(--text-primary);
-}
-
-.path-description {
-  font-size: var(--font-size-medium);
-  color: var(--text-secondary);
   margin-bottom: var(--spacing-lg);
-  line-height: 1.5;
 }
 
-.path-action {
-  color: var(--primary-color);
-  font-weight: var(--font-weight-medium);
-  
-  &:hover {
-    color: var(--primary-light);
-  }
-}
-
-// 推荐大师区域
-.mentors-section {
-  padding: var(--spacing-xxl) 0;
-  background: var(--bg-secondary);
-}
-
-.mentors-grid {
+.status-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: var(--spacing-lg);
 }
 
-.mentor-card {
-  background: var(--bg-card);
-  border-radius: var(--border-radius-large);
-  padding: var(--spacing-lg);
+.status-card {
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius-medium);
   transition: all var(--transition-normal);
-  border: 1px solid var(--border-color);
   
   &:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-medium);
-    border-color: var(--primary-color);
+    box-shadow: var(--shadow-light);
   }
 }
 
-.mentor-avatar {
-  position: relative;
-  flex-shrink: 0;
-}
-
-.online-status {
-  position: absolute;
-  bottom: 2px;
-  right: 2px;
-  width: 12px;
-  height: 12px;
+.status-icon {
+  width: 50px;
+  height: 50px;
+  background: var(--primary-color);
   border-radius: 50%;
-  background: var(--text-tertiary);
-  border: 2px solid var(--bg-card);
-  
-  &.online {
-    background: var(--success-color);
-  }
-}
-
-.mentor-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.mentor-name {
-  font-size: var(--font-size-h4);
-  font-weight: var(--font-weight-semibold);
-  margin-bottom: var(--spacing-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--icon-size-lg);
   color: var(--text-primary);
 }
 
-.mentor-domain {
+.status-content h4 {
   font-size: var(--font-size-medium);
-  color: var(--primary-color);
-  margin-bottom: var(--spacing-sm);
   font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-xs) 0;
 }
 
-.mentor-rating {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-sm);
-}
-
-.student-count {
-  font-size: var(--font-size-small);
-  color: var(--text-tertiary);
-}
-
-.mentor-price {
-  font-size: var(--font-size-h5);
+.status-content p {
+  font-size: var(--font-size-h4);
   font-weight: var(--font-weight-bold);
   color: var(--primary-color);
+  margin: 0;
 }
 
 // 响应式设计
 @media (max-width: 768px) {
-  .container {
-    padding: 0 var(--spacing-md);
+  .home-page {
+    padding: var(--spacing-lg);
   }
   
-  .welcome-actions {
+  .user-info {
     flex-direction: column;
-    align-items: center;
+    gap: var(--spacing-md);
   }
   
-  .action-btn {
-    width: 100%;
-    max-width: 280px;
-  }
-  
-  .learning-paths-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .mentors-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .mentor-card {
+  .action-buttons {
     flex-direction: column;
-    text-align: center;
+  }
+  
+  .status-cards {
+    grid-template-columns: 1fr;
   }
 }
 </style>
