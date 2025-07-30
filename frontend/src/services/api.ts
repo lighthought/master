@@ -1,6 +1,8 @@
 import { mockAuthService } from './mock/authService'
 import { mockUserStatsService } from './mock/userStatsService'
 import { mockUserPreferencesService } from './mock/userPreferencesService'
+import { mockMentorsService } from './mock/mentorsService'
+import { mockBookingsService } from './mock/bookingsService'
 
 // 环境配置
 const isDevelopment = import.meta.env.DEV
@@ -214,6 +216,102 @@ export class ApiService {
     }
   };
 
+  // 大师服务
+  static mentors = {
+    // 获取推荐大师
+    async getRecommendedMentors(userId: string) {
+      if (isDevelopment) {
+        return mockMentorsService.getRecommendedMentors(userId)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+
+    // 获取大师详情
+    async getMentorDetail(mentorId: string) {
+      if (isDevelopment) {
+        return mockMentorsService.getMentorDetail(mentorId)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+
+    // 搜索大师
+    async searchMentors(params: any) {
+      if (isDevelopment) {
+        return mockMentorsService.searchMentors(params)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+
+    // 获取大师评价
+    async getMentorReviews(mentorId: string, page = 1, pageSize = 10) {
+      if (isDevelopment) {
+        return mockMentorsService.getMentorReviews(mentorId, page, pageSize)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    }
+  };
+
+  // 预约服务
+  static bookings = {
+    // 创建预约
+    async createBooking(bookingData: any) {
+      if (isDevelopment) {
+        return mockBookingsService.createBooking(bookingData)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+
+    // 获取用户预约列表
+    async getUserBookings(userId: string, status?: string) {
+      if (isDevelopment) {
+        return mockBookingsService.getUserBookings(userId, status)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+
+    // 获取大师预约列表
+    async getMentorBookings(mentorId: string, status?: string) {
+      if (isDevelopment) {
+        return mockBookingsService.getMentorBookings(mentorId, status)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+
+    // 更新预约状态
+    async updateBookingStatus(bookingId: string, status: string) {
+      if (isDevelopment) {
+        return mockBookingsService.updateBookingStatus(bookingId, status as any)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+
+    // 取消预约
+    async cancelBooking(bookingId: string, reason?: string) {
+      if (isDevelopment) {
+        return mockBookingsService.cancelBooking(bookingId, reason)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    },
+
+    // 获取预约详情
+    async getBookingDetail(bookingId: string) {
+      if (isDevelopment) {
+        return mockBookingsService.getBookingDetail(bookingId)
+      }
+      // TODO: 实现真实API调用
+      throw new Error('API not implemented')
+    }
+  };
+
   // 用户偏好服务
   static userPreferences = {
     // 获取用户偏好
@@ -251,5 +349,5 @@ export class ApiService {
       // TODO: 实现真实API调用
       throw new Error('API not implemented')
     }
-  };
+  }
 }

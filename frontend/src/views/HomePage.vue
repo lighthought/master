@@ -5,6 +5,9 @@
     
     <!-- 学习路径选择区域（仅学徒身份显示） -->
     <LearningPathSelector v-if="authStore.isApprentice" />
+    
+    <!-- 推荐大师展示区域（仅学徒身份显示） -->
+    <RecommendedMentors v-if="authStore.isApprentice" />
   </div>
 </template>
 
@@ -13,6 +16,7 @@ import { computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import PersonalizedWelcome from '@/components/home/PersonalizedWelcome.vue'
 import LearningPathSelector from '@/components/home/LearningPathSelector.vue'
+import RecommendedMentors from '@/components/home/RecommendedMentors.vue'
 
 const authStore = useAuthStore()
 </script>

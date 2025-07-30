@@ -22,6 +22,12 @@ const routes: RouteRecordRaw[] = [
     meta: { title: '大师', requiresAuth: true }
   },
   {
+    path: '/mentors/:id',
+    name: 'MentorDetail',
+    component: () => import('@/views/MentorDetailPage.vue'),
+    meta: { title: '大师详情', requiresAuth: true }
+  },
+  {
     path: '/courses',
     name: 'Courses',
     component: () => import('@/views/CoursesPage.vue'),

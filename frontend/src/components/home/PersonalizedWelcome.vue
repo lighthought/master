@@ -139,16 +139,16 @@
           开始学习
         </el-button>
         
-        <el-button 
-          v-if="authStore.isApprentice"
-          type="success" 
-          size="large"
-          @click="$router.push('/mentors')"
-          class="action-btn"
-        >
-          <el-icon><User /></el-icon>
-          寻找大师
-        </el-button>
+                       <el-button 
+                 v-if="authStore.isApprentice"
+                 type="success" 
+                 size="large"
+                 @click="$router.push('/mentors')"
+                 class="action-btn"
+               >
+                 <el-icon><User /></el-icon>
+                 寻找大师
+               </el-button>
         
         <el-button 
           v-if="authStore.isMaster"
