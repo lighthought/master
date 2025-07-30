@@ -7,6 +7,9 @@ import { mockCoursesService } from './mock/coursesService'
 import { mockLearningService } from './mock/learningService'
 import { mockCirclesService } from './mock/circlesService'
 import { mockPostsService } from './mock/postsService'
+import { mockLearningRecordsService } from './mock/learningRecordsService'
+import { mockMasterService } from './mock/masterService'
+import { mockIncomeService } from './mock/incomeService'
 
 // 环境配置
 const isDevelopment = import.meta.env.DEV
@@ -675,6 +678,87 @@ export class ApiService {
       }
       // TODO: 实现真实API调用
       return await mockPostsService.toggleReplyLike(postId, replyId, userId)
+    }
+  };
+
+  // 学习记录服务
+  static learningRecords = {
+    // 获取用户学习记录
+    async getUserLearningRecords(userId: string, params: any = {}) {
+      if (isDevelopment) {
+        return await mockLearningRecordsService.getUserLearningRecords(userId, params)
+      }
+      // TODO: 实现真实API调用
+      return await mockLearningRecordsService.getUserLearningRecords(userId, params)
+    },
+
+    // 获取学习记录详情
+    async getLearningRecordDetail(recordId: string) {
+      if (isDevelopment) {
+        return await mockLearningRecordsService.getLearningRecordDetail(recordId)
+      }
+      // TODO: 实现真实API调用
+      return await mockLearningRecordsService.getLearningRecordDetail(recordId)
+    }
+  };
+
+  // 大师服务
+  static master = {
+    // 获取学生统计数据
+    async getStudentStats(masterId: string) {
+      if (isDevelopment) {
+        return await mockMasterService.getStudentStats(masterId)
+      }
+      // TODO: 实现真实API调用
+      return await mockMasterService.getStudentStats(masterId)
+    },
+
+    // 获取学生列表
+    async getStudents(masterId: string, params: any = {}) {
+      if (isDevelopment) {
+        return await mockMasterService.getStudents(masterId, params)
+      }
+      // TODO: 实现真实API调用
+      return await mockMasterService.getStudents(masterId, params)
+    },
+
+    // 发送消息
+    async sendMessage(masterId: string, messageData: any) {
+      if (isDevelopment) {
+        return await mockMasterService.sendMessage(masterId, messageData)
+      }
+      // TODO: 实现真实API调用
+      return await mockMasterService.sendMessage(masterId, messageData)
+    }
+  };
+
+  // 收入服务
+  static income = {
+    // 获取收入统计数据
+    async getIncomeStats(masterId: string, params: any = {}) {
+      if (isDevelopment) {
+        return await mockIncomeService.getIncomeStats(masterId, params)
+      }
+      // TODO: 实现真实API调用
+      return await mockIncomeService.getIncomeStats(masterId, params)
+    },
+
+    // 获取收入明细
+    async getIncomeDetails(masterId: string, params: any = {}) {
+      if (isDevelopment) {
+        return await mockIncomeService.getIncomeDetails(masterId, params)
+      }
+      // TODO: 实现真实API调用
+      return await mockIncomeService.getIncomeDetails(masterId, params)
+    },
+
+    // 导出收入报表
+    async exportIncomeReport(masterId: string, params: any = {}) {
+      if (isDevelopment) {
+        return await mockIncomeService.exportIncomeReport(masterId, params)
+      }
+      // TODO: 实现真实API调用
+      return await mockIncomeService.exportIncomeReport(masterId, params)
     }
   };
 }

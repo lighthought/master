@@ -100,6 +100,24 @@ const routes: RouteRecordRaw[] = [
     meta: { title: '个人中心', requiresAuth: true }
   },
   {
+    path: '/learning-records',
+    name: 'LearningRecords',
+    component: () => import('@/views/LearningRecordsPage.vue'),
+    meta: { title: '学习记录', requiresAuth: true }
+  },
+  {
+    path: '/student-management',
+    name: 'StudentManagement',
+    component: () => import('@/views/StudentManagementPage.vue'),
+    meta: { title: '学生管理', requiresAuth: true }
+  },
+  {
+    path: '/income-stats',
+    name: 'IncomeStats',
+    component: () => import('@/views/IncomeStatsPage.vue'),
+    meta: { title: '收入统计', requiresAuth: true }
+  },
+  {
     path: '/identity',
     name: 'IdentityManagement',
     component: () => import('@/views/IdentityManagementPage.vue'),

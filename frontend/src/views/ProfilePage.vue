@@ -221,6 +221,47 @@
               <el-icon><Reading /></el-icon>
               学习统计
             </h3>
+            <el-button type="text" @click="$router.push('/learning-records')">
+              <el-icon><ArrowRight /></el-icon>
+              查看学习记录
+            </el-button>
+          </div>
+          
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-number">{{ learningStats.totalCourses }}</div>
+              <div class="stat-label">已报名课程</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">{{ learningStats.completedCourses }}</div>
+              <div class="stat-label">已完成课程</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">{{ learningStats.totalStudyTime }}</div>
+              <div class="stat-label">总学习时长(小时)</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">{{ learningStats.averageRating }}</div>
+              <div class="stat-label">平均评分</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 教学统计 -->
+        <div v-if="hasMasterIdentity" class="profile-card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <el-icon><UserFilled /></el-icon>
+              教学统计
+            </h3>
+            <el-button type="text" @click="$router.push('/student-management')">
+              <el-icon><ArrowRight /></el-icon>
+              学生管理
+            </el-button>
+            <el-button type="text" @click="$router.push('/income-stats')">
+              <el-icon><ArrowRight /></el-icon>
+              收入统计
+            </el-button>
           </div>
           
           <div class="stats-grid">
@@ -448,7 +489,7 @@ import { ref, onMounted, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import {
   Edit, User, Plus, Calendar, Check, InfoFilled, Lock, Key, Phone, Message,
-  Reading, VideoPlay, Clock, Trophy, Star, UserFilled, Money
+  Reading, VideoPlay, Clock, Trophy, Star, UserFilled, Money, ArrowRight
 } from '@element-plus/icons-vue'
 import { useAuthStore } from '@/stores/auth'
 import { ApiService } from '@/services/api'
@@ -941,3 +982,4 @@ onMounted(() => {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+</style>
