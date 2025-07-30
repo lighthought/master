@@ -438,6 +438,8 @@ export const mockCoursesService = {
     courseId: string
     userId: string
     price: number
+    paymentMethod?: string
+    userInfo?: any
   }) {
     await delay(1000)
     
@@ -452,7 +454,13 @@ export const mockCoursesService = {
       courseId: enrollData.courseId,
       userId: enrollData.userId,
       courseTitle: course.title,
+      courseDescription: course.description,
+      courseCover: course.cover,
+      mentorName: course.mentorName,
+      duration: course.duration,
       price: enrollData.price,
+      paymentMethod: enrollData.paymentMethod || 'alipay',
+      userInfo: enrollData.userInfo,
       status: 'enrolled',
       enrolledAt: new Date().toISOString(),
       expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString() // 1年后过期

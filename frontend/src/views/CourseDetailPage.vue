@@ -457,7 +457,8 @@ const enrollCourse = () => {
     return
   }
   
-  showEnrollDialog.value = true
+  // 跳转到专门的报名页面
+  router.push(`/courses/${route.params.id}/enroll`)
 }
 
 // 确认报名

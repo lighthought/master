@@ -58,6 +58,18 @@ const routes: RouteRecordRaw[] = [
     meta: { title: '课程详情', requiresAuth: true }
   },
   {
+    path: '/courses/:id/enroll',
+    name: 'CourseEnroll',
+    component: () => import('@/views/CourseEnrollPage.vue'),
+    meta: { title: '课程报名', requiresAuth: true }
+  },
+  {
+    path: '/enroll-success/:id',
+    name: 'EnrollSuccess',
+    component: () => import('@/views/EnrollSuccessPage.vue'),
+    meta: { title: '报名成功', requiresAuth: true }
+  },
+  {
     path: '/community',
     name: 'Community',
     component: () => import('@/views/CommunityPage.vue'),
