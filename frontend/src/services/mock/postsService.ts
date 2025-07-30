@@ -24,16 +24,24 @@ const mockPosts = [
         userId: '2',
         userAvatar: 'https://via.placeholder.com/32x32/FF9800/FFFFFF?text=李',
         userName: '李学徒',
+        userRole: 'apprentice',
         content: '感谢分享！这个技巧确实很实用',
-        createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString()
+        likes: 3,
+        isLiked: false,
+        createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
+        replies: []
       },
       {
         id: '2',
         userId: '3',
         userAvatar: 'https://via.placeholder.com/32x32/9C27B0/FFFFFF?text=王',
         userName: '王同学',
+        userRole: 'apprentice',
         content: '请问这个和Options API相比有什么优势？',
-        createdAt: new Date(Date.now() - 30 * 60 * 1000).toISOString()
+        likes: 1,
+        isLiked: false,
+        createdAt: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+        replies: []
       }
     ]
   },
@@ -60,8 +68,12 @@ const mockPosts = [
         userId: '5',
         userAvatar: 'https://via.placeholder.com/32x32/3F51B5/FFFFFF?text=赵',
         userName: '赵开发者',
+        userRole: 'apprentice',
         content: '能分享一下具体的部署配置吗？',
-        createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString()
+        likes: 2,
+        isLiked: false,
+        createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+        replies: []
       }
     ]
   },
@@ -197,8 +209,12 @@ export const mockPostsService = {
       userId: commentData.userId,
       userAvatar: commentData.userAvatar,
       userName: commentData.userName,
+      userRole: commentData.userRole || 'apprentice',
       content: commentData.content,
-      createdAt: new Date().toISOString()
+      likes: 0,
+      isLiked: false,
+      createdAt: new Date().toISOString(),
+      replies: []
     }
     
     post.commentsList.unshift(newComment)
@@ -267,6 +283,177 @@ export const mockPostsService = {
         total: posts.length,
         page,
         pageSize
+      }
+    }
+  },
+
+  // 评论点赞/取消点赞
+  async toggleCommentLike(postId: string, commentId: string, userId: string) {
+    await delay(300)
+    
+    const post = mockPosts.find(p => p.id === postId)
+    if (!post) {
+      throw new Error('动态不存在')
+    }
+    
+    const comment = post.commentsList.find(c => c.id === commentId)
+    if (!comment) {
+      throw new Error('评论不存在')
+    }
+    
+    // 初始化点赞相关字段
+    if (!comment.likes) comment.likes = 0
+    if (!comment.isLiked) comment.isLiked = false
+    
+    if (comment.isLiked) {
+      comment.likes--
+      comment.isLiked = false
+    } else {
+      comment.likes++
+      comment.isLiked = true
+    }
+    
+    return {
+      success: true,
+      data: {
+        likes: comment.likes,
+        isLiked: comment.isLiked
+      }
+    }
+  },
+
+  // 添加回复
+  async addReply(postId: string, replyData: any) {
+    await delay(500)
+    
+    const post = mockPosts.find(p => p.id === postId)
+    if (!post) {
+      throw new Error('动态不存在')
+    }
+    
+    const parentComment = post.commentsList.find(c => c.id === replyData.parentId)
+    if (!parentComment) {
+      throw new Error('父评论不存在')
+    }
+    
+    const newReply = {
+      id: Date.now().toString(),
+      userId: replyData.userId,
+      userAvatar: replyData.userAvatar,
+      userName: replyData.userName,
+      userRole: replyData.userRole,
+      content: replyData.content,
+      likes: 0,
+      isLiked: false,
+      createdAt: new Date().toISOString()
+    }
+    
+    // 初始化回复列表
+    if (!parentComment.replies) {
+      parentComment.replies = []
+    }
+    
+    parentComment.replies.unshift(newReply)
+    
+    return {
+      success: true,
+      data: newReply,
+      message: '回复发布成功'
+    }
+  },
+
+  // 删除评论
+  async deleteComment(postId: string, commentId: string, userId: string) {
+    await delay(400)
+    
+    const post = mockPosts.find(p => p.id === postId)
+    if (!post) {
+      throw new Error('动态不存在')
+    }
+    
+    const commentIndex = post.commentsList.findIndex(c => c.id === commentId && c.userId === userId)
+    if (commentIndex === -1) {
+      throw new Error('评论不存在或无权限删除')
+    }
+    
+    post.commentsList.splice(commentIndex, 1)
+    post.comments--
+    
+    return {
+      success: true,
+      message: '评论删除成功'
+    }
+  },
+
+  // 删除回复
+  async deleteReply(postId: string, replyId: string, userId: string) {
+    await delay(400)
+    
+    const post = mockPosts.find(p => p.id === postId)
+    if (!post) {
+      throw new Error('动态不存在')
+    }
+    
+    let replyFound = false
+    for (const comment of post.commentsList) {
+      if (comment.replies) {
+        const replyIndex = comment.replies.findIndex(r => r.id === replyId && r.userId === userId)
+        if (replyIndex > -1) {
+          comment.replies.splice(replyIndex, 1)
+          replyFound = true
+          break
+        }
+      }
+    }
+    
+    if (!replyFound) {
+      throw new Error('回复不存在或无权限删除')
+    }
+    
+    return {
+      success: true,
+      message: '回复删除成功'
+    }
+  },
+
+  // 回复点赞/取消点赞
+  async toggleReplyLike(postId: string, replyId: string, userId: string) {
+    await delay(300)
+    
+    const post = mockPosts.find(p => p.id === postId)
+    if (!post) {
+      throw new Error('动态不存在')
+    }
+    
+    let reply = null
+    for (const comment of post.commentsList) {
+      if (comment.replies) {
+        reply = comment.replies.find(r => r.id === replyId)
+        if (reply) break
+      }
+    }
+    
+    if (!reply) {
+      throw new Error('回复不存在')
+    }
+    
+    // 初始化点赞相关字段
+    if (!reply.likes) reply.likes = 0
+    if (!reply.isLiked) reply.isLiked = false
+    
+    if (reply.isLiked) {
+      reply.likes--
+      reply.isLiked = false
+    } else {
+      reply.likes++
+      reply.isLiked = true
+    }
+    
+    return {
+      success: true,
+      data: {
+        likes: reply.likes,
+        isLiked: reply.isLiked
       }
     }
   }

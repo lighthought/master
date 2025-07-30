@@ -178,6 +178,29 @@ export class ApiService {
       }
       
       return await response.json()
+    },
+
+    // 修改密码
+    async changePassword(currentPassword: string, newPassword: string) {
+      if (isDevelopment) {
+        return await mockAuthService.changePassword(currentPassword, newPassword)
+      }
+      
+      // TODO: 真实API调用
+      const response = await fetch('/api/auth/change-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+        },
+        body: JSON.stringify({ currentPassword, newPassword })
+      })
+      
+      if (!response.ok) {
+        throw new Error('修改密码失败')
+      }
+      
+      return await response.json()
     }
   };
 
@@ -612,6 +635,46 @@ export class ApiService {
       }
       // TODO: 实现真实API调用
       return await mockPostsService.getUserPosts(userId, params)
+    },
+    // 评论点赞/取消点赞
+    async toggleCommentLike(postId: string, commentId: string, userId: string) {
+      if (isDevelopment) {
+        return await mockPostsService.toggleCommentLike(postId, commentId, userId)
+      }
+      // TODO: 实现真实API调用
+      return await mockPostsService.toggleCommentLike(postId, commentId, userId)
+    },
+    // 添加回复
+    async addReply(postId: string, replyData: any) {
+      if (isDevelopment) {
+        return await mockPostsService.addReply(postId, replyData)
+      }
+      // TODO: 实现真实API调用
+      return await mockPostsService.addReply(postId, replyData)
+    },
+    // 删除评论
+    async deleteComment(postId: string, commentId: string, userId: string) {
+      if (isDevelopment) {
+        return await mockPostsService.deleteComment(postId, commentId, userId)
+      }
+      // TODO: 实现真实API调用
+      return await mockPostsService.deleteComment(postId, commentId, userId)
+    },
+    // 删除回复
+    async deleteReply(postId: string, replyId: string, userId: string) {
+      if (isDevelopment) {
+        return await mockPostsService.deleteReply(postId, replyId, userId)
+      }
+      // TODO: 实现真实API调用
+      return await mockPostsService.deleteReply(postId, replyId, userId)
+    },
+    // 回复点赞/取消点赞
+    async toggleReplyLike(postId: string, replyId: string, userId: string) {
+      if (isDevelopment) {
+        return await mockPostsService.toggleReplyLike(postId, replyId, userId)
+      }
+      // TODO: 实现真实API调用
+      return await mockPostsService.toggleReplyLike(postId, replyId, userId)
     }
   };
 }

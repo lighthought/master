@@ -239,5 +239,25 @@ export const mockAuthService = {
       success: true,
       user
     }
+  },
+
+  // 修改密码
+  async changePassword(currentPassword: string, newPassword: string) {
+    await delay(1000)
+    
+    // 模拟密码验证
+    if (currentPassword !== '123456') {
+      throw new Error('当前密码错误')
+    }
+    
+    // 模拟密码强度验证
+    if (newPassword.length < 6) {
+      throw new Error('新密码长度不能少于6位')
+    }
+    
+    return {
+      success: true,
+      message: '密码修改成功'
+    }
   }
 }

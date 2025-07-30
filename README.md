@@ -209,13 +209,13 @@ docker-compose ps
 
 ## 许可证
 
-本项目采用MIT许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
+本项目采用 AGPL v3 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
 
 ## 联系方式
 
-- 项目维护者: [Your Name]
-- 邮箱: [your.email@example.com]
-- 项目链接: [https://github.com/your-username/master-guide](https://github.com/your-username/master-guide)
+- 项目维护者: [Jack Zhu]
+- 邮箱: [qqjack2012@gmail.com]
+- 项目链接: [https://github.com/lighthought/master](https://github.com/lighthought/master)
 
 ---
 

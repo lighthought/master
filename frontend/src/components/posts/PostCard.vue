@@ -115,20 +115,14 @@
 
         <!-- 评论列表 -->
         <div class="comments-list">
-          <div 
+          <CommentItem
             v-for="comment in post.commentsList" 
             :key="comment.id"
-            class="comment-item"
-          >
-            <el-avatar :size="32" :src="comment.userAvatar" />
-            <div class="comment-content">
-              <div class="comment-header">
-                <span class="comment-user">{{ comment.userName }}</span>
-                <span class="comment-time">{{ formatTime(comment.createdAt) }}</span>
-              </div>
-              <p class="comment-text">{{ comment.content }}</p>
-            </div>
-          </div>
+            :comment="comment"
+            :post-id="post.id"
+            @update-comment="updateComment"
+            @delete-comment="deleteComment"
+          />
         </div>
       </div>
     </div>
@@ -143,6 +137,7 @@ import {
 } from '@element-plus/icons-vue'
 import { useAuthStore } from '@/stores/auth'
 import { ApiService } from '@/services/api'
+import CommentItem from './CommentItem.vue'
 
 // Props
 const props = defineProps<{
@@ -294,6 +289,23 @@ const handleAction = async (command: string) => {
         ElMessage.error('删除失败')
       }
     }
+  }
+}
+
+// 更新评论
+const updateComment = (updatedComment: any) => {
+  const commentIndex = props.post.commentsList.findIndex((c: any) => c.id === updatedComment.id)
+  if (commentIndex > -1) {
+    props.post.commentsList[commentIndex] = updatedComment
+  }
+}
+
+// 删除评论
+const deleteComment = (commentId: string) => {
+  const commentIndex = props.post.commentsList.findIndex((c: any) => c.id === commentId)
+  if (commentIndex > -1) {
+    props.post.commentsList.splice(commentIndex, 1)
+    props.post.comments--
   }
 }
 </script>
