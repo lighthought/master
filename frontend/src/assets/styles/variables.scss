@@ -1,0 +1,104 @@
+// Master Guide 设计系统变量
+:root {
+  // 主色调 - 体现专业和活力
+  --primary-color: #FF6B35;
+  --primary-light: #FF8A65;
+  --primary-dark: #E55A2B;
+
+  // 辅助色 - 体现技艺传承
+  --secondary-color: #FFD93D;
+  --secondary-light: #FFE082;
+  --secondary-dark: #FBC02D;
+
+  // 深色主题背景
+  --bg-primary: #1A1A1A;
+  --bg-secondary: #2D2D2D;
+  --bg-tertiary: #404040;
+  --bg-card: #333333;
+  --bg-overlay: rgba(0, 0, 0, 0.7);
+
+  // 文字颜色
+  --text-primary: #FFFFFF;
+  --text-secondary: #CCCCCC;
+  --text-tertiary: #999999;
+  --text-disabled: #666666;
+  --text-inverse: #1A1A1A;
+
+  // 状态颜色
+  --success-color: #4CAF50;
+  --warning-color: #FF9800;
+  --danger-color: #F44336;
+  --info-color: #2196F3;
+
+  // 大师/学徒身份色
+  --master-color: #FF6B35;
+  --apprentice-color: #4CAF50;
+  --dual-color: #FFD93D;
+
+  // 字体族
+  --font-family-cn: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --font-family-en: 'SF Pro Display', 'Segoe UI', 'Roboto', sans-serif;
+  --font-family-number: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+
+  // 字体大小
+  --font-size-h1: 32px;
+  --font-size-h2: 24px;
+  --font-size-h3: 20px;
+  --font-size-h4: 18px;
+  --font-size-h5: 16px;
+  --font-size-large: 16px;
+  --font-size-medium: 14px;
+  --font-size-small: 12px;
+  --font-size-mini: 10px;
+
+  // 字重规范
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  // 间距系统
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+
+  // 圆角规范
+  --border-radius-small: 4px;
+  --border-radius-medium: 8px;
+  --border-radius-large: 12px;
+  --border-radius-xl: 16px;
+  --border-radius-full: 50%;
+
+  // 阴影系统
+  --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --shadow-heavy: 0 8px 32px rgba(0, 0, 0, 0.2);
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.1);
+  --shadow-button: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  // 动画规范
+  --transition-fast: 0.15s;
+  --transition-normal: 0.25s;
+  --transition-slow: 0.35s;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  // 响应式断点
+  --breakpoint-xs: 480px;
+  --breakpoint-sm: 768px;
+  --breakpoint-md: 1024px;
+  --breakpoint-lg: 1200px;
+  --breakpoint-xl: 1440px;
+
+  // 图标尺寸
+  --icon-size-xs: 12px;
+  --icon-size-sm: 16px;
+  --icon-size-md: 20px;
+  --icon-size-lg: 24px;
+  --icon-size-xl: 32px;
+}
