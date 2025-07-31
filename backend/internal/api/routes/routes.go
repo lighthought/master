@@ -8,7 +8,7 @@ import (
 )
 
 // SetupRoutes 设置路由
-func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.AuthHandler, userHandler *handlers.UserHandler, mentorHandler *handlers.MentorHandler, courseHandler *handlers.CourseHandler, appointmentHandler *handlers.AppointmentHandler) {
+func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.AuthHandler, userHandler *handlers.UserHandler, mentorHandler *handlers.MentorHandler, courseHandler *handlers.CourseHandler, appointmentHandler *handlers.AppointmentHandler, circleHandler *handlers.CircleHandler, postHandler *handlers.PostHandler, commentHandler *handlers.CommentHandler) {
 	// API v1 路由组
 	v1 := engine.Group("/api/v1")
 	{
@@ -175,38 +175,106 @@ func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.A
 		// 圈子相关路由
 		circles := v1.Group("/circles")
 		{
-			circles.GET("", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Get circles list - TODO"})
-			})
-			circles.GET("/:id", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Get circle detail - TODO"})
-			})
-			circles.POST("/:id/join", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Join circle - TODO"})
-			})
-			circles.DELETE("/:id/join", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Leave circle - TODO"})
-			})
+			if circleHandler != nil {
+				circles.GET("", circleHandler.GetCircles)
+				circles.GET("/recommended", circleHandler.GetRecommendedCircles)
+				circles.POST("/:circle_id/join", circleHandler.JoinCircle)
+				circles.DELETE("/:circle_id/join", circleHandler.LeaveCircle)
+			} else {
+				circles.GET("", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get circles list - TODO"})
+				})
+				circles.GET("/:id", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get circle detail - TODO"})
+				})
+				circles.POST("/:id/join", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Join circle - TODO"})
+				})
+				circles.DELETE("/:id/join", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Leave circle - TODO"})
+				})
+			}
+		}
+
+		// 圈子动态相关路由
+		circlePosts := v1.Group("/circles/:circle_id/posts")
+		{
+			if postHandler != nil {
+				circlePosts.GET("", postHandler.GetPosts)
+				circlePosts.POST("", postHandler.CreatePost)
+			} else {
+				circlePosts.GET("", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get circle posts - TODO"})
+				})
+				circlePosts.POST("", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Create circle post - TODO"})
+				})
+			}
 		}
 
 		// 动态相关路由
 		posts := v1.Group("/posts")
 		{
-			posts.GET("", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Get posts list - TODO"})
-			})
-			posts.POST("", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Create post - TODO"})
-			})
-			posts.GET("/:id", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Get post detail - TODO"})
-			})
-			posts.POST("/:id/like", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Like post - TODO"})
-			})
-			posts.DELETE("/:id/like", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Unlike post - TODO"})
-			})
+			if postHandler != nil {
+				posts.POST("/:post_id/like", postHandler.LikePost)
+				posts.DELETE("/:post_id/like", postHandler.UnlikePost)
+			} else {
+				posts.GET("", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get posts list - TODO"})
+				})
+				posts.POST("", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Create post - TODO"})
+				})
+				posts.GET("/:id", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get post detail - TODO"})
+				})
+				posts.POST("/:id/like", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Like post - TODO"})
+				})
+				posts.DELETE("/:id/like", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Unlike post - TODO"})
+				})
+			}
+		}
+
+		// 动态评论相关路由
+		postComments := v1.Group("/posts/:post_id/comments")
+		{
+			if commentHandler != nil {
+				postComments.GET("", commentHandler.GetComments)
+				postComments.POST("", commentHandler.CreateComment)
+			} else {
+				postComments.GET("", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get post comments - TODO"})
+				})
+				postComments.POST("", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Create post comment - TODO"})
+				})
+			}
+		}
+
+		// 评论相关路由
+		comments := v1.Group("/comments")
+		{
+			if commentHandler != nil {
+				comments.POST("/:comment_id/replies", commentHandler.CreateReply)
+				comments.POST("/:comment_id/like", commentHandler.LikeComment)
+				comments.DELETE("/:comment_id/like", commentHandler.UnlikeComment)
+				comments.DELETE("/:comment_id", commentHandler.DeleteComment)
+			} else {
+				comments.POST("/:comment_id/replies", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Create comment reply - TODO"})
+				})
+				comments.POST("/:comment_id/like", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Like comment - TODO"})
+				})
+				comments.DELETE("/:comment_id/like", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Unlike comment - TODO"})
+				})
+				comments.DELETE("/:comment_id", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Delete comment - TODO"})
+				})
+			}
 		}
 
 		// 学习记录相关路由

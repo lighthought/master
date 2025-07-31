@@ -20,6 +20,9 @@ type Container struct {
 	CourseRepository        repository.CourseRepository
 	CourseContentRepository repository.CourseContentRepository
 	AppointmentRepository   repository.AppointmentRepository
+	CircleRepository        repository.CircleRepository
+	PostRepository          repository.PostRepository
+	CommentRepository       repository.CommentRepository
 
 	// Services
 	AuthService        service.AuthService
@@ -27,6 +30,9 @@ type Container struct {
 	MentorService      service.MentorService
 	CourseService      service.CourseService
 	AppointmentService service.AppointmentService
+	CircleService      service.CircleService
+	PostService        service.PostService
+	CommentService     service.CommentService
 
 	// Handlers
 	AuthHandler        *handlers.AuthHandler
@@ -34,6 +40,9 @@ type Container struct {
 	MentorHandler      *handlers.MentorHandler
 	CourseHandler      *handlers.CourseHandler
 	AppointmentHandler *handlers.AppointmentHandler
+	CircleHandler      *handlers.CircleHandler
+	PostHandler        *handlers.PostHandler
+	CommentHandler     *handlers.CommentHandler
 }
 
 // NewContainer 创建依赖注入容器
@@ -47,6 +56,9 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 	courseRepo := repository.NewCourseRepository(db)
 	courseContentRepo := repository.NewCourseContentRepository(db)
 	appointmentRepo := repository.NewAppointmentRepository(db)
+	circleRepo := repository.NewCircleRepository(db)
+	postRepo := repository.NewPostRepository(db)
+	commentRepo := repository.NewCommentRepository(db)
 
 	// 初始化Services
 	authService := service.NewAuthService(userRepo, identityRepo, cfg.JWT.Secret, cfg.JWT.ExpireHours)
@@ -54,6 +66,9 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 	mentorService := service.NewMentorService(mentorRepo)
 	courseService := service.NewCourseService(courseRepo, courseContentRepo)
 	appointmentService := service.NewAppointmentService(appointmentRepo, mentorRepo)
+	circleService := service.NewCircleService(circleRepo)
+	postService := service.NewPostService(postRepo)
+	commentService := service.NewCommentService(commentRepo)
 
 	// 初始化Handlers
 	authHandler := handlers.NewAuthHandler(authService)
@@ -61,6 +76,9 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 	mentorHandler := handlers.NewMentorHandler(mentorService)
 	courseHandler := handlers.NewCourseHandler(courseService)
 	appointmentHandler := handlers.NewAppointmentHandler(appointmentService)
+	circleHandler := handlers.NewCircleHandler(circleService)
+	postHandler := handlers.NewPostHandler(postService)
+	commentHandler := handlers.NewCommentHandler(commentService)
 
 	return &Container{
 		UserRepository:          userRepo,
@@ -71,15 +89,24 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 		CourseRepository:        courseRepo,
 		CourseContentRepository: courseContentRepo,
 		AppointmentRepository:   appointmentRepo,
+		CircleRepository:        circleRepo,
+		PostRepository:          postRepo,
+		CommentRepository:       commentRepo,
 		AuthService:             authService,
 		UserService:             userService,
 		MentorService:           mentorService,
 		CourseService:           courseService,
 		AppointmentService:      appointmentService,
+		CircleService:           circleService,
+		PostService:             postService,
+		CommentService:          commentService,
 		AuthHandler:             authHandler,
 		UserHandler:             userHandler,
 		MentorHandler:           mentorHandler,
 		CourseHandler:           courseHandler,
 		AppointmentHandler:      appointmentHandler,
+		CircleHandler:           circleHandler,
+		PostHandler:             postHandler,
+		CommentHandler:          commentHandler,
 	}
 }

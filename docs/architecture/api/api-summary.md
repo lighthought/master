@@ -51,7 +51,7 @@
 - **[预约管理 API](./appointment-api.md)** - 预约创建、管理、状态更新等
 
 ### 2.2 社交互动模块
-- **[社群管理 API](./community-api.md)** - 圈子、动态、评论、点赞等
+- **[社群管理 API](./circle-api.md)** - 圈子、动态、评论、点赞等
 - **[评价管理 API](./review-api.md)** - 课程评价、大师评价等
 - **[通知管理 API](./notification-api.md)** - 消息通知、设置等
 - **[实时通信 API](./chat-api.md)** - 在线聊天、消息等
