@@ -8,7 +8,7 @@ import (
 )
 
 // SetupRoutes 设置路由
-func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.AuthHandler, userHandler *handlers.UserHandler, mentorHandler *handlers.MentorHandler) {
+func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.AuthHandler, userHandler *handlers.UserHandler, mentorHandler *handlers.MentorHandler, courseHandler *handlers.CourseHandler) {
 	// API v1 路由组
 	v1 := engine.Group("/api/v1")
 	{
@@ -103,21 +103,41 @@ func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.A
 		// 课程相关路由
 		courses := v1.Group("/courses")
 		{
-			courses.GET("", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Get courses list - TODO"})
-			})
-			courses.GET("/:id", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Get course detail - TODO"})
-			})
-			courses.POST("", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Create course - TODO"})
-			})
-			courses.PUT("/:id", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Update course - TODO"})
-			})
-			courses.POST("/:id/enroll", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Enroll course - TODO"})
-			})
+			if courseHandler != nil {
+				courses.GET("", courseHandler.GetCourses)
+				courses.GET("/:course_id", courseHandler.GetCourseDetail)
+				courses.POST("", courseHandler.CreateCourse)
+				courses.POST("/:course_id/enroll", courseHandler.EnrollCourse)
+				courses.GET("/:course_id/progress", courseHandler.GetCourseProgress)
+				courses.GET("/search", courseHandler.SearchCourses)
+				courses.GET("/recommended", courseHandler.GetRecommendedCourses)
+				courses.GET("/enrolled", courseHandler.GetEnrolledCourses)
+			} else {
+				courses.GET("", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get courses list - TODO"})
+				})
+				courses.GET("/:id", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get course detail - TODO"})
+				})
+				courses.POST("", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Create course - TODO"})
+				})
+				courses.POST("/:id/enroll", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Enroll course - TODO"})
+				})
+				courses.GET("/:id/progress", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get course progress - TODO"})
+				})
+				courses.GET("/search", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Search courses - TODO"})
+				})
+				courses.GET("/recommended", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get recommended courses - TODO"})
+				})
+				courses.GET("/enrolled", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get enrolled courses - TODO"})
+				})
+			}
 		}
 
 		// 预约相关路由

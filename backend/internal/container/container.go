@@ -12,21 +12,25 @@ import (
 // Container 依赖注入容器
 type Container struct {
 	// Repositories
-	UserRepository        repository.UserRepository
-	IdentityRepository    repository.IdentityRepository
-	ProfileRepository     repository.ProfileRepository
-	PreferencesRepository repository.PreferencesRepository
-	MentorRepository      repository.MentorRepository
+	UserRepository          repository.UserRepository
+	IdentityRepository      repository.IdentityRepository
+	ProfileRepository       repository.ProfileRepository
+	PreferencesRepository   repository.PreferencesRepository
+	MentorRepository        repository.MentorRepository
+	CourseRepository        repository.CourseRepository
+	CourseContentRepository repository.CourseContentRepository
 
 	// Services
 	AuthService   service.AuthService
 	UserService   service.UserService
 	MentorService service.MentorService
+	CourseService service.CourseService
 
 	// Handlers
 	AuthHandler   *handlers.AuthHandler
 	UserHandler   *handlers.UserHandler
 	MentorHandler *handlers.MentorHandler
+	CourseHandler *handlers.CourseHandler
 }
 
 // NewContainer 创建依赖注入容器
@@ -37,28 +41,36 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 	profileRepo := repository.NewProfileRepository(db)
 	preferencesRepo := repository.NewPreferencesRepository(db)
 	mentorRepo := repository.NewMentorRepository(db)
+	courseRepo := repository.NewCourseRepository(db)
+	courseContentRepo := repository.NewCourseContentRepository(db)
 
 	// 初始化Services
 	authService := service.NewAuthService(userRepo, identityRepo, cfg.JWT.Secret, cfg.JWT.ExpireHours)
 	userService := service.NewUserService(userRepo, identityRepo, profileRepo, preferencesRepo)
 	mentorService := service.NewMentorService(mentorRepo)
+	courseService := service.NewCourseService(courseRepo, courseContentRepo)
 
 	// 初始化Handlers
 	authHandler := handlers.NewAuthHandler(authService)
 	userHandler := handlers.NewUserHandler(userService)
 	mentorHandler := handlers.NewMentorHandler(mentorService)
+	courseHandler := handlers.NewCourseHandler(courseService)
 
 	return &Container{
-		UserRepository:        userRepo,
-		IdentityRepository:    identityRepo,
-		ProfileRepository:     profileRepo,
-		PreferencesRepository: preferencesRepo,
-		MentorRepository:      mentorRepo,
-		AuthService:           authService,
-		UserService:           userService,
-		MentorService:         mentorService,
-		AuthHandler:           authHandler,
-		UserHandler:           userHandler,
-		MentorHandler:         mentorHandler,
+		UserRepository:          userRepo,
+		IdentityRepository:      identityRepo,
+		ProfileRepository:       profileRepo,
+		PreferencesRepository:   preferencesRepo,
+		MentorRepository:        mentorRepo,
+		CourseRepository:        courseRepo,
+		CourseContentRepository: courseContentRepo,
+		AuthService:             authService,
+		UserService:             userService,
+		MentorService:           mentorService,
+		CourseService:           courseService,
+		AuthHandler:             authHandler,
+		UserHandler:             userHandler,
+		MentorHandler:           mentorHandler,
+		CourseHandler:           courseHandler,
 	}
 }
