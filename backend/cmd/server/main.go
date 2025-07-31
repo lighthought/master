@@ -139,13 +139,14 @@ func main() {
 	// 设置静态文件服务
 	engine.Static("/static", "./static")
 	engine.Static("/uploads", "./static/uploads")
+	engine.Static("/data", "./data")
 
 	// 设置路由
 	if the_container != nil {
-		routes.SetupRoutes(engine, the_container.AuthHandler, the_container.UserHandler, the_container.MentorHandler, the_container.CourseHandler, the_container.AppointmentHandler, the_container.CircleHandler, the_container.PostHandler, the_container.CommentHandler, the_container.ReviewHandler, the_container.NotificationHandler, the_container.LearningHandler, the_container.StudentHandler, the_container.IncomeHandler, the_container.PaymentHandler)
+		routes.SetupRoutes(engine, the_container.AuthHandler, the_container.UserHandler, the_container.MentorHandler, the_container.CourseHandler, the_container.AppointmentHandler, the_container.CircleHandler, the_container.PostHandler, the_container.CommentHandler, the_container.ReviewHandler, the_container.NotificationHandler, the_container.LearningHandler, the_container.StudentHandler, the_container.IncomeHandler, the_container.PaymentHandler, the_container.UploadHandler, the_container.SearchHandler, the_container.StatsHandler)
 	} else {
 		// 如果数据库未连接，使用默认路由
-		routes.SetupRoutes(engine, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil)
+		routes.SetupRoutes(engine, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil)
 	}
 
 	// 添加Swagger文档路由

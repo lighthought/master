@@ -7,7 +7,7 @@ import (
 )
 
 // SetupRoutes 设置路由
-func SetupRoutes(r *gin.Engine, authHandler *handlers.AuthHandler, userHandler *handlers.UserHandler, mentorHandler *handlers.MentorHandler, courseHandler *handlers.CourseHandler, appointmentHandler *handlers.AppointmentHandler, circleHandler *handlers.CircleHandler, postHandler *handlers.PostHandler, commentHandler *handlers.CommentHandler, reviewHandler *handlers.ReviewHandler, notificationHandler *handlers.NotificationHandler, learningHandler *handlers.LearningHandler, studentHandler *handlers.StudentHandler, incomeHandler *handlers.IncomeHandler, paymentHandler *handlers.PaymentHandler) {
+func SetupRoutes(r *gin.Engine, authHandler *handlers.AuthHandler, userHandler *handlers.UserHandler, mentorHandler *handlers.MentorHandler, courseHandler *handlers.CourseHandler, appointmentHandler *handlers.AppointmentHandler, circleHandler *handlers.CircleHandler, postHandler *handlers.PostHandler, commentHandler *handlers.CommentHandler, reviewHandler *handlers.ReviewHandler, notificationHandler *handlers.NotificationHandler, learningHandler *handlers.LearningHandler, studentHandler *handlers.StudentHandler, incomeHandler *handlers.IncomeHandler, paymentHandler *handlers.PaymentHandler, uploadHandler *handlers.UploadHandler, searchHandler *handlers.SearchHandler, statsHandler *handlers.StatsHandler) {
 	// API v1 路由组
 	v1 := r.Group("/api/v1")
 	{
@@ -456,6 +456,42 @@ func SetupRoutes(r *gin.Engine, authHandler *handlers.AuthHandler, userHandler *
 				})
 				payments.POST("/webhook/:gateway", func(c *gin.Context) {
 					c.JSON(200, gin.H{"message": "Process payment webhook - TODO"})
+				})
+			}
+		}
+
+		// 文件上传相关路由
+		uploadGroup := v1.Group("/upload")
+		{
+			if uploadHandler != nil {
+				uploadGroup.POST("/file", uploadHandler.UploadFile)
+			} else {
+				uploadGroup.POST("/file", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Upload file - TODO"})
+				})
+			}
+		}
+
+		// 搜索相关路由
+		searchGroup := v1.Group("/search")
+		{
+			if searchHandler != nil {
+				searchGroup.GET("", searchHandler.GlobalSearch)
+			} else {
+				searchGroup.GET("", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Global search - TODO"})
+				})
+			}
+		}
+
+		// 统计相关路由
+		statsGroup := v1.Group("/stats")
+		{
+			if statsHandler != nil {
+				statsGroup.GET("/user/:user_id", statsHandler.GetUserStats)
+			} else {
+				statsGroup.GET("/user/:user_id", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get user stats - TODO"})
 				})
 			}
 		}

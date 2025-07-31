@@ -811,4 +811,31 @@ CREATE INDEX idx_payment_methods_enabled ON payment_methods(enabled);
 -- 支付相关序列
 CREATE SEQUENCE IF NOT EXISTS payment_order_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1;
 CREATE SEQUENCE IF NOT EXISTS payment_record_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1;
-CREATE SEQUENCE IF NOT EXISTS payment_refund_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1; 
+CREATE SEQUENCE IF NOT EXISTS payment_refund_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1;
+
+-- 文件上传相关序列
+CREATE SEQUENCE IF NOT EXISTS upload_file_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1;
+
+-- 文件上传表
+CREATE TABLE upload_files (
+    id VARCHAR(32) PRIMARY KEY DEFAULT generate_table_id('UPLOAD_', 'upload_file_id_num_seq'),
+    original_name VARCHAR(255) NOT NULL,
+    file_path VARCHAR(500) NOT NULL,
+    file_url VARCHAR(500) NOT NULL,
+    file_type VARCHAR(50) NOT NULL,
+    file_size BIGINT NOT NULL,
+    mime_type VARCHAR(100),
+    user_id VARCHAR(32) REFERENCES users(id) ON DELETE CASCADE,
+    upload_type VARCHAR(50) NOT NULL CHECK (upload_type IN ('avatar', 'course_cover', 'post_image')),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 文件上传相关索引
+CREATE INDEX idx_upload_files_user_id ON upload_files(user_id);
+CREATE INDEX idx_upload_files_upload_type ON upload_files(upload_type);
+CREATE INDEX idx_upload_files_created_at ON upload_files(created_at);
+CREATE INDEX idx_upload_files_file_type ON upload_files(file_type);
+
+-- 文件上传触发器
+CREATE TRIGGER update_upload_files_updated_at BEFORE UPDATE ON upload_files FOR EACH ROW EXECUTE FUNCTION update_updated_at_column(); 

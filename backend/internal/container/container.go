@@ -30,6 +30,9 @@ type Container struct {
 	MessageRepository       repository.MessageRepository
 	IncomeRepository        repository.IncomeRepository
 	PaymentRepository       repository.PaymentRepository
+	UploadRepository        repository.UploadRepository
+	SearchRepository        repository.SearchRepository
+	StatsRepository         repository.StatsRepository
 
 	// Services
 	AuthService         service.AuthService
@@ -46,6 +49,9 @@ type Container struct {
 	StudentService      service.StudentService
 	IncomeService       service.IncomeService
 	PaymentService      service.PaymentService
+	UploadService       service.UploadService
+	SearchService       service.SearchService
+	StatsService        service.StatsService
 
 	// Handlers
 	AuthHandler         *handlers.AuthHandler
@@ -62,6 +68,9 @@ type Container struct {
 	StudentHandler      *handlers.StudentHandler
 	IncomeHandler       *handlers.IncomeHandler
 	PaymentHandler      *handlers.PaymentHandler
+	UploadHandler       *handlers.UploadHandler
+	SearchHandler       *handlers.SearchHandler
+	StatsHandler        *handlers.StatsHandler
 }
 
 // NewContainer 创建依赖注入容器
@@ -85,6 +94,9 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 	messageRepo := repository.NewMessageRepository(db)
 	incomeRepo := repository.NewIncomeRepository(db)
 	paymentRepo := repository.NewPaymentRepository(db)
+	uploadRepo := repository.NewUploadRepository(db)
+	searchRepo := repository.NewSearchRepository(db)
+	statsRepo := repository.NewStatsRepository(db)
 
 	// 初始化Services
 	authService := service.NewAuthService(userRepo, identityRepo, cfg.JWT.Secret, cfg.JWT.ExpireHours)
@@ -101,6 +113,9 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 	studentService := service.NewStudentService(studentRepo, userRepo, identityRepo, appointmentRepo, messageRepo)
 	incomeService := service.NewIncomeService(incomeRepo)
 	paymentService := service.NewPaymentService(paymentRepo)
+	uploadService := service.NewUploadService(uploadRepo)
+	searchService := service.NewSearchService(searchRepo)
+	statsService := service.NewStatsService(statsRepo)
 
 	// 初始化Handlers
 	authHandler := handlers.NewAuthHandler(authService)
@@ -117,6 +132,9 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 	studentHandler := handlers.NewStudentHandler(studentService)
 	incomeHandler := handlers.NewIncomeHandler(incomeService)
 	paymentHandler := handlers.NewPaymentHandler(paymentService)
+	uploadHandler := handlers.NewUploadHandler(uploadService)
+	searchHandler := handlers.NewSearchHandler(searchService)
+	statsHandler := handlers.NewStatsHandler(statsService)
 
 	return &Container{
 		UserRepository:          userRepo,
@@ -137,6 +155,9 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 		MessageRepository:       messageRepo,
 		IncomeRepository:        incomeRepo,
 		PaymentRepository:       paymentRepo,
+		UploadRepository:        uploadRepo,
+		SearchRepository:        searchRepo,
+		StatsRepository:         statsRepo,
 		AuthService:             authService,
 		UserService:             userService,
 		MentorService:           mentorService,
@@ -151,6 +172,9 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 		StudentService:          studentService,
 		IncomeService:           incomeService,
 		PaymentService:          paymentService,
+		UploadService:           uploadService,
+		SearchService:           searchService,
+		StatsService:            statsService,
 		AuthHandler:             authHandler,
 		UserHandler:             userHandler,
 		MentorHandler:           mentorHandler,
@@ -165,5 +189,8 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 		StudentHandler:          studentHandler,
 		IncomeHandler:           incomeHandler,
 		PaymentHandler:          paymentHandler,
+		UploadHandler:           uploadHandler,
+		SearchHandler:           searchHandler,
+		StatsHandler:            statsHandler,
 	}
 }
