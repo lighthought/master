@@ -13,10 +13,11 @@ type Review struct {
 	Content       string    `json:"content" gorm:"type:text"`
 	ReviewType    string    `json:"review_type" gorm:"not null"`
 	CreatedAt     time.Time `json:"created_at" gorm:"autoCreateTime"`
+	UpdatedAt     time.Time `json:"updated_at" gorm:"autoUpdateTime"`
 
 	// 关联关系
 	Reviewer    *User             `json:"reviewer,omitempty" gorm:"foreignKey:ReviewerID"`
-	Reviewed    *User             `json:"reviewed,omitempty" gorm:"foreignKey:ReviewedID"`
+	Reviewed    *UserIdentity     `json:"reviewed,omitempty" gorm:"foreignKey:ReviewedID"`
 	Course      *Course           `json:"course,omitempty" gorm:"foreignKey:CourseID"`
 	Appointment *AppointmentModel `json:"appointment,omitempty" gorm:"foreignKey:AppointmentID"`
 }

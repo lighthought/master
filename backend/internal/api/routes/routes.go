@@ -8,7 +8,7 @@ import (
 )
 
 // SetupRoutes 设置路由
-func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.AuthHandler, userHandler *handlers.UserHandler, mentorHandler *handlers.MentorHandler, courseHandler *handlers.CourseHandler, appointmentHandler *handlers.AppointmentHandler, circleHandler *handlers.CircleHandler, postHandler *handlers.PostHandler, commentHandler *handlers.CommentHandler) {
+func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.AuthHandler, userHandler *handlers.UserHandler, mentorHandler *handlers.MentorHandler, courseHandler *handlers.CourseHandler, appointmentHandler *handlers.AppointmentHandler, circleHandler *handlers.CircleHandler, postHandler *handlers.PostHandler, commentHandler *handlers.CommentHandler, reviewHandler *handlers.ReviewHandler) {
 	// API v1 路由组
 	v1 := engine.Group("/api/v1")
 	{
@@ -273,6 +273,38 @@ func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.A
 				})
 				comments.DELETE("/:comment_id", func(c *gin.Context) {
 					c.JSON(200, gin.H{"message": "Delete comment - TODO"})
+				})
+			}
+		}
+
+		// 评价相关路由
+		reviews := v1.Group("/reviews")
+		{
+			if reviewHandler != nil {
+				reviews.GET("", reviewHandler.GetReviews)
+				reviews.GET("/:review_id", reviewHandler.GetReviewByID)
+				reviews.POST("", reviewHandler.CreateReview)
+				reviews.PUT("/:review_id", reviewHandler.UpdateReview)
+				reviews.DELETE("/:review_id", reviewHandler.DeleteReview)
+				reviews.GET("/stats", reviewHandler.GetReviewStats)
+			} else {
+				reviews.GET("", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get reviews list - TODO"})
+				})
+				reviews.GET("/:id", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get review detail - TODO"})
+				})
+				reviews.POST("", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Create review - TODO"})
+				})
+				reviews.PUT("/:id", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Update review - TODO"})
+				})
+				reviews.DELETE("/:id", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Delete review - TODO"})
+				})
+				reviews.GET("/stats", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get review stats - TODO"})
 				})
 			}
 		}

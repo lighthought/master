@@ -23,6 +23,7 @@ type Container struct {
 	CircleRepository        repository.CircleRepository
 	PostRepository          repository.PostRepository
 	CommentRepository       repository.CommentRepository
+	ReviewRepository        repository.ReviewRepository
 
 	// Services
 	AuthService        service.AuthService
@@ -33,6 +34,7 @@ type Container struct {
 	CircleService      service.CircleService
 	PostService        service.PostService
 	CommentService     service.CommentService
+	ReviewService      service.ReviewService
 
 	// Handlers
 	AuthHandler        *handlers.AuthHandler
@@ -43,6 +45,7 @@ type Container struct {
 	CircleHandler      *handlers.CircleHandler
 	PostHandler        *handlers.PostHandler
 	CommentHandler     *handlers.CommentHandler
+	ReviewHandler      *handlers.ReviewHandler
 }
 
 // NewContainer 创建依赖注入容器
@@ -59,6 +62,7 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 	circleRepo := repository.NewCircleRepository(db)
 	postRepo := repository.NewPostRepository(db)
 	commentRepo := repository.NewCommentRepository(db)
+	reviewRepo := repository.NewReviewRepository(db)
 
 	// 初始化Services
 	authService := service.NewAuthService(userRepo, identityRepo, cfg.JWT.Secret, cfg.JWT.ExpireHours)
@@ -69,6 +73,7 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 	circleService := service.NewCircleService(circleRepo)
 	postService := service.NewPostService(postRepo)
 	commentService := service.NewCommentService(commentRepo)
+	reviewService := service.NewReviewService(reviewRepo)
 
 	// 初始化Handlers
 	authHandler := handlers.NewAuthHandler(authService)
@@ -79,6 +84,7 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 	circleHandler := handlers.NewCircleHandler(circleService)
 	postHandler := handlers.NewPostHandler(postService)
 	commentHandler := handlers.NewCommentHandler(commentService)
+	reviewHandler := handlers.NewReviewHandler(reviewService)
 
 	return &Container{
 		UserRepository:          userRepo,
@@ -92,6 +98,7 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 		CircleRepository:        circleRepo,
 		PostRepository:          postRepo,
 		CommentRepository:       commentRepo,
+		ReviewRepository:        reviewRepo,
 		AuthService:             authService,
 		UserService:             userService,
 		MentorService:           mentorService,
@@ -100,6 +107,7 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 		CircleService:           circleService,
 		PostService:             postService,
 		CommentService:          commentService,
+		ReviewService:           reviewService,
 		AuthHandler:             authHandler,
 		UserHandler:             userHandler,
 		MentorHandler:           mentorHandler,
@@ -108,5 +116,6 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 		CircleHandler:           circleHandler,
 		PostHandler:             postHandler,
 		CommentHandler:          commentHandler,
+		ReviewHandler:           reviewHandler,
 	}
 }
