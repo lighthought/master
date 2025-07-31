@@ -8,7 +8,7 @@ import (
 )
 
 // SetupRoutes 设置路由
-func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.AuthHandler, userHandler *handlers.UserHandler) {
+func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.AuthHandler, userHandler *handlers.UserHandler, mentorHandler *handlers.MentorHandler) {
 	// API v1 路由组
 	v1 := engine.Group("/api/v1")
 	{
@@ -78,18 +78,26 @@ func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.A
 		// 大师相关路由
 		mentors := v1.Group("/mentors")
 		{
-			mentors.GET("", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Get mentors list - TODO"})
-			})
-			mentors.GET("/:id", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Get mentor detail - TODO"})
-			})
-			mentors.GET("/search", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Search mentors - TODO"})
-			})
-			mentors.GET("/recommended", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Get recommended mentors - TODO"})
-			})
+			if mentorHandler != nil {
+				mentors.GET("", mentorHandler.GetMentors)
+				mentors.GET("/:mentor_id", mentorHandler.GetMentorDetail)
+				mentors.GET("/search", mentorHandler.SearchMentors)
+				mentors.GET("/recommended", mentorHandler.GetRecommendedMentors)
+				mentors.GET("/:mentor_id/reviews", mentorHandler.GetMentorReviews)
+			} else {
+				mentors.GET("", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get mentors list - TODO"})
+				})
+				mentors.GET("/:id", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get mentor detail - TODO"})
+				})
+				mentors.GET("/search", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Search mentors - TODO"})
+				})
+				mentors.GET("/recommended", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get recommended mentors - TODO"})
+				})
+			}
 		}
 
 		// 课程相关路由

@@ -44,6 +44,9 @@ CREATE SEQUENCE IF NOT EXISTS message_id_num_seq INCREMENT BY 1 START 1 MINVALUE
 CREATE SEQUENCE IF NOT EXISTS notification_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1;
 CREATE SEQUENCE IF NOT EXISTS system_config_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1;
 CREATE SEQUENCE IF NOT EXISTS audit_log_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1;
+CREATE SEQUENCE IF NOT EXISTS mentor_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1;
+CREATE SEQUENCE IF NOT EXISTS mentor_review_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1;
+
 
 -- 设置序列所有者
 ALTER SEQUENCE user_id_num_seq OWNER TO master_guide;
@@ -66,6 +69,9 @@ ALTER SEQUENCE message_id_num_seq OWNER TO master_guide;
 ALTER SEQUENCE notification_id_num_seq OWNER TO master_guide;
 ALTER SEQUENCE system_config_id_num_seq OWNER TO master_guide;
 ALTER SEQUENCE audit_log_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE mentor_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE mentor_review_id_num_seq OWNER TO master_guide;
+
 
 -- 创建用户基础表
 CREATE TABLE users (
@@ -109,6 +115,35 @@ CREATE TABLE user_profiles (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- 创建大师表
+CREATE TABLE mentors (
+    id VARCHAR(32) PRIMARY KEY DEFAULT generate_table_id('MENTOR_', 'mentor_id_num_seq'),
+    identity_id VARCHAR(32) NOT NULL REFERENCES user_identities(id) ON DELETE CASCADE,
+    user_id VARCHAR(32) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    rating DECIMAL(3,2) DEFAULT 0.00 CHECK (rating >= 0 AND rating <= 5),
+    student_count INTEGER DEFAULT 0,
+    hourly_rate DECIMAL(10,2) NOT NULL,
+    is_online BOOLEAN DEFAULT FALSE,
+    experience_years INTEGER DEFAULT 0,
+    status VARCHAR(20) DEFAULT 'active' CHECK (status IN ('active', 'inactive', 'suspended')),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 创建大师评价表
+CREATE TABLE mentor_reviews (
+    id VARCHAR(32) PRIMARY KEY DEFAULT generate_table_id('MENTOR_REVIEW_', 'mentor_review_id_num_seq'),
+    mentor_id VARCHAR(32) NOT NULL REFERENCES mentors(id) ON DELETE CASCADE,
+    reviewer_id VARCHAR(32) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    content TEXT,
+    is_anonymous BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
 -- 创建领域表
 CREATE TABLE domains (
     id VARCHAR(32) PRIMARY KEY DEFAULT generate_table_id('DOMAIN_', 'domain_id_num_seq'),
@@ -125,7 +160,7 @@ CREATE TABLE domains (
 -- 创建课程表
 CREATE TABLE courses (
     id VARCHAR(32) PRIMARY KEY DEFAULT generate_table_id('COURSE_', 'course_id_num_seq'),
-    mentor_id VARCHAR(32) NOT NULL REFERENCES user_identities(id) ON DELETE CASCADE,
+    mentor_id VARCHAR(32) NOT NULL REFERENCES mentors(id) ON DELETE CASCADE,
     title VARCHAR(200) NOT NULL,
     description TEXT,
     cover_image VARCHAR(500),
@@ -345,6 +380,20 @@ CREATE INDEX idx_user_profiles_identity_id ON user_profiles(identity_id);
 CREATE INDEX idx_user_profiles_name ON user_profiles(name);
 CREATE INDEX idx_user_profiles_skills ON user_profiles USING GIN(skills);
 
+-- 大师表索引
+CREATE INDEX idx_mentors_identity_id ON mentors(identity_id);
+CREATE INDEX idx_mentors_user_id ON mentors(user_id);
+CREATE INDEX idx_mentors_rating ON mentors(rating);
+CREATE INDEX idx_mentors_hourly_rate ON mentors(hourly_rate);
+CREATE INDEX idx_mentors_is_online ON mentors(is_online);
+CREATE INDEX idx_mentors_status ON mentors(status);
+
+-- 大师评价表索引
+CREATE INDEX idx_mentor_reviews_mentor_id ON mentor_reviews(mentor_id);
+CREATE INDEX idx_mentor_reviews_reviewer_id ON mentor_reviews(reviewer_id);
+CREATE INDEX idx_mentor_reviews_rating ON mentor_reviews(rating);
+CREATE INDEX idx_mentor_reviews_created_at ON mentor_reviews(created_at);
+
 -- 领域表索引
 CREATE INDEX idx_domains_code ON domains(code);
 CREATE INDEX idx_domains_is_active ON domains(is_active);
@@ -502,6 +551,8 @@ $$ language 'plpgsql';
 CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON users FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_user_identities_updated_at BEFORE UPDATE ON user_identities FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_user_profiles_updated_at BEFORE UPDATE ON user_profiles FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE TRIGGER update_mentors_updated_at BEFORE UPDATE ON mentors FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE TRIGGER update_mentor_reviews_updated_at BEFORE UPDATE ON mentor_reviews FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_courses_updated_at BEFORE UPDATE ON courses FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_course_contents_updated_at BEFORE UPDATE ON course_contents FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_circles_updated_at BEFORE UPDATE ON circles FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
