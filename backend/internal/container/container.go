@@ -24,28 +24,31 @@ type Container struct {
 	PostRepository          repository.PostRepository
 	CommentRepository       repository.CommentRepository
 	ReviewRepository        repository.ReviewRepository
+	NotificationRepository  repository.NotificationRepository
 
 	// Services
-	AuthService        service.AuthService
-	UserService        service.UserService
-	MentorService      service.MentorService
-	CourseService      service.CourseService
-	AppointmentService service.AppointmentService
-	CircleService      service.CircleService
-	PostService        service.PostService
-	CommentService     service.CommentService
-	ReviewService      service.ReviewService
+	AuthService         service.AuthService
+	UserService         service.UserService
+	MentorService       service.MentorService
+	CourseService       service.CourseService
+	AppointmentService  service.AppointmentService
+	CircleService       service.CircleService
+	PostService         service.PostService
+	CommentService      service.CommentService
+	ReviewService       service.ReviewService
+	NotificationService service.NotificationService
 
 	// Handlers
-	AuthHandler        *handlers.AuthHandler
-	UserHandler        *handlers.UserHandler
-	MentorHandler      *handlers.MentorHandler
-	CourseHandler      *handlers.CourseHandler
-	AppointmentHandler *handlers.AppointmentHandler
-	CircleHandler      *handlers.CircleHandler
-	PostHandler        *handlers.PostHandler
-	CommentHandler     *handlers.CommentHandler
-	ReviewHandler      *handlers.ReviewHandler
+	AuthHandler         *handlers.AuthHandler
+	UserHandler         *handlers.UserHandler
+	MentorHandler       *handlers.MentorHandler
+	CourseHandler       *handlers.CourseHandler
+	AppointmentHandler  *handlers.AppointmentHandler
+	CircleHandler       *handlers.CircleHandler
+	PostHandler         *handlers.PostHandler
+	CommentHandler      *handlers.CommentHandler
+	ReviewHandler       *handlers.ReviewHandler
+	NotificationHandler *handlers.NotificationHandler
 }
 
 // NewContainer 创建依赖注入容器
@@ -63,6 +66,7 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 	postRepo := repository.NewPostRepository(db)
 	commentRepo := repository.NewCommentRepository(db)
 	reviewRepo := repository.NewReviewRepository(db)
+	notificationRepo := repository.NewNotificationRepository(db)
 
 	// 初始化Services
 	authService := service.NewAuthService(userRepo, identityRepo, cfg.JWT.Secret, cfg.JWT.ExpireHours)
@@ -74,6 +78,7 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 	postService := service.NewPostService(postRepo)
 	commentService := service.NewCommentService(commentRepo)
 	reviewService := service.NewReviewService(reviewRepo)
+	notificationService := service.NewNotificationService(notificationRepo)
 
 	// 初始化Handlers
 	authHandler := handlers.NewAuthHandler(authService)
@@ -85,6 +90,7 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 	postHandler := handlers.NewPostHandler(postService)
 	commentHandler := handlers.NewCommentHandler(commentService)
 	reviewHandler := handlers.NewReviewHandler(reviewService)
+	notificationHandler := handlers.NewNotificationHandler(notificationService)
 
 	return &Container{
 		UserRepository:          userRepo,
@@ -99,6 +105,7 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 		PostRepository:          postRepo,
 		CommentRepository:       commentRepo,
 		ReviewRepository:        reviewRepo,
+		NotificationRepository:  notificationRepo,
 		AuthService:             authService,
 		UserService:             userService,
 		MentorService:           mentorService,
@@ -108,6 +115,7 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 		PostService:             postService,
 		CommentService:          commentService,
 		ReviewService:           reviewService,
+		NotificationService:     notificationService,
 		AuthHandler:             authHandler,
 		UserHandler:             userHandler,
 		MentorHandler:           mentorHandler,
@@ -117,5 +125,6 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 		PostHandler:             postHandler,
 		CommentHandler:          commentHandler,
 		ReviewHandler:           reviewHandler,
+		NotificationHandler:     notificationHandler,
 	}
 }

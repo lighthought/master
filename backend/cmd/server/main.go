@@ -142,10 +142,10 @@ func main() {
 
 	// 设置路由
 	if the_container != nil {
-		routes.SetupRoutes(engine, cfg, the_container.AuthHandler, the_container.UserHandler, the_container.MentorHandler, the_container.CourseHandler, the_container.AppointmentHandler, the_container.CircleHandler, the_container.PostHandler, the_container.CommentHandler, the_container.ReviewHandler)
+		routes.SetupRoutes(engine, cfg, the_container.AuthHandler, the_container.UserHandler, the_container.MentorHandler, the_container.CourseHandler, the_container.AppointmentHandler, the_container.CircleHandler, the_container.PostHandler, the_container.CommentHandler, the_container.ReviewHandler, the_container.NotificationHandler)
 	} else {
 		// 如果数据库未连接，使用默认路由
-		routes.SetupRoutes(engine, cfg, nil, nil, nil, nil, nil, nil, nil, nil, nil)
+		routes.SetupRoutes(engine, cfg, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil)
 	}
 
 	// 添加Swagger文档路由

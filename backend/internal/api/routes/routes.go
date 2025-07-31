@@ -8,7 +8,7 @@ import (
 )
 
 // SetupRoutes 设置路由
-func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.AuthHandler, userHandler *handlers.UserHandler, mentorHandler *handlers.MentorHandler, courseHandler *handlers.CourseHandler, appointmentHandler *handlers.AppointmentHandler, circleHandler *handlers.CircleHandler, postHandler *handlers.PostHandler, commentHandler *handlers.CommentHandler, reviewHandler *handlers.ReviewHandler) {
+func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.AuthHandler, userHandler *handlers.UserHandler, mentorHandler *handlers.MentorHandler, courseHandler *handlers.CourseHandler, appointmentHandler *handlers.AppointmentHandler, circleHandler *handlers.CircleHandler, postHandler *handlers.PostHandler, commentHandler *handlers.CommentHandler, reviewHandler *handlers.ReviewHandler, notificationHandler *handlers.NotificationHandler) {
 	// API v1 路由组
 	v1 := engine.Group("/api/v1")
 	{
@@ -305,6 +305,50 @@ func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.A
 				})
 				reviews.GET("/stats", func(c *gin.Context) {
 					c.JSON(200, gin.H{"message": "Get review stats - TODO"})
+				})
+			}
+		}
+
+		// 通知相关路由
+		notifications := v1.Group("/notifications")
+		{
+			if notificationHandler != nil {
+				notifications.GET("", notificationHandler.GetNotifications)
+				notifications.PUT("/:notification_id/read", notificationHandler.MarkNotificationRead)
+				notifications.PUT("/read", notificationHandler.BatchMarkNotificationsRead)
+				notifications.DELETE("/:notification_id", notificationHandler.DeleteNotification)
+				notifications.DELETE("", notificationHandler.BatchDeleteNotifications)
+				notifications.GET("/unread-count", notificationHandler.GetUnreadCount)
+				notifications.GET("/settings", notificationHandler.GetNotificationSettings)
+				notifications.PUT("/settings", notificationHandler.UpdateNotificationSettings)
+				notifications.POST("/send", notificationHandler.SendNotification)
+			} else {
+				notifications.GET("", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get notifications list - TODO"})
+				})
+				notifications.PUT("/:id/read", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Mark notification read - TODO"})
+				})
+				notifications.PUT("/read", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Batch mark notifications read - TODO"})
+				})
+				notifications.DELETE("/:id", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Delete notification - TODO"})
+				})
+				notifications.DELETE("", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Batch delete notifications - TODO"})
+				})
+				notifications.GET("/unread-count", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get unread count - TODO"})
+				})
+				notifications.GET("/settings", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get notification settings - TODO"})
+				})
+				notifications.PUT("/settings", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Update notification settings - TODO"})
+				})
+				notifications.POST("/send", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Send notification - TODO"})
 				})
 			}
 		}
