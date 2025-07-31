@@ -548,33 +548,5 @@ func SetupRoutes(r *gin.Engine, authHandler *handlers.AuthHandler, userHandler *
 			}
 		}
 
-		// 文件上传路由
-		upload := v1.Group("/upload")
-		{
-			upload.POST("/file", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Upload file - TODO"})
-			})
-		}
-
-		// 搜索路由
-		search := v1.Group("/search")
-		{
-			search.GET("/global", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Global search - TODO"})
-			})
-		}
-
-		// 统计路由
-		stats := v1.Group("/stats")
-		{
-			stats.GET("/system", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Get system stats - TODO"})
-			})
-		}
 	}
-
-	// WebSocket路由
-	r.GET("/ws", func(c *gin.Context) {
-		c.JSON(200, gin.H{"message": "WebSocket endpoint - TODO"})
-	})
 }

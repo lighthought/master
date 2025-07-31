@@ -6,7 +6,7 @@ server:
   max_header_bytes: 1048576
 
 database:
-  host: postgres
+  host: localhost
   port: 5434
   user: master_guide
   password: master_guide123
@@ -17,7 +17,7 @@ database:
   conn_max_lifetime: 3600
 
 redis:
-  host: redis
+  host: localhost
   port: 6380
   password: ""
   db: 0

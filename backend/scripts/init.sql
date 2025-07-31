@@ -838,4 +838,97 @@ CREATE INDEX idx_upload_files_created_at ON upload_files(created_at);
 CREATE INDEX idx_upload_files_file_type ON upload_files(file_type);
 
 -- 文件上传触发器
-CREATE TRIGGER update_upload_files_updated_at BEFORE UPDATE ON upload_files FOR EACH ROW EXECUTE FUNCTION update_updated_at_column(); 
+CREATE TRIGGER update_upload_files_updated_at BEFORE UPDATE ON upload_files FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- 创建用户和权限管理
+-- 创建用户（PostgreSQL 语法）
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT FROM pg_user WHERE usename = 'master_guide') THEN
+        CREATE USER master_guide WITH PASSWORD 'master_guide123';
+    END IF;
+END
+$$;
+
+-- 赋予数据库权限
+GRANT ALL PRIVILEGES ON DATABASE master_guide TO master_guide;
+
+-- 赋予公共模式权限
+GRANT ALL PRIVILEGES ON SCHEMA public TO master_guide;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO master_guide;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO master_guide;
+
+-- 设置默认权限
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO master_guide;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO master_guide;
+
+-- 赋予所有序列的所有权
+ALTER SEQUENCE user_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE user_identity_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE user_profile_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE domain_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE course_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE course_content_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE learning_record_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE content_progress_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE circle_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE circle_member_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE post_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE comment_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE post_like_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE comment_like_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE appointment_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE review_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE message_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE notification_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE system_config_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE audit_log_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE mentor_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE mentor_review_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE study_session_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE assignment_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE income_transaction_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE withdrawal_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE payment_order_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE payment_record_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE payment_refund_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE upload_file_id_num_seq OWNER TO master_guide;
+
+-- 赋予所有表的所有权
+ALTER TABLE users OWNER TO master_guide;
+ALTER TABLE user_identities OWNER TO master_guide;
+ALTER TABLE user_profiles OWNER TO master_guide;
+ALTER TABLE mentors OWNER TO master_guide;
+ALTER TABLE mentor_reviews OWNER TO master_guide;
+ALTER TABLE domains OWNER TO master_guide;
+ALTER TABLE courses OWNER TO master_guide;
+ALTER TABLE course_contents OWNER TO master_guide;
+ALTER TABLE learning_records OWNER TO master_guide;
+ALTER TABLE study_sessions OWNER TO master_guide;
+ALTER TABLE assignments OWNER TO master_guide;
+ALTER TABLE appointments OWNER TO master_guide;
+ALTER TABLE income_transactions OWNER TO master_guide;
+ALTER TABLE withdrawals OWNER TO master_guide;
+ALTER TABLE content_progress OWNER TO master_guide;
+ALTER TABLE circles OWNER TO master_guide;
+ALTER TABLE circle_members OWNER TO master_guide;
+ALTER TABLE posts OWNER TO master_guide;
+ALTER TABLE comments OWNER TO master_guide;
+ALTER TABLE post_likes OWNER TO master_guide;
+ALTER TABLE comment_likes OWNER TO master_guide;
+ALTER TABLE reviews OWNER TO master_guide;
+ALTER TABLE messages OWNER TO master_guide;
+ALTER TABLE notifications OWNER TO master_guide;
+ALTER TABLE system_configs OWNER TO master_guide;
+ALTER TABLE audit_logs OWNER TO master_guide;
+ALTER TABLE payment_orders OWNER TO master_guide;
+ALTER TABLE payment_records OWNER TO master_guide;
+ALTER TABLE payment_refunds OWNER TO master_guide;
+ALTER TABLE payment_methods OWNER TO master_guide;
+ALTER TABLE upload_files OWNER TO master_guide;
+
+-- 赋予函数所有权
+ALTER FUNCTION generate_table_id(VARCHAR(32), VARCHAR(50)) OWNER TO master_guide;
+ALTER FUNCTION update_updated_at_column() OWNER TO master_guide;
+ALTER FUNCTION update_course_stats() OWNER TO master_guide;
+ALTER FUNCTION update_post_stats() OWNER TO master_guide; 
