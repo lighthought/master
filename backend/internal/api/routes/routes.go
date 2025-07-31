@@ -8,7 +8,7 @@ import (
 )
 
 // SetupRoutes 设置路由
-func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.AuthHandler, userHandler *handlers.UserHandler, mentorHandler *handlers.MentorHandler, courseHandler *handlers.CourseHandler) {
+func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.AuthHandler, userHandler *handlers.UserHandler, mentorHandler *handlers.MentorHandler, courseHandler *handlers.CourseHandler, appointmentHandler *handlers.AppointmentHandler) {
 	// API v1 路由组
 	v1 := engine.Group("/api/v1")
 	{
@@ -143,18 +143,33 @@ func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.A
 		// 预约相关路由
 		appointments := v1.Group("/appointments")
 		{
-			appointments.GET("", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Get appointments list - TODO"})
-			})
-			appointments.POST("", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Create appointment - TODO"})
-			})
-			appointments.GET("/:id", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Get appointment detail - TODO"})
-			})
-			appointments.PUT("/:id/status", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Update appointment status - TODO"})
-			})
+			if appointmentHandler != nil {
+				appointments.GET("", appointmentHandler.GetAppointments)
+				appointments.POST("", appointmentHandler.CreateAppointment)
+				appointments.GET("/:appointment_id", appointmentHandler.GetAppointmentDetail)
+				appointments.PUT("/:appointment_id/status", appointmentHandler.UpdateAppointmentStatus)
+				appointments.DELETE("/:appointment_id", appointmentHandler.CancelAppointment)
+				appointments.GET("/mentor-stats", appointmentHandler.GetMentorAppointmentStats)
+			} else {
+				appointments.GET("", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get appointments list - TODO"})
+				})
+				appointments.POST("", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Create appointment - TODO"})
+				})
+				appointments.GET("/:id", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get appointment detail - TODO"})
+				})
+				appointments.PUT("/:id/status", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Update appointment status - TODO"})
+				})
+				appointments.DELETE("/:id", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Cancel appointment - TODO"})
+				})
+				appointments.GET("/mentor-stats", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get mentor appointment stats - TODO"})
+				})
+			}
 		}
 
 		// 圈子相关路由

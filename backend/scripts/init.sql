@@ -289,7 +289,7 @@ CREATE TABLE comment_likes (
 CREATE TABLE appointments (
     id VARCHAR(32) PRIMARY KEY DEFAULT generate_table_id('APPOINTMENT_', 'appointment_id_num_seq'),
     student_id VARCHAR(32) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    mentor_id VARCHAR(32) NOT NULL REFERENCES user_identities(id) ON DELETE CASCADE,
+    mentor_id VARCHAR(32) NOT NULL REFERENCES mentors(id) ON DELETE CASCADE,
     appointment_time TIMESTAMP NOT NULL,
     duration_minutes INTEGER NOT NULL,
     meeting_type VARCHAR(20) DEFAULT 'video' CHECK (meeting_type IN ('video', 'voice', 'text')),
