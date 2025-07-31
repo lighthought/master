@@ -243,7 +243,7 @@ import { ElMessage } from 'element-plus'
 import { Camera } from '@element-plus/icons-vue'
 import type { FormInstance, FormRules, UploadProps } from 'element-plus'
 import { useAuthStore } from '@/stores/auth'
-import type { Identity } from '@/stores/auth'
+import type { Identity } from '@/types/user'
 
 // 定义props和事件
 interface Props {

@@ -178,7 +178,11 @@ const handleSubmit = async () => {
     const result = await authStore.register({
       email: formData.email,
       password: formData.password,
-      primaryIdentity: formData.primaryIdentity as 'master' | 'apprentice'
+      primaryIdentity: {
+        identity_type: formData.primaryIdentity as 'master' | 'apprentice',
+        domain: 'general', // 默认领域
+        name: formData.primaryIdentity === 'master' ? '大师' : '学徒' // 默认名称
+      }
     })
     
     // 注册成功

@@ -442,9 +442,10 @@ const togglePlay = () => {
 }
 
 // 跳转视频
-const seekVideo = (value: number) => {
-  currentTime.value = (value / 100) * duration.value
-  videoProgress.value = value
+const seekVideo = (value: number | number[]) => {
+  const progress = Array.isArray(value) ? value[0] : value
+  currentTime.value = (progress / 100) * duration.value
+  videoProgress.value = progress
 }
 
 // 切换全屏

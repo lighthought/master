@@ -1,10 +1,3 @@
-import { mockAuthService } from './mock/authService'
-import { mockUserStatsService } from './mock/userStatsService'
-import { mockUserPreferencesService } from './mock/userPreferencesService'
-import { mockMentorsService } from './mock/mentorsService'
-import { mockBookingsService } from './mock/bookingsService'
-import { mockCoursesService } from './mock/coursesService'
-import { mockLearningService } from './mock/learningService'
 import { mockCirclesService } from './mock/circlesService'
 import { mockPostsService } from './mock/postsService'
 import { mockLearningRecordsService } from './mock/learningRecordsService'
@@ -16,54 +9,27 @@ const isDevelopment = import.meta.env.DEV
 
 // API服务类
 export class ApiService {
-  // 认证相关API
+  // 认证相关API - 从 auth.ts 模块导入
   static auth = {
     // 用户注册
     async register(userData: {
       email: string
       password: string
-      primaryIdentity: 'master' | 'apprentice'
+      phone?: string
+      primaryIdentity: {
+        identity_type: 'master' | 'apprentice'
+        domain: string
+        name: string
+      }
     }) {
-      if (isDevelopment) {
-        return await mockAuthService.register(userData)
-      }
-      
-      // TODO: 真实API调用
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userData)
-      })
-      
-      if (!response.ok) {
-        throw new Error('注册失败')
-      }
-      
-      return await response.json()
+      const { authApi } = await import('./api/auth')
+      return await authApi.register(userData)
     },
 
     // 用户登录
     async login(email: string, password: string) {
-      if (isDevelopment) {
-        return await mockAuthService.login(email, password)
-      }
-      
-      // TODO: 真实API调用
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-      })
-      
-      if (!response.ok) {
-        throw new Error('登录失败')
-      }
-      
-      return await response.json()
+      const { authApi } = await import('./api/auth')
+      return await authApi.login(email, password)
     },
 
     // 创建大师身份
@@ -76,25 +42,8 @@ export class ApiService {
       price: number
       serviceTypes: string[]
     }) {
-      if (isDevelopment) {
-        return await mockAuthService.createMasterIdentity(userId, identityData)
-      }
-      
-      // TODO: 真实API调用
-      const response = await fetch('/api/identity/master', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
-        },
-        body: JSON.stringify({ userId, ...identityData })
-      })
-      
-      if (!response.ok) {
-        throw new Error('创建大师身份失败')
-      }
-      
-      return await response.json()
+      const { authApi } = await import('./api/auth')
+      return await authApi.createMasterIdentity(userId, identityData)
     },
 
     // 创建学徒身份
@@ -109,376 +58,217 @@ export class ApiService {
       timePreferences: string[]
       budgetRange: string
     }) {
-      if (isDevelopment) {
-        return await mockAuthService.createApprenticeIdentity(userId, identityData)
-      }
-      
-      // TODO: 真实API调用
-      const response = await fetch('/api/identity/apprentice', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
-        },
-        body: JSON.stringify({ userId, ...identityData })
-      })
-      
-      if (!response.ok) {
-        throw new Error('创建学徒身份失败')
-      }
-      
-      return await response.json()
+      const { authApi } = await import('./api/auth')
+      return await authApi.createApprenticeIdentity(userId, identityData)
     },
 
     // 更新身份信息
     async updateIdentityInfo(userId: string, identityId: string, identityData: any) {
-      if (isDevelopment) {
-        return mockAuthService.updateIdentityInfo(userId, identityId, identityData)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { authApi } = await import('./api/auth')
+      return await authApi.updateIdentityInfo(userId, identityId, identityData)
     },
 
     // 切换身份
     async switchIdentity(userId: string, identityId: string) {
-      if (isDevelopment) {
-        return await mockAuthService.switchIdentity(userId, identityId)
-      }
-      
-      // TODO: 真实API调用
-      const response = await fetch('/api/identity/switch', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
-        },
-        body: JSON.stringify({ userId, identityId })
-      })
-      
-      if (!response.ok) {
-        throw new Error('切换身份失败')
-      }
-      
-      return await response.json()
+      const { authApi } = await import('./api/auth')
+      return await authApi.switchIdentity(identityId)
     },
 
     // 获取用户信息
     async getUserInfo(userId: string) {
-      if (isDevelopment) {
-        return await mockAuthService.getUserInfo(userId)
-      }
-      
-      // TODO: 真实API调用
-      const response = await fetch(`/api/user/${userId}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
-        }
-      })
-      
-      if (!response.ok) {
-        throw new Error('获取用户信息失败')
-      }
-      
-      return await response.json()
+      const { authApi } = await import('./api/auth')
+      return await authApi.getUserInfo(userId)
     },
 
     // 修改密码
     async changePassword(currentPassword: string, newPassword: string) {
-      if (isDevelopment) {
-        return await mockAuthService.changePassword(currentPassword, newPassword)
-      }
-      
-      // TODO: 真实API调用
-      const response = await fetch('/api/auth/change-password', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
-        },
-        body: JSON.stringify({ currentPassword, newPassword })
-      })
-      
-      if (!response.ok) {
-        throw new Error('修改密码失败')
-      }
-      
-      return await response.json()
+      const { authApi } = await import('./api/auth')
+      return await authApi.changePassword(currentPassword, newPassword)
     }
   };
 
-  // 用户统计服务
+  // 用户统计服务 - 从 user.ts 模块导入
   static userStats = {
     // 获取学习统计
     async getLearningStats(userId: string) {
-      if (isDevelopment) {
-        return mockUserStatsService.getLearningStats(userId)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { userApi } = await import('./api/user')
+      return await userApi.getLearningStats(userId)
     },
 
     // 获取教学统计
     async getTeachingStats(userId: string) {
-      if (isDevelopment) {
-        return mockUserStatsService.getTeachingStats(userId)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { userApi } = await import('./api/user')
+      return await userApi.getTeachingStats(userId)
     },
 
     // 获取通用统计
     async getGeneralStats(userId: string) {
-      if (isDevelopment) {
-        return mockUserStatsService.getGeneralStats(userId)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { userApi } = await import('./api/user')
+      return await userApi.getGeneralStats(userId)
     },
 
     // 获取用户成就
     async getUserAchievements(userId: string, identityType: 'master' | 'apprentice') {
-      if (isDevelopment) {
-        return mockUserStatsService.getUserAchievements(userId, identityType)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { userApi } = await import('./api/user')
+      return await userApi.getUserAchievements(userId, identityType)
     }
   };
 
-  // 大师服务
+  // 大师服务 - 从 mentor.ts 模块导入
   static mentors = {
     // 获取推荐大师
     async getRecommendedMentors(userId: string) {
-      if (isDevelopment) {
-        return mockMentorsService.getRecommendedMentors(userId)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { mentorApi } = await import('./api/mentor')
+      return await mentorApi.getRecommendedMentors(userId)
     },
 
     // 获取大师详情
     async getMentorDetail(mentorId: string) {
-      if (isDevelopment) {
-        return mockMentorsService.getMentorDetail(mentorId)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { mentorApi } = await import('./api/mentor')
+      return await mentorApi.getMentorDetail(mentorId)
     },
 
     // 搜索大师
     async searchMentors(params: any) {
-      if (isDevelopment) {
-        return mockMentorsService.searchMentors(params)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { mentorApi } = await import('./api/mentor')
+      return await mentorApi.searchMentors(params)
     },
 
     // 获取大师评价
     async getMentorReviews(mentorId: string, page = 1, pageSize = 10) {
-      if (isDevelopment) {
-        return mockMentorsService.getMentorReviews(mentorId, page, pageSize)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { mentorApi } = await import('./api/mentor')
+      return await mentorApi.getMentorReviews(mentorId, page, pageSize)
     }
   };
 
-  // 预约服务
+  // 预约服务 - 从 appointment.ts 模块导入
   static bookings = {
     // 创建预约
     async createBooking(bookingData: any) {
-      if (isDevelopment) {
-        return mockBookingsService.createBooking(bookingData)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { appointmentApi } = await import('./api/appointment')
+      return await appointmentApi.createBooking(bookingData)
     },
 
     // 获取用户预约列表
     async getUserBookings(userId: string, status?: string) {
-      if (isDevelopment) {
-        return mockBookingsService.getUserBookings(userId, status)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { appointmentApi } = await import('./api/appointment')
+      return await appointmentApi.getUserBookings(userId, status)
     },
 
     // 获取大师预约列表
     async getMentorBookings(mentorId: string, status?: string) {
-      if (isDevelopment) {
-        return mockBookingsService.getMentorBookings(mentorId, status)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { appointmentApi } = await import('./api/appointment')
+      return await appointmentApi.getMentorBookings(mentorId, status)
     },
 
     // 更新预约状态
     async updateBookingStatus(bookingId: string, status: string) {
-      if (isDevelopment) {
-        return mockBookingsService.updateBookingStatus(bookingId, status as any)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { appointmentApi } = await import('./api/appointment')
+      return await appointmentApi.updateBookingStatus(bookingId, status)
     },
 
     // 取消预约
     async cancelBooking(bookingId: string, reason?: string) {
-      if (isDevelopment) {
-        return mockBookingsService.cancelBooking(bookingId, reason)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { appointmentApi } = await import('./api/appointment')
+      return await appointmentApi.cancelBooking(bookingId, reason)
     },
 
     // 获取预约详情
     async getBookingDetail(bookingId: string) {
-      if (isDevelopment) {
-        return mockBookingsService.getBookingDetail(bookingId)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { appointmentApi } = await import('./api/appointment')
+      return await appointmentApi.getBookingDetail(bookingId)
     }
   };
 
-  // 课程服务
+  // 课程服务 - 从 course.ts 模块导入
   static courses = {
     // 搜索课程
     async searchCourses(params: any) {
-      if (isDevelopment) {
-        return mockCoursesService.searchCourses(params)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { courseApi } = await import('./api/course')
+      return await courseApi.searchCourses(params)
     },
 
     // 获取推荐课程
     async getRecommendedCourses() {
-      if (isDevelopment) {
-        return mockCoursesService.getRecommendedCourses()
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { courseApi } = await import('./api/course')
+      return await courseApi.getRecommendedCourses()
     },
 
     // 获取课程详情
     async getCourseDetail(courseId: string) {
-      if (isDevelopment) {
-        return mockCoursesService.getCourseDetail(courseId)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { courseApi } = await import('./api/course')
+      return await courseApi.getCourseDetail(courseId)
     },
 
     // 报名课程
     async enrollCourse(enrollData: any) {
-      if (isDevelopment) {
-        return mockCoursesService.enrollCourse(enrollData)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { courseApi } = await import('./api/course')
+      return await courseApi.enrollCourse(enrollData.courseId, enrollData)
     },
 
     // 获取用户已报名课程
     async getUserEnrolledCourses(userId: string) {
-      if (isDevelopment) {
-        return mockCoursesService.getUserEnrolledCourses(userId)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { courseApi } = await import('./api/course')
+      return await courseApi.getEnrolledCourses()
     }
   };
 
-  // 学习服务
+  // 学习服务 - 从 learning.ts 模块导入
   static learning = {
     // 获取用户学习记录
     async getUserLearningRecords(userId: string, courseId: string) {
-      if (isDevelopment) {
-        return mockLearningService.getUserLearningRecords(userId, courseId)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { learningApi } = await import('./api/learning')
+      return await learningApi.getLearningRecords({ course_id: courseId })
     },
     // 更新学习进度
     async updateLearningProgress(data: any) {
-      if (isDevelopment) {
-        return mockLearningService.updateLearningProgress(data)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { learningApi } = await import('./api/learning')
+      return await learningApi.updateLearningProgress(data.recordId, data)
     },
     // 标记课程完成
     async markLessonCompleted(data: any) {
-      if (isDevelopment) {
-        return mockLearningService.markLessonCompleted(data)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { learningApi } = await import('./api/learning')
+      return await learningApi.markLessonCompleted(data)
     },
     // 获取课程笔记
     async getCourseNotes(userId: string, courseId: string, lessonId?: string) {
-      if (isDevelopment) {
-        return mockLearningService.getCourseNotes(userId, courseId, lessonId)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { learningApi } = await import('./api/learning')
+      return await learningApi.getCourseNotes(userId, courseId, lessonId)
     },
     // 添加笔记
     async addNote(data: any) {
-      if (isDevelopment) {
-        return mockLearningService.addNote(data)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { learningApi } = await import('./api/learning')
+      return await learningApi.addNote(data)
     },
     // 更新笔记
     async updateNote(noteId: string, content: string) {
-      if (isDevelopment) {
-        return mockLearningService.updateNote(noteId, content)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { learningApi } = await import('./api/learning')
+      return await learningApi.updateNote(noteId, content)
     },
     // 删除笔记
     async deleteNote(noteId: string) {
-      if (isDevelopment) {
-        return mockLearningService.deleteNote(noteId)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { learningApi } = await import('./api/learning')
+      return await learningApi.deleteNote(noteId)
     },
     // 获取课程讨论
     async getCourseDiscussions(courseId: string, lessonId?: string) {
-      if (isDevelopment) {
-        return mockLearningService.getCourseDiscussions(courseId, lessonId)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { learningApi } = await import('./api/learning')
+      return await learningApi.getCourseDiscussions(courseId, lessonId)
     },
     // 添加讨论
     async addDiscussion(data: any) {
-      if (isDevelopment) {
-        return mockLearningService.addDiscussion(data)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { learningApi } = await import('./api/learning')
+      return await learningApi.addDiscussion(data)
     },
     // 点赞讨论
     async likeDiscussion(discussionId: string) {
-      if (isDevelopment) {
-        return mockLearningService.likeDiscussion(discussionId)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { learningApi } = await import('./api/learning')
+      return await learningApi.likeDiscussion(discussionId)
     },
     // 获取学习统计
     async getLearningStats(userId: string, courseId: string) {
-      if (isDevelopment) {
-        return mockLearningService.getLearningStats(userId, courseId)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { learningApi } = await import('./api/learning')
+      return await learningApi.getLearningStatsLegacy(userId, courseId)
     }
   };
 
@@ -542,42 +332,30 @@ export class ApiService {
     }
   };
 
-  // 用户偏好服务
+  // 用户偏好服务 - 从 user.ts 模块导入
   static userPreferences = {
     // 获取用户偏好
     async getUserPreferences(userId: string) {
-      if (isDevelopment) {
-        return mockUserPreferencesService.getUserPreferences(userId)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { userApi } = await import('./api/user')
+      return await userApi.getUserPreferences(userId)
     },
 
     // 保存用户偏好
     async saveUserPreferences(userId: string, preferences: any) {
-      if (isDevelopment) {
-        return mockUserPreferencesService.saveUserPreferences(userId, preferences)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { userApi } = await import('./api/user')
+      return await userApi.saveUserPreferences(userId, preferences)
     },
 
     // 获取推荐学习路径
     async getRecommendedLearningPath(userId: string) {
-      if (isDevelopment) {
-        return mockUserPreferencesService.getRecommendedLearningPath(userId)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { userApi } = await import('./api/user')
+      return await userApi.getRecommendedLearningPath()
     },
 
     // 获取学习路径统计
     async getLearningPathStats() {
-      if (isDevelopment) {
-        return mockUserPreferencesService.getLearningPathStats()
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { userApi } = await import('./api/user')
+      return await userApi.getLearningPathStats()
     }
   };
 

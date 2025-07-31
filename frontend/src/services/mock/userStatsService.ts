@@ -4,7 +4,47 @@ import type { User } from '@/types/user'
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 // 模拟用户统计数据
-const mockUserStats = {
+const mockUserStats: { [key: string]: {
+  apprentice: {
+    learningStats: {
+      totalCourses: number
+      progress: number
+      completedLessons: number
+      totalLessons: number
+      currentCourse: string
+      nextLesson: string
+    }
+    achievements: Array<{
+      id: string
+      name: string
+      description: string
+      icon: string
+    }>
+  }
+  master: {
+    teachingStats: {
+      totalStudents: number
+      totalHours: number
+      totalEarnings: number
+      averageRating: number
+      completedSessions: number
+      upcomingSessions: number
+    }
+    achievements: Array<{
+      id: string
+      name: string
+      description: string
+      icon: string
+    }>
+  }
+  general: {
+    activeDays: number
+    achievements: number
+    totalLoginDays: number
+    lastLoginDate: string
+    streakDays: number
+  }
+} } = {
   '1': {
     // 学徒统计数据
     apprentice: {

@@ -261,7 +261,7 @@ import { ElMessage } from 'element-plus'
 import CreateMasterIdentity from '@/components/identity/CreateMasterIdentity.vue'
 import CreateApprenticeIdentity from '@/components/identity/CreateApprenticeIdentity.vue'
 import EditIdentityInfo from '@/components/identity/EditIdentityInfo.vue'
-import type { Identity } from '@/stores/auth'
+import type { Identity } from '@/types/user'
 
 const router = useRouter()
 const authStore = useAuthStore()

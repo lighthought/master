@@ -53,7 +53,11 @@ export const useAuthStore = defineStore('auth', () => {
   const register = async (userData: {
     email: string
     password: string
-    primaryIdentity: 'master' | 'apprentice'
+    primaryIdentity: {
+      identity_type: 'master' | 'apprentice'
+      domain: string
+      name: string
+    }
   }) => {
     loading.value = true
     try {

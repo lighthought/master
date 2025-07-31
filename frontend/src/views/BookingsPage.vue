@@ -21,7 +21,7 @@
     <div v-if="loading" class="loading-container">
       <el-skeleton :rows="3" animated />
       <div class="skeleton-cards">
-        <el-skeleton-item v-for="i in 3" :key="i" variant="card" style="width: 100%; height: 200px; margin-bottom: 16px;" />
+        <el-skeleton-item v-for="i in 3" :key="i" variant="rect" style="width: 100%; height: 200px; margin-bottom: 16px;" />
       </div>
     </div>
     
@@ -362,8 +362,8 @@ const handleStatusChange = () => {
 }
 
 // 获取状态类型
-const getStatusType = (status: string) => {
-  const types: Record<string, string> = {
+const getStatusType = (status: string): 'warning' | 'primary' | 'success' | 'info' => {
+  const types: Record<string, 'warning' | 'primary' | 'success' | 'info'> = {
     pending: 'warning',
     confirmed: 'primary',
     completed: 'success',

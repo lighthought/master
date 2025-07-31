@@ -29,7 +29,17 @@ const mockPosts = [
         likes: 3,
         isLiked: false,
         createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
-        replies: []
+        replies: [] as Array<{
+          id: string
+          userId: string
+          userAvatar: string
+          userName: string
+          userRole: string
+          content: string
+          likes: number
+          isLiked: boolean
+          createdAt: string
+        }>
       },
       {
         id: '2',
@@ -41,7 +51,17 @@ const mockPosts = [
         likes: 1,
         isLiked: false,
         createdAt: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-        replies: []
+        replies: [] as Array<{
+          id: string
+          userId: string
+          userAvatar: string
+          userName: string
+          userRole: string
+          content: string
+          likes: number
+          isLiked: boolean
+          createdAt: string
+        }>
       }
     ]
   },
@@ -73,7 +93,17 @@ const mockPosts = [
         likes: 2,
         isLiked: false,
         createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-        replies: []
+        replies: [] as Array<{
+          id: string
+          userId: string
+          userAvatar: string
+          userName: string
+          userRole: string
+          content: string
+          likes: number
+          isLiked: boolean
+          createdAt: string
+        }>
       }
     ]
   },
@@ -214,7 +244,17 @@ export const mockPostsService = {
       likes: 0,
       isLiked: false,
       createdAt: new Date().toISOString(),
-      replies: []
+      replies: [] as Array<{
+        id: string
+        userId: string
+        userAvatar: string
+        userName: string
+        userRole: string
+        content: string
+        likes: number
+        isLiked: boolean
+        createdAt: string
+      }>
     }
     
     post.commentsList.unshift(newComment)

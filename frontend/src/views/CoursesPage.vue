@@ -440,8 +440,8 @@ const loadCourses = async () => {
   try {
     const params = {
       query: searchQuery.value,
-      category: selectedCategory.value || filterForm.value.category,
       ...filterForm.value,
+      category: selectedCategory.value || filterForm.value.category,
       sort: sortOption.value,
       page: currentPage.value,
       pageSize: pageSize

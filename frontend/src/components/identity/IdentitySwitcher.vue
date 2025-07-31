@@ -132,7 +132,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { ArrowDown, Check, Plus } from '@element-plus/icons-vue'
 import { useAuthStore } from '@/stores/auth'
-import type { Identity } from '@/stores/auth'
+import type { Identity } from '@/types/user'
 
 // 定义事件
 const emit = defineEmits<{

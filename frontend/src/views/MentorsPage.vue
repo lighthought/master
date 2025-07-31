@@ -68,7 +68,7 @@
       <div v-if="loading" class="loading-container">
         <el-skeleton :rows="3" animated />
         <div class="skeleton-cards">
-          <el-skeleton-item v-for="i in 6" :key="i" variant="card" style="width: 100%; height: 200px; margin-bottom: 16px;" />
+          <el-skeleton-item v-for="i in 6" :key="i" variant="rect" style="width: 100%; height: 200px; margin-bottom: 16px;" />
         </div>
       </div>
       

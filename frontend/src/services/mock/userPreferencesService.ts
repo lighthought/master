@@ -4,7 +4,15 @@ import type { User } from '@/types/user'
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 // 模拟用户偏好数据
-const mockUserPreferences = {
+const mockUserPreferences: { [key: string]: {
+  learningStyle: string
+  timePreference: string
+  budgetRange: string
+  learningGoals: string[]
+  preferredDomains: string[]
+  experienceLevel: string
+  updatedAt: string
+} } = {
   '1': {
     learningStyle: 'one-on-one',
     timePreference: 'flexible',

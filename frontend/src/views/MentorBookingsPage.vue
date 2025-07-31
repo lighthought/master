@@ -70,9 +70,8 @@
         <!-- 选择框 -->
         <div class="booking-select">
           <el-checkbox 
-            v-model="selectedBookings" 
-            :value="booking.id"
-            @change="handleSelectionChange"
+            :model-value="selectedBookings.includes(booking.id)"
+            @change="(checked) => handleBookingSelect(booking.id, checked)"
           />
         </div>
         
@@ -386,7 +385,7 @@ const showRescheduleDialog = ref(false)
 const rejecting = ref(false)
 const rescheduling = ref(false)
 const currentStatus = ref('all')
-const dateRange = ref<[Date, Date] | null>(null)
+const dateRange = ref<[Date, Date] | undefined>(undefined)
 const selectedBookings = ref<string[]>([])
 
 // 数据
@@ -441,9 +440,24 @@ const handleSelectionChange = () => {
   // 选择变化时的处理逻辑
 }
 
+// 处理单个预约选择
+const handleBookingSelect = (bookingId: string, checked: boolean | string | number) => {
+  const isChecked = !!checked
+  if (isChecked) {
+    if (!selectedBookings.value.includes(bookingId)) {
+      selectedBookings.value.push(bookingId)
+    }
+  } else {
+    const index = selectedBookings.value.indexOf(bookingId)
+    if (index > -1) {
+      selectedBookings.value.splice(index, 1)
+    }
+  }
+}
+
 // 获取状态类型
-const getStatusType = (status: string) => {
-  const types: Record<string, string> = {
+const getStatusType = (status: string): 'warning' | 'primary' | 'success' | 'info' => {
+  const types: Record<string, 'warning' | 'primary' | 'success' | 'info'> = {
     pending: 'warning',
     confirmed: 'primary',
     completed: 'success',
