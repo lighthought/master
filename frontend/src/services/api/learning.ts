@@ -1,4 +1,5 @@
 import { mockLearningService } from '../mock/learningService'
+import { mockLearningRecordsService } from '../mock/learningRecordsService'
 
 // 环境配置
 const isDevelopment = import.meta.env.DEV
@@ -16,7 +17,7 @@ export const learningApi = {
     page_size?: number
   } = {}) {
     if (isDevelopment) {
-      return await mockLearningService.getUserLearningRecords('', '')
+      return await mockLearningRecordsService.getUserLearningRecords('1', params)
     }
     
     const searchParams = new URLSearchParams()
@@ -44,7 +45,7 @@ export const learningApi = {
   // 获取学习记录详情
   async getLearningRecordDetail(recordId: string) {
     if (isDevelopment) {
-      return await mockLearningService.getUserLearningRecords('', '')
+      return await mockLearningRecordsService.getLearningRecordDetail(recordId)
     }
     
     const response = await fetch(`${API_BASE_URL}/learning-records/${recordId}`, {

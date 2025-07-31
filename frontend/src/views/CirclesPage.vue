@@ -288,9 +288,17 @@ const loadCircles = async () => {
 const loadCategories = async () => {
   try {
     const response = await ApiService.circles.getCircleCategories()
-    categories.value = response.data
+    // 根据返回的数据结构进行处理
+    if (response.data && Array.isArray(response.data)) {
+      categories.value = response.data
+    } else if (response.data && response.data.categories && Array.isArray(response.data.categories)) {
+      categories.value = response.data.categories
+    } else {
+      categories.value = []
+    }
   } catch (error) {
     console.error('加载圈子分类失败:', error)
+    categories.value = []
   }
 }
 

@@ -1,4 +1,3 @@
-import { mockCirclesService } from './mock/circlesService'
 import { mockPostsService } from './mock/postsService'
 import { mockLearningRecordsService } from './mock/learningRecordsService'
 import { mockMasterService } from './mock/masterService'
@@ -272,63 +271,112 @@ export class ApiService {
     }
   };
 
-  // 圈子服务
+  // 圈子服务 - 从 circles.ts 模块导入
   static circles = {
     // 获取圈子列表
     async getCircles(params: any) {
-      if (isDevelopment) {
-        return mockCirclesService.getCircles(params)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { circlesApi } = await import('./api/circles')
+      return await circlesApi.getCircles(params)
     },
     // 获取圈子详情
     async getCircleDetail(circleId: string) {
-      if (isDevelopment) {
-        return mockCirclesService.getCircleDetail(circleId)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { circlesApi } = await import('./api/circles')
+      return await circlesApi.getCircleDetail(circleId)
     },
     // 加入圈子
     async joinCircle(circleId: string, userId: string) {
-      if (isDevelopment) {
-        return mockCirclesService.joinCircle(circleId, userId)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { circlesApi } = await import('./api/circles')
+      return await circlesApi.joinCircle(circleId)
     },
     // 退出圈子
     async leaveCircle(circleId: string, userId: string) {
-      if (isDevelopment) {
-        return mockCirclesService.leaveCircle(circleId, userId)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { circlesApi } = await import('./api/circles')
+      return await circlesApi.leaveCircle(circleId)
     },
     // 获取用户加入的圈子
     async getUserJoinedCircles(userId: string) {
-      if (isDevelopment) {
-        return mockCirclesService.getUserJoinedCircles(userId)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { circlesApi } = await import('./api/circles')
+      return await circlesApi.getUserJoinedCircles(userId)
     },
     // 获取圈子分类
     async getCircleCategories() {
-      if (isDevelopment) {
-        return mockCirclesService.getCircleCategories()
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { circlesApi } = await import('./api/circles')
+      return await circlesApi.getCircleCategories()
     },
     // 搜索圈子
     async searchCircles(query: string) {
-      if (isDevelopment) {
-        return mockCirclesService.searchCircles(query)
-      }
-      // TODO: 实现真实API调用
-      throw new Error('API not implemented')
+      const { circlesApi } = await import('./api/circles')
+      return await circlesApi.searchCircles(query)
+    },
+    // 获取圈子动态
+    async getCirclePosts(circleId: string, params: any = {}) {
+      const { circlesApi } = await import('./api/circles')
+      return await circlesApi.getCirclePosts(circleId, params)
+    },
+    // 发布动态
+    async createPost(circleId: string, postData: any) {
+      const { circlesApi } = await import('./api/circles')
+      return await circlesApi.createPost(circleId, postData)
+    },
+    // 点赞动态
+    async likePost(postId: string) {
+      const { circlesApi } = await import('./api/circles')
+      return await circlesApi.likePost(postId)
+    },
+    // 取消点赞
+    async unlikePost(postId: string) {
+      const { circlesApi } = await import('./api/circles')
+      return await circlesApi.unlikePost(postId)
+    },
+    // 获取评论列表
+    async getComments(postId: string, params: any = {}) {
+      const { circlesApi } = await import('./api/circles')
+      return await circlesApi.getComments(postId, params)
+    },
+    // 发表评论
+    async createComment(postId: string, commentData: any) {
+      const { circlesApi } = await import('./api/circles')
+      return await circlesApi.createComment(postId, commentData)
+    },
+    // 回复评论
+    async createReply(commentId: string, replyData: any) {
+      const { circlesApi } = await import('./api/circles')
+      return await circlesApi.createReply(commentId, replyData)
+    },
+    // 点赞评论
+    async likeComment(commentId: string) {
+      const { circlesApi } = await import('./api/circles')
+      return await circlesApi.likeComment(commentId)
+    },
+    // 取消点赞评论
+    async unlikeComment(commentId: string) {
+      const { circlesApi } = await import('./api/circles')
+      return await circlesApi.unlikeComment(commentId)
+    },
+    // 点赞回复
+    async likeReply(replyId: string) {
+      const { circlesApi } = await import('./api/circles')
+      return await circlesApi.likeReply(replyId)
+    },
+    // 取消点赞回复
+    async unlikeReply(replyId: string) {
+      const { circlesApi } = await import('./api/circles')
+      return await circlesApi.unlikeReply(replyId)
+    },
+    // 删除评论
+    async deleteComment(commentId: string) {
+      const { circlesApi } = await import('./api/circles')
+      return await circlesApi.deleteComment(commentId)
+    },
+    // 删除回复
+    async deleteReply(replyId: string) {
+      const { circlesApi } = await import('./api/circles')
+      return await circlesApi.deleteReply(replyId)
+    },
+    // 获取推荐圈子
+    async getRecommendedCircles(userId?: string) {
+      const { circlesApi } = await import('./api/circles')
+      return await circlesApi.getRecommendedCircles(userId)
     }
   };
 
@@ -359,184 +407,305 @@ export class ApiService {
     }
   };
 
-  // 动态服务
+  // 动态服务 - 从 posts.ts 模块导入
   static posts = {
     // 获取动态列表
     async getPosts(params: any = {}) {
-      if (isDevelopment) {
-        return await mockPostsService.getPosts(params)
-      }
-      // TODO: 实现真实API调用
-      return await mockPostsService.getPosts(params)
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.getPosts(params)
     },
     // 发布动态
     async createPost(postData: any) {
-      if (isDevelopment) {
-        return await mockPostsService.createPost(postData)
-      }
-      // TODO: 实现真实API调用
-      return await mockPostsService.createPost(postData)
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.createPost(postData)
     },
     // 点赞/取消点赞
     async toggleLike(postId: string, userId: string) {
-      if (isDevelopment) {
-        return await mockPostsService.toggleLike(postId, userId)
-      }
-      // TODO: 实现真实API调用
-      return await mockPostsService.toggleLike(postId, userId)
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.toggleLike(postId, userId)
     },
     // 添加评论
     async addComment(postId: string, commentData: any) {
-      if (isDevelopment) {
-        return await mockPostsService.addComment(postId, commentData)
-      }
-      // TODO: 实现真实API调用
-      return await mockPostsService.addComment(postId, commentData)
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.addComment(postId, commentData)
     },
     // 获取动态详情
     async getPostDetail(postId: string) {
-      if (isDevelopment) {
-        return await mockPostsService.getPostDetail(postId)
-      }
-      // TODO: 实现真实API调用
-      return await mockPostsService.getPostDetail(postId)
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.getPostDetail(postId)
     },
     // 删除动态
     async deletePost(postId: string, userId: string) {
-      if (isDevelopment) {
-        return await mockPostsService.deletePost(postId, userId)
-      }
-      // TODO: 实现真实API调用
-      return await mockPostsService.deletePost(postId, userId)
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.deletePost(postId)
     },
     // 获取用户的动态列表
     async getUserPosts(userId: string, params: any = {}) {
-      if (isDevelopment) {
-        return await mockPostsService.getUserPosts(userId, params)
-      }
-      // TODO: 实现真实API调用
-      return await mockPostsService.getUserPosts(userId, params)
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.getUserPosts(userId, params)
     },
     // 评论点赞/取消点赞
     async toggleCommentLike(postId: string, commentId: string, userId: string) {
-      if (isDevelopment) {
-        return await mockPostsService.toggleCommentLike(postId, commentId, userId)
-      }
-      // TODO: 实现真实API调用
-      return await mockPostsService.toggleCommentLike(postId, commentId, userId)
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.toggleCommentLike(postId, commentId, userId)
     },
     // 添加回复
     async addReply(postId: string, replyData: any) {
-      if (isDevelopment) {
-        return await mockPostsService.addReply(postId, replyData)
-      }
-      // TODO: 实现真实API调用
-      return await mockPostsService.addReply(postId, replyData)
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.addReply(postId, replyData)
     },
     // 删除评论
     async deleteComment(postId: string, commentId: string, userId: string) {
-      if (isDevelopment) {
-        return await mockPostsService.deleteComment(postId, commentId, userId)
-      }
-      // TODO: 实现真实API调用
-      return await mockPostsService.deleteComment(postId, commentId, userId)
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.deleteCommentLegacy(postId, commentId, userId)
     },
     // 删除回复
     async deleteReply(postId: string, replyId: string, userId: string) {
-      if (isDevelopment) {
-        return await mockPostsService.deleteReply(postId, replyId, userId)
-      }
-      // TODO: 实现真实API调用
-      return await mockPostsService.deleteReply(postId, replyId, userId)
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.deleteReplyLegacy(postId, replyId, userId)
     },
     // 回复点赞/取消点赞
     async toggleReplyLike(postId: string, replyId: string, userId: string) {
-      if (isDevelopment) {
-        return await mockPostsService.toggleReplyLike(postId, replyId, userId)
-      }
-      // TODO: 实现真实API调用
-      return await mockPostsService.toggleReplyLike(postId, replyId, userId)
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.toggleReplyLike(postId, replyId, userId)
+    },
+    // 点赞动态
+    async likePost(postId: string) {
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.likePost(postId)
+    },
+    // 取消点赞动态
+    async unlikePost(postId: string) {
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.unlikePost(postId)
+    },
+    // 获取评论列表
+    async getComments(postId: string, params: any = {}) {
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.getComments(postId, params)
+    },
+    // 发表评论
+    async createComment(postId: string, commentData: any) {
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.createComment(postId, commentData)
+    },
+    // 回复评论
+    async createReply(commentId: string, replyData: any) {
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.createReply(commentId, replyData)
+    },
+    // 点赞评论
+    async likeComment(commentId: string) {
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.likeComment(commentId)
+    },
+    // 取消点赞评论
+    async unlikeComment(commentId: string) {
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.unlikeComment(commentId)
+    },
+    // 点赞回复
+    async likeReply(replyId: string) {
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.likeReply(replyId)
+    },
+    // 取消点赞回复
+    async unlikeReply(replyId: string) {
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.unlikeReply(replyId)
+    },
+    // 删除评论
+    async deleteCommentById(commentId: string) {
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.deleteComment(commentId)
+    },
+    // 删除回复
+    async deleteReplyById(replyId: string) {
+      const { postsApi } = await import('./api/posts')
+      return await postsApi.deleteReply(replyId)
     }
   };
 
-  // 学习记录服务
+  // 学习记录服务 - 从 learning.ts 模块导入
   static learningRecords = {
     // 获取用户学习记录
     async getUserLearningRecords(userId: string, params: any = {}) {
-      if (isDevelopment) {
-        return await mockLearningRecordsService.getUserLearningRecords(userId, params)
-      }
-      // TODO: 实现真实API调用
-      return await mockLearningRecordsService.getUserLearningRecords(userId, params)
+      const { learningApi } = await import('./api/learning')
+      return await learningApi.getUserLearningRecords(userId, '')
     },
 
     // 获取学习记录详情
     async getLearningRecordDetail(recordId: string) {
-      if (isDevelopment) {
-        return await mockLearningRecordsService.getLearningRecordDetail(recordId)
-      }
-      // TODO: 实现真实API调用
-      return await mockLearningRecordsService.getLearningRecordDetail(recordId)
+      const { learningApi } = await import('./api/learning')
+      return await learningApi.getLearningRecordDetail(recordId)
+    },
+
+    // 获取学习记录列表
+    async getLearningRecords(params: any = {}) {
+      const { learningApi } = await import('./api/learning')
+      return await learningApi.getLearningRecords(params)
+    },
+
+    // 更新学习进度
+    async updateLearningProgress(recordId: string, progressData: any) {
+      const { learningApi } = await import('./api/learning')
+      return await learningApi.updateLearningProgress(recordId, progressData)
+    },
+
+    // 提交作业
+    async submitAssignment(recordId: string, assignmentData: any) {
+      const { learningApi } = await import('./api/learning')
+      return await learningApi.submitAssignment(recordId, assignmentData)
+    },
+
+    // 获取学习统计
+    async getLearningStats(params: any = {}) {
+      const { learningApi } = await import('./api/learning')
+      return await learningApi.getLearningStats(params)
+    },
+
+    // 获取学习路径推荐
+    async getRecommendedLearningPath() {
+      const { learningApi } = await import('./api/learning')
+      return await learningApi.getRecommendedLearningPath()
     }
   };
 
-  // 大师服务
+  // 大师服务 - 从 student.ts 模块导入
   static master = {
     // 获取学生统计数据
     async getStudentStats(masterId: string) {
-      if (isDevelopment) {
-        return await mockMasterService.getStudentStats(masterId)
-      }
-      // TODO: 实现真实API调用
-      return await mockMasterService.getStudentStats(masterId)
+      const { studentApi } = await import('./api/student')
+      return await studentApi.getStudentStats()
     },
 
     // 获取学生列表
     async getStudents(masterId: string, params: any = {}) {
-      if (isDevelopment) {
-        return await mockMasterService.getStudents(masterId, params)
-      }
-      // TODO: 实现真实API调用
-      return await mockMasterService.getStudents(masterId, params)
+      const { studentApi } = await import('./api/student')
+      return await studentApi.getStudents(params)
     },
 
     // 发送消息
     async sendMessage(masterId: string, messageData: any) {
-      if (isDevelopment) {
-        return await mockMasterService.sendMessage(masterId, messageData)
-      }
-      // TODO: 实现真实API调用
-      return await mockMasterService.sendMessage(masterId, messageData)
+      const { studentApi } = await import('./api/student')
+      return await studentApi.sendMessageLegacy(masterId, messageData)
+    },
+
+    // 获取学生详情
+    async getStudentDetail(studentId: string) {
+      const { studentApi } = await import('./api/student')
+      return await studentApi.getStudentDetail(studentId)
+    },
+
+    // 获取与学生聊天记录
+    async getMessages(studentId: string, params: any = {}) {
+      const { studentApi } = await import('./api/student')
+      return await studentApi.getMessages(studentId, params)
+    },
+
+    // 更新学生学习进度
+    async updateStudentProgress(studentId: string, courseId: string, progressData: any) {
+      const { studentApi } = await import('./api/student')
+      return await studentApi.updateStudentProgress(studentId, courseId, progressData)
+    },
+
+    // 评价学生作业
+    async gradeAssignment(studentId: string, assignmentId: string, gradeData: any) {
+      const { studentApi } = await import('./api/student')
+      return await studentApi.gradeAssignment(studentId, assignmentId, gradeData)
+    },
+
+    // 获取学生学习报告
+    async getStudentReport(studentId: string, params: any = {}) {
+      const { studentApi } = await import('./api/student')
+      return await studentApi.getStudentReport(studentId, params)
     }
   };
 
-  // 收入服务
+  // 收入服务 - 从 income.ts 模块导入
   static income = {
     // 获取收入统计数据
     async getIncomeStats(masterId: string, params: any = {}) {
-      if (isDevelopment) {
-        return await mockIncomeService.getIncomeStats(masterId, params)
-      }
-      // TODO: 实现真实API调用
-      return await mockIncomeService.getIncomeStats(masterId, params)
+      const { incomeApi } = await import('./api/income')
+      return await incomeApi.getIncomeStats(params)
     },
 
     // 获取收入明细
     async getIncomeDetails(masterId: string, params: any = {}) {
-      if (isDevelopment) {
-        return await mockIncomeService.getIncomeDetails(masterId, params)
-      }
-      // TODO: 实现真实API调用
-      return await mockIncomeService.getIncomeDetails(masterId, params)
+      const { incomeApi } = await import('./api/income')
+      return await incomeApi.getIncomeTransactions(params)
     },
 
     // 导出收入报表
     async exportIncomeReport(masterId: string, params: any = {}) {
-      if (isDevelopment) {
-        return await mockIncomeService.exportIncomeReport(masterId, params)
-      }
-      // TODO: 实现真实API调用
-      return await mockIncomeService.exportIncomeReport(masterId, params)
+      const { incomeApi } = await import('./api/income')
+      return await incomeApi.exportIncomeReport(params)
+    },
+
+    // 获取收入趋势
+    async getIncomeTrends(params: any = {}) {
+      const { incomeApi } = await import('./api/income')
+      return await incomeApi.getIncomeTrends(params)
+    },
+
+    // 获取提现记录
+    async getWithdrawals(params: any = {}) {
+      const { incomeApi } = await import('./api/income')
+      return await incomeApi.getWithdrawals(params)
+    },
+
+    // 申请提现
+    async requestWithdrawal(withdrawalData: any) {
+      const { incomeApi } = await import('./api/income')
+      return await incomeApi.requestWithdrawal(withdrawalData)
+    },
+
+    // 获取可提现金额
+    async getAvailableAmount() {
+      const { incomeApi } = await import('./api/income')
+      return await incomeApi.getAvailableAmount()
+    },
+
+    // 创建支付订单
+    async createPaymentOrder(orderData: any) {
+      const { incomeApi } = await import('./api/income')
+      return await incomeApi.createPaymentOrder(orderData)
+    },
+
+    // 查询支付状态
+    async getPaymentStatus(orderId: string) {
+      const { incomeApi } = await import('./api/income')
+      return await incomeApi.getPaymentStatus(orderId)
+    },
+
+    // 获取支付历史
+    async getPaymentHistory(params: any = {}) {
+      const { incomeApi } = await import('./api/income')
+      return await incomeApi.getPaymentHistory(params)
+    },
+
+    // 申请退款
+    async requestRefund(refundData: any) {
+      const { incomeApi } = await import('./api/income')
+      return await incomeApi.requestRefund(refundData)
+    },
+
+    // 查询退款状态
+    async getRefundStatus(refundId: string) {
+      const { incomeApi } = await import('./api/income')
+      return await incomeApi.getRefundStatus(refundId)
+    },
+
+    // 获取支付方式列表
+    async getPaymentMethods() {
+      const { incomeApi } = await import('./api/income')
+      return await incomeApi.getPaymentMethods()
+    },
+
+    // 获取支付统计
+    async getPaymentStats(params: any = {}) {
+      const { incomeApi } = await import('./api/income')
+      return await incomeApi.getPaymentStats(params)
     }
   };
 }
