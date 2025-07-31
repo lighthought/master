@@ -2,15 +2,14 @@ package routes
 
 import (
 	"master-guide-backend/internal/api/handlers"
-	"master-guide-backend/pkg/config"
 
 	"github.com/gin-gonic/gin"
 )
 
 // SetupRoutes 设置路由
-func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.AuthHandler, userHandler *handlers.UserHandler, mentorHandler *handlers.MentorHandler, courseHandler *handlers.CourseHandler, appointmentHandler *handlers.AppointmentHandler, circleHandler *handlers.CircleHandler, postHandler *handlers.PostHandler, commentHandler *handlers.CommentHandler, reviewHandler *handlers.ReviewHandler, notificationHandler *handlers.NotificationHandler, learningHandler *handlers.LearningHandler) {
+func SetupRoutes(r *gin.Engine, authHandler *handlers.AuthHandler, userHandler *handlers.UserHandler, mentorHandler *handlers.MentorHandler, courseHandler *handlers.CourseHandler, appointmentHandler *handlers.AppointmentHandler, circleHandler *handlers.CircleHandler, postHandler *handlers.PostHandler, commentHandler *handlers.CommentHandler, reviewHandler *handlers.ReviewHandler, notificationHandler *handlers.NotificationHandler, learningHandler *handlers.LearningHandler, studentHandler *handlers.StudentHandler, incomeHandler *handlers.IncomeHandler, paymentHandler *handlers.PaymentHandler) {
 	// API v1 路由组
-	v1 := engine.Group("/api/v1")
+	v1 := r.Group("/api/v1")
 	{
 		// 健康检查
 		v1.GET("/health", func(c *gin.Context) {
@@ -388,34 +387,108 @@ func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.A
 		// 收入相关路由
 		income := v1.Group("/income")
 		{
-			income.GET("/stats", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Get income stats - TODO"})
-			})
-			income.GET("/transactions", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Get income transactions - TODO"})
-			})
+			if incomeHandler != nil {
+				income.GET("/stats", incomeHandler.GetIncomeStats)
+				income.GET("/transactions", incomeHandler.GetIncomeTransactions)
+				income.GET("/trends", incomeHandler.GetIncomeTrends)
+				income.GET("/export", incomeHandler.ExportIncomeReport)
+				income.GET("/withdrawals", incomeHandler.GetWithdrawals)
+				income.POST("/withdrawals", incomeHandler.CreateWithdrawal)
+				income.GET("/available", incomeHandler.GetAvailableIncome)
+			} else {
+				income.GET("/stats", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get income stats - TODO"})
+				})
+				income.GET("/transactions", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get income transactions - TODO"})
+				})
+				income.GET("/trends", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get income trends - TODO"})
+				})
+				income.GET("/export", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Export income report - TODO"})
+				})
+				income.GET("/withdrawals", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get withdrawals - TODO"})
+				})
+				income.POST("/withdrawals", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Create withdrawal - TODO"})
+				})
+				income.GET("/available", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get available income - TODO"})
+				})
+			}
 		}
 
 		// 支付相关路由
 		payments := v1.Group("/payments")
 		{
-			payments.POST("/orders", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Create payment order - TODO"})
-			})
-			payments.GET("/orders/:id/status", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Get payment status - TODO"})
-			})
+			if paymentHandler != nil {
+				payments.POST("/orders", paymentHandler.CreatePaymentOrder)
+				payments.GET("/orders/:order_id/status", paymentHandler.QueryPaymentStatus)
+				payments.GET("/history", paymentHandler.ListPaymentHistory)
+				payments.POST("/refunds", paymentHandler.CreateRefund)
+				payments.GET("/refunds/:refund_id/status", paymentHandler.QueryRefundStatus)
+				payments.GET("/methods", paymentHandler.ListPaymentMethods)
+				payments.GET("/stats", paymentHandler.GetPaymentStats)
+				payments.POST("/webhook/:gateway", paymentHandler.ProcessPaymentWebhook)
+			} else {
+				payments.POST("/orders", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Create payment order - TODO"})
+				})
+				payments.GET("/orders/:order_id/status", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get payment status - TODO"})
+				})
+				payments.GET("/history", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get payment history - TODO"})
+				})
+				payments.POST("/refunds", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Create refund - TODO"})
+				})
+				payments.GET("/refunds/:refund_id/status", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get refund status - TODO"})
+				})
+				payments.GET("/methods", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get payment methods - TODO"})
+				})
+				payments.GET("/stats", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get payment stats - TODO"})
+				})
+				payments.POST("/webhook/:gateway", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Process payment webhook - TODO"})
+				})
+			}
 		}
 
-		// 学生相关路由
+		// 学生管理路由
 		students := v1.Group("/students")
 		{
-			students.GET("", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Get students list - TODO"})
-			})
-			students.GET("/:id", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Get student detail - TODO"})
-			})
+			if studentHandler != nil {
+				students.GET("", studentHandler.GetStudents)
+				students.GET("/stats", studentHandler.GetStudentStats)
+				students.GET("/:student_id", studentHandler.GetStudentByID)
+				students.GET("/:student_id/messages", studentHandler.GetMessages)
+				students.POST("/:student_id/messages", studentHandler.SendMessage)
+				students.PUT("/:student_id/courses/:course_id/progress", studentHandler.UpdateStudentProgress)
+				students.POST("/:student_id/assignments/:assignment_id/grade", studentHandler.GradeAssignment)
+				students.GET("/:student_id/report", studentHandler.GetStudentReport)
+			} else {
+				students.GET("", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get students list - TODO"})
+				})
+				students.GET("/:id", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get student detail - TODO"})
+				})
+				students.POST("", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Create student - TODO"})
+				})
+				students.PUT("/:id", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Update student - TODO"})
+				})
+				students.DELETE("/:id", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Delete student - TODO"})
+				})
+			}
 		}
 
 		// 文件上传路由
@@ -444,7 +517,7 @@ func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.A
 	}
 
 	// WebSocket路由
-	engine.GET("/ws", func(c *gin.Context) {
+	r.GET("/ws", func(c *gin.Context) {
 		c.JSON(200, gin.H{"message": "WebSocket endpoint - TODO"})
 	})
 }

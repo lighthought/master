@@ -26,6 +26,10 @@ type Container struct {
 	ReviewRepository        repository.ReviewRepository
 	NotificationRepository  repository.NotificationRepository
 	LearningRepository      repository.LearningRepository
+	StudentRepository       repository.StudentRepository
+	MessageRepository       repository.MessageRepository
+	IncomeRepository        repository.IncomeRepository
+	PaymentRepository       repository.PaymentRepository
 
 	// Services
 	AuthService         service.AuthService
@@ -39,6 +43,9 @@ type Container struct {
 	ReviewService       service.ReviewService
 	NotificationService service.NotificationService
 	LearningService     service.LearningService
+	StudentService      service.StudentService
+	IncomeService       service.IncomeService
+	PaymentService      service.PaymentService
 
 	// Handlers
 	AuthHandler         *handlers.AuthHandler
@@ -52,6 +59,9 @@ type Container struct {
 	ReviewHandler       *handlers.ReviewHandler
 	NotificationHandler *handlers.NotificationHandler
 	LearningHandler     *handlers.LearningHandler
+	StudentHandler      *handlers.StudentHandler
+	IncomeHandler       *handlers.IncomeHandler
+	PaymentHandler      *handlers.PaymentHandler
 }
 
 // NewContainer 创建依赖注入容器
@@ -71,10 +81,14 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 	reviewRepo := repository.NewReviewRepository(db)
 	notificationRepo := repository.NewNotificationRepository(db)
 	learningRepo := repository.NewLearningRepository(db)
+	studentRepo := repository.NewStudentRepository(db)
+	messageRepo := repository.NewMessageRepository(db)
+	incomeRepo := repository.NewIncomeRepository(db)
+	paymentRepo := repository.NewPaymentRepository(db)
 
 	// 初始化Services
 	authService := service.NewAuthService(userRepo, identityRepo, cfg.JWT.Secret, cfg.JWT.ExpireHours)
-	userService := service.NewUserService(userRepo, identityRepo, profileRepo, preferencesRepo)
+	userService := service.NewUserService(userRepo, identityRepo, profileRepo, preferencesRepo, learningRepo, mentorRepo, appointmentRepo)
 	mentorService := service.NewMentorService(mentorRepo)
 	courseService := service.NewCourseService(courseRepo, courseContentRepo)
 	appointmentService := service.NewAppointmentService(appointmentRepo, mentorRepo)
@@ -84,6 +98,9 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 	reviewService := service.NewReviewService(reviewRepo)
 	notificationService := service.NewNotificationService(notificationRepo)
 	learningService := service.NewLearningService(learningRepo)
+	studentService := service.NewStudentService(studentRepo, userRepo, identityRepo, appointmentRepo, messageRepo)
+	incomeService := service.NewIncomeService(incomeRepo)
+	paymentService := service.NewPaymentService(paymentRepo)
 
 	// 初始化Handlers
 	authHandler := handlers.NewAuthHandler(authService)
@@ -97,6 +114,9 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 	reviewHandler := handlers.NewReviewHandler(reviewService)
 	notificationHandler := handlers.NewNotificationHandler(notificationService)
 	learningHandler := handlers.NewLearningHandler(learningService)
+	studentHandler := handlers.NewStudentHandler(studentService)
+	incomeHandler := handlers.NewIncomeHandler(incomeService)
+	paymentHandler := handlers.NewPaymentHandler(paymentService)
 
 	return &Container{
 		UserRepository:          userRepo,
@@ -113,6 +133,10 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 		ReviewRepository:        reviewRepo,
 		NotificationRepository:  notificationRepo,
 		LearningRepository:      learningRepo,
+		StudentRepository:       studentRepo,
+		MessageRepository:       messageRepo,
+		IncomeRepository:        incomeRepo,
+		PaymentRepository:       paymentRepo,
 		AuthService:             authService,
 		UserService:             userService,
 		MentorService:           mentorService,
@@ -124,6 +148,9 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 		ReviewService:           reviewService,
 		NotificationService:     notificationService,
 		LearningService:         learningService,
+		StudentService:          studentService,
+		IncomeService:           incomeService,
+		PaymentService:          paymentService,
 		AuthHandler:             authHandler,
 		UserHandler:             userHandler,
 		MentorHandler:           mentorHandler,
@@ -135,5 +162,8 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 		ReviewHandler:           reviewHandler,
 		NotificationHandler:     notificationHandler,
 		LearningHandler:         learningHandler,
+		StudentHandler:          studentHandler,
+		IncomeHandler:           incomeHandler,
+		PaymentHandler:          paymentHandler,
 	}
 }

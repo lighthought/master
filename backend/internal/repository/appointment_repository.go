@@ -16,6 +16,8 @@ type AppointmentRepository interface {
 	UpdateAppointmentStatus(ctx context.Context, appointmentID, status string) error
 	CancelAppointment(ctx context.Context, appointmentID string) error
 	GetMentorAppointmentStats(ctx context.Context, mentorID string) (*model.MentorAppointmentStats, error)
+	GetMentorStudentCount(ctx context.Context, mentorID string) (int64, error)
+	GetMentorTotalHours(ctx context.Context, mentorID string) (int64, error)
 }
 
 // appointmentRepository 预约数据访问实现
@@ -169,4 +171,30 @@ func (r *appointmentRepository) GetMentorAppointmentStats(ctx context.Context, m
 	}
 
 	return &stats, nil
+}
+
+// GetMentorStudentCount 获取导师的学生数量
+func (r *appointmentRepository) GetMentorStudentCount(ctx context.Context, mentorID string) (int64, error) {
+	var count int64
+	err := r.db.WithContext(ctx).
+		Model(&model.AppointmentModel{}).
+		Where("mentor_id = ?", mentorID).
+		Distinct("student_id").
+		Count(&count).Error
+	return count, err
+}
+
+// GetMentorTotalHours 获取导师的总教学小时数
+func (r *appointmentRepository) GetMentorTotalHours(ctx context.Context, mentorID string) (int64, error) {
+	var totalMinutes int64
+	err := r.db.WithContext(ctx).
+		Model(&model.AppointmentModel{}).
+		Where("mentor_id = ? AND status IN (?, ?)", mentorID, "confirmed", "completed").
+		Select("COALESCE(SUM(duration_minutes), 0)").
+		Scan(&totalMinutes).Error
+	if err != nil {
+		return 0, err
+	}
+	// 转换为小时
+	return totalMinutes / 60, nil
 }

@@ -48,6 +48,8 @@ CREATE SEQUENCE IF NOT EXISTS mentor_id_num_seq INCREMENT BY 1 START 1 MINVALUE 
 CREATE SEQUENCE IF NOT EXISTS mentor_review_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1;
 CREATE SEQUENCE IF NOT EXISTS study_session_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1;
 CREATE SEQUENCE IF NOT EXISTS assignment_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1;
+CREATE SEQUENCE IF NOT EXISTS income_transaction_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1;
+CREATE SEQUENCE IF NOT EXISTS withdrawal_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1;
 
 
 -- 设置序列所有者
@@ -75,6 +77,8 @@ ALTER SEQUENCE mentor_id_num_seq OWNER TO master_guide;
 ALTER SEQUENCE mentor_review_id_num_seq OWNER TO master_guide;
 ALTER SEQUENCE study_session_id_num_seq OWNER TO master_guide;
 ALTER SEQUENCE assignment_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE income_transaction_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE withdrawal_id_num_seq OWNER TO master_guide;
 
 
 -- 创建用户基础表
@@ -235,6 +239,39 @@ CREATE TABLE assignments (
     reviewed_at TIMESTAMP,
     score DECIMAL(5,2),
     feedback TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 创建收入交易表
+CREATE TABLE income_transactions (
+    id VARCHAR(32) PRIMARY KEY DEFAULT generate_table_id('INCOME_', 'income_transaction_id_num_seq'),
+    mentor_id VARCHAR(32) NOT NULL REFERENCES mentors(id) ON DELETE CASCADE,
+    student_id VARCHAR(32) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    transaction_type VARCHAR(20) NOT NULL CHECK (transaction_type IN ('course_enrollment', 'appointment', 'refund')),
+    amount DECIMAL(10,2) NOT NULL,
+    platform_fee DECIMAL(10,2) NOT NULL DEFAULT 0,
+    net_income DECIMAL(10,2) NOT NULL,
+    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'completed', 'failed')),
+    description TEXT,
+    course_id VARCHAR(32) REFERENCES courses(id) ON DELETE SET NULL,
+    appointment_id VARCHAR(32) REFERENCES appointments(id) ON DELETE SET NULL,
+    completed_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 创建提现表
+CREATE TABLE withdrawals (
+    id VARCHAR(32) PRIMARY KEY DEFAULT generate_table_id('WITHDRAWAL_', 'withdrawal_id_num_seq'),
+    mentor_id VARCHAR(32) NOT NULL REFERENCES mentors(id) ON DELETE CASCADE,
+    amount DECIMAL(10,2) NOT NULL,
+    fee DECIMAL(10,2) NOT NULL DEFAULT 0,
+    net_amount DECIMAL(10,2) NOT NULL,
+    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'completed', 'failed')),
+    bank_account VARCHAR(50) NOT NULL,
+    bank_name VARCHAR(100) NOT NULL,
+    completed_at TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -471,6 +508,20 @@ CREATE INDEX idx_assignments_status ON assignments(status);
 CREATE INDEX idx_assignments_submitted_at ON assignments(submitted_at);
 CREATE INDEX idx_assignments_score ON assignments(score);
 
+-- 收入交易索引
+CREATE INDEX idx_income_transactions_mentor_id ON income_transactions(mentor_id);
+CREATE INDEX idx_income_transactions_student_id ON income_transactions(student_id);
+CREATE INDEX idx_income_transactions_type ON income_transactions(transaction_type);
+CREATE INDEX idx_income_transactions_status ON income_transactions(status);
+CREATE INDEX idx_income_transactions_created_at ON income_transactions(created_at);
+CREATE INDEX idx_income_transactions_course_id ON income_transactions(course_id);
+CREATE INDEX idx_income_transactions_appointment_id ON income_transactions(appointment_id);
+
+-- 提现索引
+CREATE INDEX idx_withdrawals_mentor_id ON withdrawals(mentor_id);
+CREATE INDEX idx_withdrawals_status ON withdrawals(status);
+CREATE INDEX idx_withdrawals_created_at ON withdrawals(created_at);
+
 -- 圈子表索引
 CREATE INDEX idx_circles_domain ON circles(domain);
 CREATE INDEX idx_circles_status ON circles(status);
@@ -609,6 +660,8 @@ CREATE TRIGGER update_comments_updated_at BEFORE UPDATE ON comments FOR EACH ROW
 CREATE TRIGGER update_appointments_updated_at BEFORE UPDATE ON appointments FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_reviews_updated_at BEFORE UPDATE ON reviews FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_system_configs_updated_at BEFORE UPDATE ON system_configs FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE TRIGGER update_income_transactions_updated_at BEFORE UPDATE ON income_transactions FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE TRIGGER update_withdrawals_updated_at BEFORE UPDATE ON withdrawals FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- 创建统计更新函数
 CREATE OR REPLACE FUNCTION update_course_stats()
@@ -686,3 +739,76 @@ INSERT INTO system_configs (config_key, config_value, description) VALUES
 ('max_file_size', '10485760', '最大文件上传大小（字节）'),
 ('allowed_file_types', '["image/jpeg","image/png","image/gif","application/pdf","text/plain"]', '允许的文件类型'),
 ('default_avatar', 'https://example.com/default-avatar.png', '默认头像URL'); 
+
+-- 支付相关表
+
+-- 支付订单表
+CREATE TABLE payment_orders (
+    id VARCHAR(32) PRIMARY KEY DEFAULT generate_table_id('PAYORDER_', 'payment_order_id_num_seq'),
+    order_type VARCHAR(32) NOT NULL CHECK (order_type IN ('course_enrollment', 'appointment', 'refund')),
+    order_ref_id VARCHAR(32) NOT NULL, -- 业务订单ID，如课程报名ID、预约ID等
+    amount DECIMAL(10,2) NOT NULL,
+    currency VARCHAR(10) NOT NULL DEFAULT 'CNY',
+    payment_method VARCHAR(32) NOT NULL,
+    description TEXT,
+    metadata JSONB,
+    status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'completed', 'failed', 'cancelled')),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP,
+    UNIQUE(order_type, order_ref_id)
+);
+
+-- 支付流水表
+CREATE TABLE payment_records (
+    id VARCHAR(32) PRIMARY KEY DEFAULT generate_table_id('PAYREC_', 'payment_record_id_num_seq'),
+    order_id VARCHAR(32) NOT NULL REFERENCES payment_orders(id) ON DELETE CASCADE,
+    payment_url VARCHAR(500),
+    qr_code VARCHAR(500),
+    status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'completed', 'failed', 'cancelled')),
+    amount DECIMAL(10,2) NOT NULL,
+    currency VARCHAR(10) NOT NULL DEFAULT 'CNY',
+    payment_method VARCHAR(32) NOT NULL,
+    paid_at TIMESTAMP,
+    transaction_id VARCHAR(64),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 退款表
+CREATE TABLE payment_refunds (
+    id VARCHAR(32) PRIMARY KEY DEFAULT generate_table_id('REFUND_', 'payment_refund_id_num_seq'),
+    payment_id VARCHAR(32) NOT NULL REFERENCES payment_records(id) ON DELETE CASCADE,
+    amount DECIMAL(10,2) NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'completed', 'failed', 'cancelled')),
+    reason TEXT,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    completed_at TIMESTAMP,
+    refund_transaction_id VARCHAR(64)
+);
+
+-- 支付方式表
+CREATE TABLE payment_methods (
+    id VARCHAR(32) PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    icon VARCHAR(500),
+    enabled BOOLEAN DEFAULT TRUE,
+    min_amount DECIMAL(10,2) DEFAULT 0.01,
+    max_amount DECIMAL(10,2) DEFAULT 100000.00
+);
+
+-- 支付相关索引
+CREATE INDEX idx_payment_orders_status ON payment_orders(status);
+CREATE INDEX idx_payment_orders_created_at ON payment_orders(created_at);
+CREATE INDEX idx_payment_records_order_id ON payment_records(order_id);
+CREATE INDEX idx_payment_records_status ON payment_records(status);
+CREATE INDEX idx_payment_records_paid_at ON payment_records(paid_at);
+CREATE INDEX idx_payment_refunds_payment_id ON payment_refunds(payment_id);
+CREATE INDEX idx_payment_refunds_status ON payment_refunds(status);
+CREATE INDEX idx_payment_methods_enabled ON payment_methods(enabled);
+
+-- 支付相关序列
+CREATE SEQUENCE IF NOT EXISTS payment_order_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1;
+CREATE SEQUENCE IF NOT EXISTS payment_record_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1;
+CREATE SEQUENCE IF NOT EXISTS payment_refund_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1; 
