@@ -35,6 +35,7 @@ import (
 
 	"master-guide-backend/internal/api/middleware"
 	"master-guide-backend/internal/api/routes"
+	"master-guide-backend/internal/container"
 	"master-guide-backend/pkg/cache"
 	"master-guide-backend/pkg/config"
 	"master-guide-backend/pkg/database"
@@ -45,6 +46,7 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"gorm.io/gorm"
 )
 
 // @securityDefinitions.apikey Bearer
@@ -84,12 +86,15 @@ func main() {
 		ConnMaxLifetime: cfg.Database.ConnMaxLifetime,
 	}
 
+	var db *gorm.DB
 	if err := database.Connect(dbConfig); err != nil {
 		logger.Warn("连接数据库失败，将启动无数据库模式", logger.String("error", err.Error()))
 		logger.Info("注意：某些功能可能不可用")
+		db = nil
 	} else {
 		defer database.Close()
 		logger.Info("数据库连接成功")
+		db = database.GetDB()
 	}
 
 	// 连接Redis
@@ -107,6 +112,15 @@ func main() {
 	} else {
 		defer cache.Close()
 		logger.Info("Redis连接成功")
+	}
+
+	// 初始化依赖注入容器
+	var the_container *container.Container
+	if db != nil {
+		the_container = container.NewContainer(db, cfg)
+		logger.Info("依赖注入容器初始化成功")
+	} else {
+		logger.Warn("数据库未连接，部分功能不可用")
 	}
 
 	// 设置Gin模式
@@ -127,7 +141,12 @@ func main() {
 	engine.Static("/uploads", "./static/uploads")
 
 	// 设置路由
-	routes.SetupRoutes(engine, cfg)
+	if the_container != nil {
+		routes.SetupRoutes(engine, cfg, the_container.AuthHandler, the_container.UserHandler)
+	} else {
+		// 如果数据库未连接，使用默认路由
+		routes.SetupRoutes(engine, cfg, nil, nil)
+	}
 
 	// 添加Swagger文档路由
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

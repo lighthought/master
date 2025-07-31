@@ -1,13 +1,14 @@
 package routes
 
 import (
+	"master-guide-backend/internal/api/handlers"
 	"master-guide-backend/pkg/config"
 
 	"github.com/gin-gonic/gin"
 )
 
 // SetupRoutes 设置路由
-func SetupRoutes(engine *gin.Engine, cfg *config.Config) {
+func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.AuthHandler, userHandler *handlers.UserHandler) {
 	// API v1 路由组
 	v1 := engine.Group("/api/v1")
 	{
@@ -22,32 +23,56 @@ func SetupRoutes(engine *gin.Engine, cfg *config.Config) {
 		// 认证相关路由
 		auth := v1.Group("/auth")
 		{
-			auth.POST("/register", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Register endpoint - TODO"})
-			})
-			auth.POST("/login", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Login endpoint - TODO"})
-			})
-			auth.POST("/refresh", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Refresh token endpoint - TODO"})
-			})
+			if authHandler != nil {
+				auth.POST("/register", authHandler.Register)
+				auth.POST("/login", authHandler.Login)
+				auth.POST("/refresh", authHandler.RefreshToken)
+				auth.POST("/switch-identity", authHandler.SwitchIdentity)
+				auth.POST("/change-password", authHandler.ChangePassword)
+			} else {
+				auth.POST("/register", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Register endpoint - TODO"})
+				})
+				auth.POST("/login", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Login endpoint - TODO"})
+				})
+				auth.POST("/refresh", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Refresh token endpoint - TODO"})
+				})
+			}
 		}
 
 		// 用户相关路由
 		users := v1.Group("/users")
 		{
-			users.GET("/profile", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Get user profile - TODO"})
-			})
-			users.PUT("/profile", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Update user profile - TODO"})
-			})
-			users.GET("/identities", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Get user identities - TODO"})
-			})
-			users.POST("/identities", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Create user identity - TODO"})
-			})
+			if userHandler != nil {
+				users.GET("/profile", userHandler.GetUserProfile)
+				users.PUT("/profile", userHandler.UpdateUserProfile)
+				users.GET("/identities", userHandler.GetUserIdentities)
+				users.POST("/identities", userHandler.CreateUserIdentity)
+				users.PUT("/identities/:identity_id", userHandler.UpdateUserIdentity)
+				users.GET("/stats/learning", userHandler.GetLearningStats)
+				users.GET("/stats/teaching", userHandler.GetTeachingStats)
+				users.GET("/stats/general", userHandler.GetGeneralStats)
+				users.GET("/achievements", userHandler.GetUserAchievements)
+				users.GET("/preferences", userHandler.GetUserPreferences)
+				users.PUT("/preferences", userHandler.SaveUserPreferences)
+				users.GET("/recommended-learning-path", userHandler.GetRecommendedLearningPath)
+				users.GET("/learning-path-stats", userHandler.GetLearningPathStats)
+			} else {
+				users.GET("/profile", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get user profile - TODO"})
+				})
+				users.PUT("/profile", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Update user profile - TODO"})
+				})
+				users.GET("/identities", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get user identities - TODO"})
+				})
+				users.POST("/identities", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Create user identity - TODO"})
+				})
+			}
 		}
 
 		// 大师相关路由
