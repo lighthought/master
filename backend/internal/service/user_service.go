@@ -247,12 +247,17 @@ func (s *userService) GetLearningStats(ctx context.Context, userID string) (*mod
 	// 这里应该从学习记录表中获取实际数据
 	// 暂时返回模拟数据
 	return &model.LearningStatsResponse{
-		TotalCourses:     12,
-		Progress:         65,
-		CompletedLessons: 8,
-		TotalLessons:     15,
-		CurrentCourse:    "Vue.js 进阶开发",
-		NextLesson:       "组件通信与状态管理",
+		Stats: &model.LearningStats{
+			TotalCourses:         12,
+			CompletedCourses:     8,
+			TotalStudyHours:      45.5,
+			AverageProgress:      65.0,
+			CurrentStreakDays:    7,
+			TotalAssignments:     15,
+			CompletedAssignments: 12,
+			AverageScore:         85.6,
+			CertificatesEarned:   2,
+		},
 	}, nil
 }
 

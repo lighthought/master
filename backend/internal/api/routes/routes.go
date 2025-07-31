@@ -8,7 +8,7 @@ import (
 )
 
 // SetupRoutes 设置路由
-func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.AuthHandler, userHandler *handlers.UserHandler, mentorHandler *handlers.MentorHandler, courseHandler *handlers.CourseHandler, appointmentHandler *handlers.AppointmentHandler, circleHandler *handlers.CircleHandler, postHandler *handlers.PostHandler, commentHandler *handlers.CommentHandler, reviewHandler *handlers.ReviewHandler, notificationHandler *handlers.NotificationHandler) {
+func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.AuthHandler, userHandler *handlers.UserHandler, mentorHandler *handlers.MentorHandler, courseHandler *handlers.CourseHandler, appointmentHandler *handlers.AppointmentHandler, circleHandler *handlers.CircleHandler, postHandler *handlers.PostHandler, commentHandler *handlers.CommentHandler, reviewHandler *handlers.ReviewHandler, notificationHandler *handlers.NotificationHandler, learningHandler *handlers.LearningHandler) {
 	// API v1 路由组
 	v1 := engine.Group("/api/v1")
 	{
@@ -356,12 +356,33 @@ func SetupRoutes(engine *gin.Engine, cfg *config.Config, authHandler *handlers.A
 		// 学习记录相关路由
 		learning := v1.Group("/learning-records")
 		{
-			learning.GET("", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Get learning records - TODO"})
-			})
-			learning.PUT("/:id/progress", func(c *gin.Context) {
-				c.JSON(200, gin.H{"message": "Update learning progress - TODO"})
-			})
+			if learningHandler != nil {
+				learning.GET("", learningHandler.GetLearningRecords)
+				learning.GET("/:record_id", learningHandler.GetLearningRecordByID)
+				learning.PUT("/:record_id/progress", learningHandler.UpdateLearningProgress)
+				learning.POST("/:record_id/assignments", learningHandler.SubmitAssignment)
+				learning.GET("/stats", learningHandler.GetLearningStats)
+				learning.GET("/recommended-path", learningHandler.GetRecommendedPath)
+			} else {
+				learning.GET("", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get learning records - TODO"})
+				})
+				learning.GET("/:record_id", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get learning record detail - TODO"})
+				})
+				learning.PUT("/:record_id/progress", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Update learning progress - TODO"})
+				})
+				learning.POST("/:record_id/assignments", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Submit assignment - TODO"})
+				})
+				learning.GET("/stats", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get learning stats - TODO"})
+				})
+				learning.GET("/recommended-path", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get recommended path - TODO"})
+				})
+			}
 		}
 
 		// 收入相关路由

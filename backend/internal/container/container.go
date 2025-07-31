@@ -25,6 +25,7 @@ type Container struct {
 	CommentRepository       repository.CommentRepository
 	ReviewRepository        repository.ReviewRepository
 	NotificationRepository  repository.NotificationRepository
+	LearningRepository      repository.LearningRepository
 
 	// Services
 	AuthService         service.AuthService
@@ -37,6 +38,7 @@ type Container struct {
 	CommentService      service.CommentService
 	ReviewService       service.ReviewService
 	NotificationService service.NotificationService
+	LearningService     service.LearningService
 
 	// Handlers
 	AuthHandler         *handlers.AuthHandler
@@ -49,6 +51,7 @@ type Container struct {
 	CommentHandler      *handlers.CommentHandler
 	ReviewHandler       *handlers.ReviewHandler
 	NotificationHandler *handlers.NotificationHandler
+	LearningHandler     *handlers.LearningHandler
 }
 
 // NewContainer 创建依赖注入容器
@@ -67,6 +70,7 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 	commentRepo := repository.NewCommentRepository(db)
 	reviewRepo := repository.NewReviewRepository(db)
 	notificationRepo := repository.NewNotificationRepository(db)
+	learningRepo := repository.NewLearningRepository(db)
 
 	// 初始化Services
 	authService := service.NewAuthService(userRepo, identityRepo, cfg.JWT.Secret, cfg.JWT.ExpireHours)
@@ -79,6 +83,7 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 	commentService := service.NewCommentService(commentRepo)
 	reviewService := service.NewReviewService(reviewRepo)
 	notificationService := service.NewNotificationService(notificationRepo)
+	learningService := service.NewLearningService(learningRepo)
 
 	// 初始化Handlers
 	authHandler := handlers.NewAuthHandler(authService)
@@ -91,6 +96,7 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 	commentHandler := handlers.NewCommentHandler(commentService)
 	reviewHandler := handlers.NewReviewHandler(reviewService)
 	notificationHandler := handlers.NewNotificationHandler(notificationService)
+	learningHandler := handlers.NewLearningHandler(learningService)
 
 	return &Container{
 		UserRepository:          userRepo,
@@ -106,6 +112,7 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 		CommentRepository:       commentRepo,
 		ReviewRepository:        reviewRepo,
 		NotificationRepository:  notificationRepo,
+		LearningRepository:      learningRepo,
 		AuthService:             authService,
 		UserService:             userService,
 		MentorService:           mentorService,
@@ -116,6 +123,7 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 		CommentService:          commentService,
 		ReviewService:           reviewService,
 		NotificationService:     notificationService,
+		LearningService:         learningService,
 		AuthHandler:             authHandler,
 		UserHandler:             userHandler,
 		MentorHandler:           mentorHandler,
@@ -126,5 +134,6 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 		CommentHandler:          commentHandler,
 		ReviewHandler:           reviewHandler,
 		NotificationHandler:     notificationHandler,
+		LearningHandler:         learningHandler,
 	}
 }

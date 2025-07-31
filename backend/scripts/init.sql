@@ -46,6 +46,8 @@ CREATE SEQUENCE IF NOT EXISTS system_config_id_num_seq INCREMENT BY 1 START 1 MI
 CREATE SEQUENCE IF NOT EXISTS audit_log_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1;
 CREATE SEQUENCE IF NOT EXISTS mentor_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1;
 CREATE SEQUENCE IF NOT EXISTS mentor_review_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1;
+CREATE SEQUENCE IF NOT EXISTS study_session_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1;
+CREATE SEQUENCE IF NOT EXISTS assignment_id_num_seq INCREMENT BY 1 START 1 MINVALUE 1 MAXVALUE 99999999999 CACHE 1;
 
 
 -- 设置序列所有者
@@ -71,6 +73,8 @@ ALTER SEQUENCE system_config_id_num_seq OWNER TO master_guide;
 ALTER SEQUENCE audit_log_id_num_seq OWNER TO master_guide;
 ALTER SEQUENCE mentor_id_num_seq OWNER TO master_guide;
 ALTER SEQUENCE mentor_review_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE study_session_id_num_seq OWNER TO master_guide;
+ALTER SEQUENCE assignment_id_num_seq OWNER TO master_guide;
 
 
 -- 创建用户基础表
@@ -196,10 +200,43 @@ CREATE TABLE learning_records (
     user_id VARCHAR(32) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     course_id VARCHAR(32) NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
     progress_percentage DECIMAL(5,2) DEFAULT 0,
-    status VARCHAR(20) DEFAULT 'enrolled' CHECK (status IN ('enrolled', 'learning', 'completed', 'dropped')),
+    status VARCHAR(20) DEFAULT 'enrolled' CHECK (status IN ('enrolled', 'learning', 'completed', 'dropped', 'paused')),
     enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     completed_at TIMESTAMP,
-    last_accessed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    last_accessed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    current_chapter VARCHAR(200),
+    completed_chapters TEXT[],
+    total_study_time INTEGER DEFAULT 0,
+    certificate_issued BOOLEAN DEFAULT FALSE,
+    certificate_url VARCHAR(500)
+);
+
+-- 创建学习会话表
+CREATE TABLE study_sessions (
+    id VARCHAR(32) PRIMARY KEY DEFAULT generate_table_id('SESSION_', 'study_session_id_num_seq'),
+    learning_record_id VARCHAR(32) NOT NULL REFERENCES learning_records(id) ON DELETE CASCADE,
+    start_time TIMESTAMP NOT NULL,
+    end_time TIMESTAMP,
+    duration_minutes INTEGER DEFAULT 0,
+    chapter VARCHAR(200),
+    notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 创建作业表
+CREATE TABLE assignments (
+    id VARCHAR(32) PRIMARY KEY DEFAULT generate_table_id('ASSIGNMENT_', 'assignment_id_num_seq'),
+    learning_record_id VARCHAR(32) NOT NULL REFERENCES learning_records(id) ON DELETE CASCADE,
+    title VARCHAR(200) NOT NULL,
+    content TEXT,
+    attachment_urls TEXT[],
+    status VARCHAR(20) DEFAULT 'submitted' CHECK (status IN ('submitted', 'reviewed', 'approved', 'rejected')),
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    reviewed_at TIMESTAMP,
+    score DECIMAL(5,2),
+    feedback TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 创建内容进度表
@@ -422,6 +459,17 @@ CREATE INDEX idx_learning_records_enrolled_at ON learning_records(enrolled_at);
 CREATE INDEX idx_content_progress_user_id ON content_progress(user_id);
 CREATE INDEX idx_content_progress_content_id ON content_progress(content_id);
 CREATE INDEX idx_content_progress_is_completed ON content_progress(is_completed);
+
+-- 学习会话索引
+CREATE INDEX idx_study_sessions_learning_record_id ON study_sessions(learning_record_id);
+CREATE INDEX idx_study_sessions_start_time ON study_sessions(start_time);
+CREATE INDEX idx_study_sessions_chapter ON study_sessions(chapter);
+
+-- 作业索引
+CREATE INDEX idx_assignments_learning_record_id ON assignments(learning_record_id);
+CREATE INDEX idx_assignments_status ON assignments(status);
+CREATE INDEX idx_assignments_submitted_at ON assignments(submitted_at);
+CREATE INDEX idx_assignments_score ON assignments(score);
 
 -- 圈子表索引
 CREATE INDEX idx_circles_domain ON circles(domain);

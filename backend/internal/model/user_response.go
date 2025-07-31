@@ -47,16 +47,6 @@ type CreateIdentityResponse struct {
 	Status     string `json:"status"`
 }
 
-// LearningStatsResponse 学习统计响应
-type LearningStatsResponse struct {
-	TotalCourses     int    `json:"total_courses"`
-	Progress         int    `json:"progress"`
-	CompletedLessons int    `json:"completed_lessons"`
-	TotalLessons     int    `json:"total_lessons"`
-	CurrentCourse    string `json:"current_course"`
-	NextLesson       string `json:"next_lesson"`
-}
-
 // TeachingStatsResponse 教学统计响应
 type TeachingStatsResponse struct {
 	TotalStudents     int     `json:"total_students"`
