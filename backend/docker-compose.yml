@@ -31,7 +31,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./scripts:/docker-entrypoint-initdb.d
     ports:
-      - "5432:5432"
+      - "5434:5432"
     networks:
       - master-guide-network
     restart: unless-stopped
@@ -45,7 +45,7 @@ services:
   redis:
     image: redis:7-alpine
     ports:
-      - "6379:6379"
+      - "6380:6379"
     volumes:
       - redis_data:/data
     networks:

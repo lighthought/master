@@ -4,6 +4,7 @@ import (
 	"master-guide-backend/internal/api/handlers"
 	"master-guide-backend/internal/repository"
 	"master-guide-backend/internal/service"
+	"master-guide-backend/internal/utils"
 	"master-guide-backend/pkg/config"
 
 	"gorm.io/gorm"
@@ -33,6 +34,7 @@ type Container struct {
 	UploadRepository        repository.UploadRepository
 	SearchRepository        repository.SearchRepository
 	StatsRepository         repository.StatsRepository
+	ChatRepository          repository.ChatRepository
 
 	// Services
 	AuthService         service.AuthService
@@ -52,6 +54,7 @@ type Container struct {
 	UploadService       service.UploadService
 	SearchService       service.SearchService
 	StatsService        service.StatsService
+	ChatService         service.ChatService
 
 	// Handlers
 	AuthHandler         *handlers.AuthHandler
@@ -71,6 +74,8 @@ type Container struct {
 	UploadHandler       *handlers.UploadHandler
 	SearchHandler       *handlers.SearchHandler
 	StatsHandler        *handlers.StatsHandler
+	ChatHandler         *handlers.ChatHandler
+	WebSocketHandler    *handlers.WebSocketHandler
 }
 
 // NewContainer 创建依赖注入容器
@@ -97,6 +102,7 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 	uploadRepo := repository.NewUploadRepository(db)
 	searchRepo := repository.NewSearchRepository(db)
 	statsRepo := repository.NewStatsRepository(db)
+	chatRepo := repository.NewChatRepository(db)
 
 	// 初始化Services
 	authService := service.NewAuthService(userRepo, identityRepo, cfg.JWT.Secret, cfg.JWT.ExpireHours)
@@ -117,6 +123,12 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 	searchService := service.NewSearchService(searchRepo)
 	statsService := service.NewStatsService(statsRepo)
 
+	// 创建 WebSocket 管理器
+	websocketMgr := utils.NewWebSocketManager()
+	go websocketMgr.Start()
+
+	chatService := service.NewChatService(chatRepo, websocketMgr)
+
 	// 初始化Handlers
 	authHandler := handlers.NewAuthHandler(authService)
 	userHandler := handlers.NewUserHandler(userService)
@@ -135,6 +147,8 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 	uploadHandler := handlers.NewUploadHandler(uploadService)
 	searchHandler := handlers.NewSearchHandler(searchService)
 	statsHandler := handlers.NewStatsHandler(statsService)
+	chatHandler := handlers.NewChatHandler(chatService)
+	websocketHandler := handlers.NewWebSocketHandler(websocketMgr)
 
 	return &Container{
 		UserRepository:          userRepo,
@@ -158,6 +172,7 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 		UploadRepository:        uploadRepo,
 		SearchRepository:        searchRepo,
 		StatsRepository:         statsRepo,
+		ChatRepository:          chatRepo,
 		AuthService:             authService,
 		UserService:             userService,
 		MentorService:           mentorService,
@@ -175,6 +190,7 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 		UploadService:           uploadService,
 		SearchService:           searchService,
 		StatsService:            statsService,
+		ChatService:             chatService,
 		AuthHandler:             authHandler,
 		UserHandler:             userHandler,
 		MentorHandler:           mentorHandler,
@@ -192,5 +208,7 @@ func NewContainer(db *gorm.DB, cfg *config.Config) *Container {
 		UploadHandler:           uploadHandler,
 		SearchHandler:           searchHandler,
 		StatsHandler:            statsHandler,
+		ChatHandler:             chatHandler,
+		WebSocketHandler:        websocketHandler,
 	}
 }

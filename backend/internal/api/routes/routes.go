@@ -7,7 +7,7 @@ import (
 )
 
 // SetupRoutes 设置路由
-func SetupRoutes(r *gin.Engine, authHandler *handlers.AuthHandler, userHandler *handlers.UserHandler, mentorHandler *handlers.MentorHandler, courseHandler *handlers.CourseHandler, appointmentHandler *handlers.AppointmentHandler, circleHandler *handlers.CircleHandler, postHandler *handlers.PostHandler, commentHandler *handlers.CommentHandler, reviewHandler *handlers.ReviewHandler, notificationHandler *handlers.NotificationHandler, learningHandler *handlers.LearningHandler, studentHandler *handlers.StudentHandler, incomeHandler *handlers.IncomeHandler, paymentHandler *handlers.PaymentHandler, uploadHandler *handlers.UploadHandler, searchHandler *handlers.SearchHandler, statsHandler *handlers.StatsHandler) {
+func SetupRoutes(r *gin.Engine, authHandler *handlers.AuthHandler, userHandler *handlers.UserHandler, mentorHandler *handlers.MentorHandler, courseHandler *handlers.CourseHandler, appointmentHandler *handlers.AppointmentHandler, circleHandler *handlers.CircleHandler, postHandler *handlers.PostHandler, commentHandler *handlers.CommentHandler, reviewHandler *handlers.ReviewHandler, notificationHandler *handlers.NotificationHandler, learningHandler *handlers.LearningHandler, studentHandler *handlers.StudentHandler, incomeHandler *handlers.IncomeHandler, paymentHandler *handlers.PaymentHandler, uploadHandler *handlers.UploadHandler, searchHandler *handlers.SearchHandler, statsHandler *handlers.StatsHandler, chatHandler *handlers.ChatHandler, websocketHandler *handlers.WebSocketHandler) {
 	// API v1 路由组
 	v1 := r.Group("/api/v1")
 	{
@@ -494,6 +494,27 @@ func SetupRoutes(r *gin.Engine, authHandler *handlers.AuthHandler, userHandler *
 					c.JSON(200, gin.H{"message": "Get user stats - TODO"})
 				})
 			}
+		}
+
+		// 聊天相关路由
+		chatGroup := v1.Group("/chat")
+		{
+			if chatHandler != nil {
+				chatGroup.GET("/online-users", chatHandler.GetOnlineUsers)
+				chatGroup.GET("/messages", chatHandler.GetChatMessages)
+			} else {
+				chatGroup.GET("/online-users", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get online users - TODO"})
+				})
+				chatGroup.GET("/messages", func(c *gin.Context) {
+					c.JSON(200, gin.H{"message": "Get chat messages - TODO"})
+				})
+			}
+		}
+
+		// WebSocket 路由
+		if websocketHandler != nil {
+			r.GET("/ws", websocketHandler.HandleWebSocket)
 		}
 
 		// 学生管理路由

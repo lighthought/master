@@ -243,6 +243,21 @@ CREATE TABLE assignments (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- 创建预约表
+CREATE TABLE appointments (
+    id VARCHAR(32) PRIMARY KEY DEFAULT generate_table_id('APPOINTMENT_', 'appointment_id_num_seq'),
+    student_id VARCHAR(32) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    mentor_id VARCHAR(32) NOT NULL REFERENCES mentors(id) ON DELETE CASCADE,
+    appointment_time TIMESTAMP NOT NULL,
+    duration_minutes INTEGER NOT NULL,
+    meeting_type VARCHAR(20) DEFAULT 'video' CHECK (meeting_type IN ('video', 'voice', 'text')),
+    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'completed', 'cancelled')),
+    price DECIMAL(10,2) NOT NULL,
+    notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- 创建收入交易表
 CREATE TABLE income_transactions (
     id VARCHAR(32) PRIMARY KEY DEFAULT generate_table_id('INCOME_', 'income_transaction_id_num_seq'),
@@ -357,21 +372,6 @@ CREATE TABLE comment_likes (
     user_id VARCHAR(32) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(comment_id, user_id)
-);
-
--- 创建预约表
-CREATE TABLE appointments (
-    id VARCHAR(32) PRIMARY KEY DEFAULT generate_table_id('APPOINTMENT_', 'appointment_id_num_seq'),
-    student_id VARCHAR(32) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    mentor_id VARCHAR(32) NOT NULL REFERENCES mentors(id) ON DELETE CASCADE,
-    appointment_time TIMESTAMP NOT NULL,
-    duration_minutes INTEGER NOT NULL,
-    meeting_type VARCHAR(20) DEFAULT 'video' CHECK (meeting_type IN ('video', 'voice', 'text')),
-    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'completed', 'cancelled')),
-    price DECIMAL(10,2) NOT NULL,
-    notes TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 创建评价表

@@ -7,7 +7,7 @@ server:
 
 database:
   host: postgres
-  port: 5432
+  port: 5434
   user: master_guide
   password: master_guide123
   dbname: master_guide
@@ -18,7 +18,7 @@ database:
 
 redis:
   host: redis
-  port: 6379
+  port: 6380
   password: ""
   db: 0
   pool_size: 10

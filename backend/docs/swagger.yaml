@@ -1,0 +1,6135 @@
+definitions:
+  model.Achievement:
+    properties:
+      description:
+        type: string
+      icon:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  model.AchievementsResponse:
+    properties:
+      achievements:
+        items:
+          $ref: '#/definitions/model.Achievement'
+        type: array
+    type: object
+  model.AppointmentDetail:
+    properties:
+      appointment_time:
+        type: string
+      created_at:
+        type: string
+      duration_minutes:
+        type: integer
+      id:
+        type: string
+      meeting_type:
+        type: string
+      mentor:
+        $ref: '#/definitions/model.MentorInfo'
+      notes:
+        type: string
+      price:
+        type: number
+      status:
+        type: string
+      student:
+        $ref: '#/definitions/model.UserInfo'
+      updated_at:
+        type: string
+    type: object
+  model.AppointmentDetailResponse:
+    properties:
+      appointment:
+        $ref: '#/definitions/model.AppointmentDetail'
+    type: object
+  model.AppointmentInfo:
+    properties:
+      appointment_time:
+        type: string
+      duration_minutes:
+        type: integer
+      id:
+        type: string
+      meeting_type:
+        type: string
+      mentor:
+        $ref: '#/definitions/model.MentorInfo'
+      price:
+        type: number
+      status:
+        type: string
+      student:
+        $ref: '#/definitions/model.UserInfo'
+    type: object
+  model.AppointmentListResponse:
+    properties:
+      appointments:
+        items:
+          $ref: '#/definitions/model.AppointmentInfo'
+        type: array
+      pagination:
+        $ref: '#/definitions/model.PaginationResponse'
+    type: object
+  model.AssignmentInfo:
+    properties:
+      id:
+        type: string
+      reviewed_at:
+        type: string
+      score:
+        type: number
+      status:
+        type: string
+      submitted_at:
+        type: string
+      title:
+        type: string
+    type: object
+  model.AuthResponse:
+    properties:
+      current_identity:
+        $ref: '#/definitions/model.IdentityInfo'
+      identities:
+        items:
+          $ref: '#/definitions/model.IdentityInfo'
+        type: array
+      token:
+        type: string
+      user_id:
+        type: string
+    type: object
+  model.AvailableIncomeResponse:
+    properties:
+      available_amount:
+        type: number
+      max_withdrawal:
+        type: number
+      min_withdrawal:
+        type: number
+      pending_amount:
+        type: number
+      total_earned:
+        type: number
+      total_withdrawn:
+        type: number
+    type: object
+  model.BatchDeleteResponse:
+    properties:
+      deleted_count:
+        type: integer
+    type: object
+  model.BatchMarkReadResponse:
+    properties:
+      marked_count:
+        type: integer
+    type: object
+  model.CancelAppointmentResponse:
+    properties:
+      appointment_id:
+        type: string
+    type: object
+  model.ChangePasswordRequest:
+    properties:
+      current_password:
+        type: string
+      new_password:
+        minLength: 8
+        type: string
+    required:
+    - current_password
+    - new_password
+    type: object
+  model.ChatMessage:
+    properties:
+      circle_id:
+        type: string
+      content:
+        type: string
+      created_at:
+        type: string
+      from_user:
+        $ref: '#/definitions/model.ChatUserInfo'
+      id:
+        type: string
+      to_user_id:
+        type: string
+      type:
+        type: string
+    type: object
+  model.ChatMessagesResponse:
+    properties:
+      messages:
+        items:
+          $ref: '#/definitions/model.ChatMessage'
+        type: array
+      pagination:
+        $ref: '#/definitions/model.PaginationResponse'
+    type: object
+  model.ChatUserInfo:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  model.CircleIdentityInfo:
+    properties:
+      domain:
+        type: string
+      identity_type:
+        type: string
+    type: object
+  model.CircleInfo:
+    properties:
+      description:
+        type: string
+      domain:
+        type: string
+      id:
+        type: string
+      is_joined:
+        type: boolean
+      member_count:
+        type: integer
+      name:
+        type: string
+    type: object
+  model.CircleListResponse:
+    properties:
+      circles:
+        items:
+          $ref: '#/definitions/model.CircleInfo'
+        type: array
+    type: object
+  model.CommentInfo:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      identity:
+        $ref: '#/definitions/model.CircleIdentityInfo'
+      is_liked:
+        type: boolean
+      like_count:
+        type: integer
+      replies:
+        items:
+          $ref: '#/definitions/model.ReplyInfo'
+        type: array
+      user:
+        $ref: '#/definitions/model.UserInfo'
+    type: object
+  model.CommentListResponse:
+    properties:
+      comments:
+        items:
+          $ref: '#/definitions/model.CommentInfo'
+        type: array
+      pagination:
+        $ref: '#/definitions/model.PaginationResponse'
+    type: object
+  model.CourseContent:
+    properties:
+      content_type:
+        type: string
+      duration_minutes:
+        type: integer
+      id:
+        type: string
+      order_index:
+        type: integer
+      title:
+        type: string
+    type: object
+  model.CourseContentInput:
+    properties:
+      content_text:
+        type: string
+      content_type:
+        type: string
+      content_url:
+        type: string
+      duration_minutes:
+        type: integer
+      order_index:
+        type: integer
+      title:
+        type: string
+    required:
+    - content_type
+    - order_index
+    - title
+    type: object
+  model.CourseDetail:
+    properties:
+      contents:
+        items:
+          $ref: '#/definitions/model.CourseContent'
+        type: array
+      cover_image:
+        type: string
+      description:
+        type: string
+      difficulty:
+        type: string
+      duration_hours:
+        type: integer
+      id:
+        type: string
+      mentor:
+        $ref: '#/definitions/model.MentorInfo'
+      price:
+        type: number
+      rating:
+        type: number
+      reviews:
+        items:
+          $ref: '#/definitions/model.CourseReview'
+        type: array
+      student_count:
+        type: integer
+      title:
+        type: string
+    type: object
+  model.CourseDetailResponse:
+    properties:
+      course:
+        $ref: '#/definitions/model.CourseDetail'
+    type: object
+  model.CourseInfo:
+    properties:
+      cover_image:
+        type: string
+      description:
+        type: string
+      difficulty:
+        type: string
+      duration_hours:
+        type: integer
+      id:
+        type: string
+      mentor:
+        $ref: '#/definitions/model.MentorInfo'
+      price:
+        type: number
+      rating:
+        type: number
+      student_count:
+        type: integer
+      title:
+        type: string
+    type: object
+  model.CourseListResponse:
+    properties:
+      courses:
+        items:
+          $ref: '#/definitions/model.CourseInfo'
+        type: array
+      pagination:
+        $ref: '#/definitions/model.PaginationResponse'
+    type: object
+  model.CourseProgress:
+    properties:
+      completed_contents:
+        items:
+          type: string
+        type: array
+      course_id:
+        type: string
+      enrolled_at:
+        type: string
+      last_accessed_at:
+        type: string
+      progress_percentage:
+        type: number
+      status:
+        type: string
+    type: object
+  model.CourseProgressInfo:
+    properties:
+      assignments_completed:
+        type: integer
+      average_score:
+        type: number
+      course_id:
+        type: string
+      progress_percentage:
+        type: number
+      study_time:
+        type: number
+      title:
+        type: string
+    type: object
+  model.CourseProgressResponse:
+    properties:
+      progress:
+        $ref: '#/definitions/model.CourseProgress'
+    type: object
+  model.CourseReview:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      rating:
+        type: integer
+      reviewer_name:
+        type: string
+    type: object
+  model.CourseSearchItem:
+    properties:
+      cover_image:
+        type: string
+      description:
+        type: string
+      difficulty:
+        type: string
+      id:
+        type: string
+      mentor_name:
+        type: string
+      price:
+        type: number
+      rating:
+        type: number
+      title:
+        type: string
+    type: object
+  model.CourseSearchResponse:
+    properties:
+      courses:
+        items:
+          $ref: '#/definitions/model.CourseInfo'
+        type: array
+      pagination:
+        $ref: '#/definitions/model.PaginationResponse'
+    type: object
+  model.CreateAppointmentRequest:
+    properties:
+      appointment_time:
+        type: string
+      duration_minutes:
+        maximum: 480
+        minimum: 15
+        type: integer
+      meeting_type:
+        enum:
+        - video
+        - voice
+        - text
+        type: string
+      mentor_id:
+        type: string
+      notes:
+        type: string
+    required:
+    - appointment_time
+    - duration_minutes
+    - meeting_type
+    - mentor_id
+    type: object
+  model.CreateAppointmentResponse:
+    properties:
+      appointment_id:
+        type: string
+      price:
+        type: number
+      status:
+        type: string
+    type: object
+  model.CreateCommentRequest:
+    properties:
+      content:
+        type: string
+    required:
+    - content
+    type: object
+  model.CreateCommentResponse:
+    properties:
+      comment_id:
+        type: string
+    type: object
+  model.CreateCourseRequest:
+    properties:
+      contents:
+        items:
+          $ref: '#/definitions/model.CourseContentInput'
+        type: array
+      cover_image:
+        type: string
+      description:
+        type: string
+      difficulty:
+        type: string
+      duration_hours:
+        minimum: 1
+        type: integer
+      max_students:
+        type: integer
+      price:
+        minimum: 0
+        type: number
+      title:
+        type: string
+    required:
+    - duration_hours
+    - price
+    - title
+    type: object
+  model.CreateCourseResponse:
+    properties:
+      course_id:
+        type: string
+    type: object
+  model.CreateIdentityRequest:
+    properties:
+      bio:
+        type: string
+      domain:
+        type: string
+      experience_years:
+        minimum: 0
+        type: integer
+      hourly_rate:
+        minimum: 0
+        type: number
+      identity_type:
+        enum:
+        - master
+        - apprentice
+        type: string
+      name:
+        type: string
+      skills:
+        items:
+          type: string
+        type: array
+    required:
+    - domain
+    - identity_type
+    - name
+    type: object
+  model.CreateIdentityResponse:
+    properties:
+      identity_id:
+        type: string
+      status:
+        type: string
+    type: object
+  model.CreatePaymentOrderRequest:
+    properties:
+      amount:
+        type: number
+      currency:
+        type: string
+      description:
+        type: string
+      metadata:
+        additionalProperties: true
+        type: object
+      order_id:
+        type: string
+      order_type:
+        enum:
+        - course_enrollment
+        - appointment
+        - refund
+        type: string
+      payment_method:
+        type: string
+    required:
+    - amount
+    - currency
+    - order_id
+    - order_type
+    - payment_method
+    type: object
+  model.CreatePaymentOrderResponse:
+    properties:
+      expires_at:
+        type: string
+      order_id:
+        type: string
+      payment_id:
+        type: string
+      payment_url:
+        type: string
+      qr_code:
+        type: string
+    type: object
+  model.CreatePostRequest:
+    properties:
+      content:
+        type: string
+      media_urls:
+        items:
+          type: string
+        type: array
+      post_type:
+        enum:
+        - text
+        - image
+        - video
+        - link
+        type: string
+    required:
+    - content
+    - post_type
+    type: object
+  model.CreatePostResponse:
+    properties:
+      post_id:
+        type: string
+    type: object
+  model.CreateRefundRequest:
+    properties:
+      amount:
+        type: number
+      description:
+        type: string
+      payment_id:
+        type: string
+      reason:
+        type: string
+    required:
+    - amount
+    - payment_id
+    type: object
+  model.CreateRefundResponse:
+    properties:
+      estimated_completion_time:
+        type: string
+      refund_id:
+        type: string
+      status:
+        type: string
+    type: object
+  model.CreateReplyRequest:
+    properties:
+      content:
+        type: string
+    required:
+    - content
+    type: object
+  model.CreateReplyResponse:
+    properties:
+      reply_id:
+        type: string
+    type: object
+  model.CreateReviewRequest:
+    properties:
+      appointment_id:
+        type: string
+      content:
+        type: string
+      course_id:
+        type: string
+      rating:
+        maximum: 5
+        minimum: 1
+        type: integer
+      review_type:
+        enum:
+        - course
+        - mentor
+        - appointment
+        type: string
+      reviewed_id:
+        type: string
+    required:
+    - content
+    - rating
+    - review_type
+    - reviewed_id
+    type: object
+  model.CreateReviewResponse:
+    properties:
+      review_id:
+        type: string
+    type: object
+  model.CreateWithdrawalRequest:
+    properties:
+      amount:
+        minimum: 100
+        type: number
+      bank_account:
+        type: string
+      bank_name:
+        type: string
+    required:
+    - amount
+    - bank_account
+    - bank_name
+    type: object
+  model.CreateWithdrawalResponse:
+    properties:
+      estimated_completion_time:
+        type: string
+      withdrawal_id:
+        type: string
+    type: object
+  model.DeleteCommentResponse:
+    properties:
+      comment_id:
+        type: string
+    type: object
+  model.DeleteNotificationRequest:
+    properties:
+      delete_all:
+        type: boolean
+      notification_ids:
+        items:
+          type: string
+        type: array
+    type: object
+  model.DeleteNotificationResponse:
+    properties:
+      notification_id:
+        type: string
+    type: object
+  model.DeleteReviewResponse:
+    properties:
+      review_id:
+        type: string
+    type: object
+  model.EnrollCourseRequest:
+    properties:
+      payment_method:
+        type: string
+      user_info:
+        $ref: '#/definitions/model.EnrollUserInfo'
+    required:
+    - payment_method
+    type: object
+  model.EnrollCourseResponse:
+    properties:
+      course_id:
+        type: string
+      enrollment_id:
+        type: string
+      payment_url:
+        type: string
+      status:
+        type: string
+    type: object
+  model.EnrollUserInfo:
+    properties:
+      name:
+        type: string
+      phone:
+        type: string
+    required:
+    - name
+    - phone
+    type: object
+  model.EnrolledCourse:
+    properties:
+      cover_image:
+        type: string
+      description:
+        type: string
+      difficulty:
+        type: string
+      duration_hours:
+        type: integer
+      enrolled_at:
+        type: string
+      enrollment_status:
+        type: string
+      id:
+        type: string
+      last_accessed_at:
+        type: string
+      mentor:
+        $ref: '#/definitions/model.MentorInfo'
+      price:
+        type: number
+      progress_percentage:
+        type: number
+      rating:
+        type: number
+      student_count:
+        type: integer
+      title:
+        type: string
+    type: object
+  model.EnrolledCoursesResponse:
+    properties:
+      courses:
+        items:
+          $ref: '#/definitions/model.EnrolledCourse'
+        type: array
+      pagination:
+        $ref: '#/definitions/model.PaginationResponse'
+    type: object
+  model.ErrorResponse:
+    properties:
+      code:
+        type: integer
+      detail:
+        type: string
+      message:
+        type: string
+    type: object
+  model.GeneralStatsResponse:
+    properties:
+      achievements:
+        type: integer
+      active_days:
+        type: integer
+      last_login_date:
+        type: string
+      streak_days:
+        type: integer
+      total_login_days:
+        type: integer
+    type: object
+  model.GradeAssignmentRequest:
+    properties:
+      comments:
+        type: string
+      feedback:
+        type: string
+      score:
+        maximum: 100
+        minimum: 0
+        type: number
+    required:
+    - feedback
+    - score
+    type: object
+  model.GradeAssignmentResponse:
+    properties:
+      assignment_id:
+        type: string
+      score:
+        type: number
+    type: object
+  model.IdentityInfo:
+    properties:
+      domain:
+        type: string
+      id:
+        type: string
+      identity_type:
+        type: string
+      status:
+        type: string
+    type: object
+  model.IdentityListResponse:
+    properties:
+      identities:
+        items:
+          $ref: '#/definitions/model.IdentityWithProfile'
+        type: array
+    type: object
+  model.IdentityWithProfile:
+    properties:
+      domain:
+        type: string
+      id:
+        type: string
+      identity_type:
+        type: string
+      profile:
+        $ref: '#/definitions/model.UserProfileInfo'
+      status:
+        type: string
+    type: object
+  model.IncomeByPeriod:
+    properties:
+      current_month:
+        type: number
+      current_quarter:
+        type: number
+      current_year:
+        type: number
+      previous_month:
+        type: number
+    type: object
+  model.IncomeBySource:
+    properties:
+      appointments:
+        type: number
+      course_enrollments:
+        type: number
+    type: object
+  model.IncomeExportResponse:
+    properties:
+      download_url:
+        type: string
+      expires_at:
+        type: string
+    type: object
+  model.IncomeStats:
+    properties:
+      average_per_transaction:
+        type: number
+      growth_rate:
+        type: number
+      income_by_period:
+        $ref: '#/definitions/model.IncomeByPeriod'
+      income_by_source:
+        $ref: '#/definitions/model.IncomeBySource'
+      top_courses:
+        items:
+          $ref: '#/definitions/model.TopCourseIncome'
+        type: array
+      total_income:
+        type: number
+      total_transactions:
+        type: integer
+    type: object
+  model.IncomeStatsResponse:
+    properties:
+      stats:
+        $ref: '#/definitions/model.IncomeStats'
+    type: object
+  model.IncomeTransaction:
+    properties:
+      amount:
+        type: number
+      completed_at:
+        type: string
+      course_title:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      net_income:
+        type: number
+      platform_fee:
+        type: number
+      status:
+        type: string
+      student_name:
+        type: string
+      type:
+        type: string
+    type: object
+  model.IncomeTransactionsResponse:
+    properties:
+      pagination:
+        $ref: '#/definitions/model.PaginationResponse'
+      transactions:
+        items:
+          $ref: '#/definitions/model.IncomeTransaction'
+        type: array
+    type: object
+  model.IncomeTrend:
+    properties:
+      appointments:
+        type: integer
+      course_enrollments:
+        type: integer
+      date:
+        type: string
+      income:
+        type: number
+      transactions:
+        type: integer
+    type: object
+  model.IncomeTrendsResponse:
+    properties:
+      trends:
+        items:
+          $ref: '#/definitions/model.IncomeTrend'
+        type: array
+    type: object
+  model.JoinCircleResponse:
+    properties:
+      circle_id:
+        type: string
+    type: object
+  model.LearningCourseInfo:
+    properties:
+      cover_image:
+        type: string
+      description:
+        type: string
+      duration_hours:
+        type: integer
+      id:
+        type: string
+      title:
+        type: string
+    type: object
+  model.LearningMentorInfo:
+    properties:
+      avatar:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  model.LearningPath:
+    properties:
+      current_level:
+        type: string
+      estimated_completion_time:
+        type: string
+      next_courses:
+        items:
+          $ref: '#/definitions/model.LearningRecommendedCourse'
+        type: array
+      skills_to_develop:
+        items:
+          type: string
+        type: array
+    type: object
+  model.LearningPathResponse:
+    properties:
+      path:
+        $ref: '#/definitions/model.LearningPath'
+    type: object
+  model.LearningPathStatsResponse:
+    properties:
+      path_distribution:
+        additionalProperties:
+          type: integer
+        type: object
+      satisfaction_rates:
+        additionalProperties:
+          format: float64
+          type: number
+        type: object
+      total_users:
+        type: integer
+    type: object
+  model.LearningRecommendedCourse:
+    properties:
+      estimated_duration:
+        type: integer
+      id:
+        type: string
+      reason:
+        type: string
+      title:
+        type: string
+    type: object
+  model.LearningRecordDetail:
+    properties:
+      assignments:
+        items:
+          $ref: '#/definitions/model.AssignmentInfo'
+        type: array
+      certificate_issued:
+        type: boolean
+      certificate_url:
+        type: string
+      completed_chapters:
+        items:
+          type: string
+        type: array
+      course:
+        $ref: '#/definitions/model.LearningCourseInfo'
+      current_chapter:
+        type: string
+      enrollment_date:
+        type: string
+      id:
+        type: string
+      last_study_date:
+        type: string
+      mentor:
+        $ref: '#/definitions/model.LearningMentorInfo'
+      progress_percentage:
+        type: number
+      status:
+        type: string
+      study_sessions:
+        items:
+          $ref: '#/definitions/model.StudySessionInfo'
+        type: array
+      total_study_time:
+        type: integer
+    type: object
+  model.LearningRecordDetailResponse:
+    properties:
+      record:
+        $ref: '#/definitions/model.LearningRecordDetail'
+    type: object
+  model.LearningRecordInfo:
+    properties:
+      certificate_issued:
+        type: boolean
+      completed_chapters:
+        items:
+          type: string
+        type: array
+      course:
+        $ref: '#/definitions/model.LearningCourseInfo'
+      current_chapter:
+        type: string
+      enrollment_date:
+        type: string
+      id:
+        type: string
+      last_study_date:
+        type: string
+      mentor:
+        $ref: '#/definitions/model.LearningMentorInfo'
+      progress_percentage:
+        type: number
+      status:
+        type: string
+      total_study_time:
+        type: integer
+    type: object
+  model.LearningRecordListResponse:
+    properties:
+      pagination:
+        $ref: '#/definitions/model.PaginationResponse'
+      records:
+        items:
+          $ref: '#/definitions/model.LearningRecordInfo'
+        type: array
+    type: object
+  model.LearningStats:
+    properties:
+      average_progress:
+        type: number
+      average_score:
+        type: number
+      certificates_earned:
+        type: integer
+      completed_assignments:
+        type: integer
+      completed_courses:
+        type: integer
+      current_streak_days:
+        type: integer
+      total_assignments:
+        type: integer
+      total_courses:
+        type: integer
+      total_study_hours:
+        type: number
+    type: object
+  model.LearningStatsResponse:
+    properties:
+      stats:
+        $ref: '#/definitions/model.LearningStats'
+    type: object
+  model.LeaveCircleResponse:
+    properties:
+      circle_id:
+        type: string
+    type: object
+  model.LikeCommentResponse:
+    properties:
+      comment_id:
+        type: string
+      like_count:
+        type: integer
+    type: object
+  model.LikePostResponse:
+    properties:
+      like_count:
+        type: integer
+      post_id:
+        type: string
+    type: object
+  model.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  model.MarkNotificationReadRequest:
+    properties:
+      mark_all:
+        type: boolean
+      notification_ids:
+        items:
+          type: string
+        type: array
+    type: object
+  model.MarkNotificationReadResponse:
+    properties:
+      notification_id:
+        type: string
+    type: object
+  model.MentorAppointmentStats:
+    properties:
+      average_rating:
+        type: number
+      cancelled_appointments:
+        type: integer
+      completed_appointments:
+        type: integer
+      confirmed_appointments:
+        type: integer
+      pending_appointments:
+        type: integer
+      total_appointments:
+        type: integer
+      total_earnings:
+        type: number
+    type: object
+  model.MentorAppointmentStatsResponse:
+    properties:
+      stats:
+        $ref: '#/definitions/model.MentorAppointmentStats'
+    type: object
+  model.MentorCourse:
+    properties:
+      id:
+        type: string
+      price:
+        type: number
+      student_count:
+        type: integer
+      title:
+        type: string
+    type: object
+  model.MentorDetail:
+    properties:
+      avatar:
+        type: string
+      bio:
+        type: string
+      courses:
+        items:
+          $ref: '#/definitions/model.MentorCourse'
+        type: array
+      domain:
+        type: string
+      experience_years:
+        type: integer
+      hourly_rate:
+        type: number
+      id:
+        type: string
+      identity_id:
+        type: string
+      is_online:
+        type: boolean
+      name:
+        type: string
+      rating:
+        type: number
+      reviews:
+        items:
+          $ref: '#/definitions/model.MentorReview'
+        type: array
+      skills:
+        items:
+          type: string
+        type: array
+      student_count:
+        type: integer
+    type: object
+  model.MentorDetailResponse:
+    properties:
+      mentor:
+        $ref: '#/definitions/model.MentorDetail'
+    type: object
+  model.MentorInfo:
+    properties:
+      avatar:
+        type: string
+      bio:
+        type: string
+      domain:
+        type: string
+      hourly_rate:
+        type: number
+      id:
+        type: string
+      identity_id:
+        type: string
+      is_online:
+        type: boolean
+      name:
+        type: string
+      rating:
+        type: number
+      skills:
+        items:
+          type: string
+        type: array
+      student_count:
+        type: integer
+    type: object
+  model.MentorListResponse:
+    properties:
+      mentors:
+        items:
+          $ref: '#/definitions/model.MentorInfo'
+        type: array
+      pagination:
+        $ref: '#/definitions/model.PaginationResponse'
+    type: object
+  model.MentorReview:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      rating:
+        type: integer
+      reviewer_avatar:
+        type: string
+      reviewer_name:
+        type: string
+    type: object
+  model.MentorReviewsResponse:
+    properties:
+      pagination:
+        $ref: '#/definitions/model.PaginationResponse'
+      reviews:
+        items:
+          $ref: '#/definitions/model.MentorReview'
+        type: array
+    type: object
+  model.MentorSearchItem:
+    properties:
+      avatar:
+        type: string
+      domain:
+        type: string
+      hourly_rate:
+        type: number
+      id:
+        type: string
+      is_online:
+        type: boolean
+      name:
+        type: string
+      rating:
+        type: number
+      student_count:
+        type: integer
+    type: object
+  model.MentorSearchResponse:
+    properties:
+      mentors:
+        items:
+          $ref: '#/definitions/model.MentorInfo'
+        type: array
+      pagination:
+        $ref: '#/definitions/model.PaginationResponse'
+    type: object
+  model.MessageInfo:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      from_user_email:
+        type: string
+      from_user_id:
+        type: string
+      id:
+        type: string
+      to_user_email:
+        type: string
+      to_user_id:
+        type: string
+      type:
+        type: string
+    type: object
+  model.MessageListResponse:
+    properties:
+      messages:
+        items:
+          $ref: '#/definitions/model.MessageInfo'
+        type: array
+      pagination:
+        $ref: '#/definitions/model.PaginationResponse'
+    type: object
+  model.NotificationInfo:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      read_at:
+        type: string
+      related_data:
+        additionalProperties: true
+        type: object
+      sender:
+        $ref: '#/definitions/model.UserInfo'
+      status:
+        type: string
+      title:
+        type: string
+      type:
+        type: string
+    type: object
+  model.NotificationListResponse:
+    properties:
+      notifications:
+        items:
+          $ref: '#/definitions/model.NotificationInfo'
+        type: array
+      pagination:
+        $ref: '#/definitions/model.PaginationResponse'
+      unread_count:
+        type: integer
+    type: object
+  model.NotificationSettings:
+    properties:
+      email_notifications:
+        $ref: '#/definitions/model.NotificationTypeSettings'
+      in_app_notifications:
+        $ref: '#/definitions/model.NotificationTypeSettings'
+      push_notifications:
+        $ref: '#/definitions/model.NotificationTypeSettings'
+      quiet_hours:
+        $ref: '#/definitions/model.QuietHoursSettings'
+    type: object
+  model.NotificationSettingsRequest:
+    properties:
+      email_notifications:
+        $ref: '#/definitions/model.NotificationTypeSettings'
+      in_app_notifications:
+        $ref: '#/definitions/model.NotificationTypeSettings'
+      push_notifications:
+        $ref: '#/definitions/model.NotificationTypeSettings'
+      quiet_hours:
+        $ref: '#/definitions/model.QuietHoursSettings'
+    type: object
+  model.NotificationSettingsResponse:
+    properties:
+      settings:
+        $ref: '#/definitions/model.NotificationSettings'
+    type: object
+  model.NotificationTypeSettings:
+    properties:
+      enabled:
+        type: boolean
+      types:
+        items:
+          type: string
+        type: array
+    type: object
+  model.OnlineUser:
+    properties:
+      avatar:
+        type: string
+      is_online:
+        type: boolean
+      last_seen:
+        type: string
+      name:
+        type: string
+      user_id:
+        type: string
+    type: object
+  model.OnlineUsersResponse:
+    properties:
+      online_users:
+        items:
+          $ref: '#/definitions/model.OnlineUser'
+        type: array
+    type: object
+  model.PaginationResponse:
+    properties:
+      data: {}
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total:
+        type: integer
+      total_pages:
+        type: integer
+    type: object
+  model.PaymentDailyStat:
+    properties:
+      amount:
+        type: number
+      date:
+        type: string
+      transactions:
+        type: integer
+    type: object
+  model.PaymentHistoryItem:
+    properties:
+      amount:
+        type: number
+      created_at:
+        type: string
+      currency:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      metadata:
+        additionalProperties: true
+        type: object
+      order_id:
+        type: string
+      paid_at:
+        type: string
+      payment_method:
+        type: string
+      status:
+        type: string
+      transaction_id:
+        type: string
+      type:
+        type: string
+    type: object
+  model.PaymentHistoryResponse:
+    properties:
+      pagination:
+        $ref: '#/definitions/model.PaginationResponse'
+      payments:
+        items:
+          $ref: '#/definitions/model.PaymentHistoryItem'
+        type: array
+    type: object
+  model.PaymentMethod:
+    properties:
+      enabled:
+        type: boolean
+      icon:
+        type: string
+      id:
+        type: string
+      max_amount:
+        type: number
+      min_amount:
+        type: number
+      name:
+        type: string
+    type: object
+  model.PaymentMethodListResponse:
+    properties:
+      payment_methods:
+        items:
+          $ref: '#/definitions/model.PaymentMethod'
+        type: array
+    type: object
+  model.PaymentStats:
+    properties:
+      daily_stats:
+        items:
+          $ref: '#/definitions/model.PaymentDailyStat'
+        type: array
+      failed_transactions:
+        type: integer
+      payment_methods_distribution:
+        additionalProperties:
+          format: int64
+          type: integer
+        type: object
+      refund_amount:
+        type: number
+      refund_count:
+        type: integer
+      successful_transactions:
+        type: integer
+      total_amount:
+        type: number
+      total_transactions:
+        type: integer
+    type: object
+  model.PaymentStatsResponse:
+    properties:
+      stats:
+        $ref: '#/definitions/model.PaymentStats'
+    type: object
+  model.PaymentWebhookRequest:
+    properties:
+      amount:
+        type: number
+      order_id:
+        type: string
+      signature:
+        type: string
+      status:
+        type: string
+      transaction_id:
+        type: string
+    required:
+    - amount
+    - order_id
+    - signature
+    - status
+    - transaction_id
+    type: object
+  model.PaymentWebhookResponse:
+    properties:
+      processed:
+        type: boolean
+    type: object
+  model.PostInfo:
+    properties:
+      comment_count:
+        type: integer
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      identity:
+        $ref: '#/definitions/model.CircleIdentityInfo'
+      like_count:
+        type: integer
+      media_urls:
+        items:
+          type: string
+        type: array
+      post_type:
+        type: string
+      user:
+        $ref: '#/definitions/model.UserInfo'
+    type: object
+  model.PostListResponse:
+    properties:
+      pagination:
+        $ref: '#/definitions/model.PaginationResponse'
+      posts:
+        items:
+          $ref: '#/definitions/model.PostInfo'
+        type: array
+    type: object
+  model.PostSearchItem:
+    properties:
+      author:
+        type: string
+      circle:
+        type: string
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      like_count:
+        type: integer
+    type: object
+  model.PrimaryIdentity:
+    properties:
+      domain:
+        type: string
+      identity_type:
+        enum:
+        - master
+        - apprentice
+        type: string
+      name:
+        type: string
+    required:
+    - domain
+    - identity_type
+    - name
+    type: object
+  model.QueryPaymentStatusResponse:
+    properties:
+      amount:
+        type: number
+      currency:
+        type: string
+      order_id:
+        type: string
+      paid_at:
+        type: string
+      payment_id:
+        type: string
+      payment_method:
+        type: string
+      status:
+        type: string
+      transaction_id:
+        type: string
+    type: object
+  model.QueryRefundStatusResponse:
+    properties:
+      amount:
+        type: number
+      completed_at:
+        type: string
+      created_at:
+        type: string
+      payment_id:
+        type: string
+      reason:
+        type: string
+      refund_id:
+        type: string
+      refund_transaction_id:
+        type: string
+      status:
+        type: string
+    type: object
+  model.QuietHoursSettings:
+    properties:
+      enabled:
+        type: boolean
+      end_time:
+        type: string
+      start_time:
+        type: string
+    type: object
+  model.RatingDistribution:
+    properties:
+      "1":
+        type: integer
+      "2":
+        type: integer
+      "3":
+        type: integer
+      "4":
+        type: integer
+      "5":
+        type: integer
+    type: object
+  model.RecommendedCircle:
+    properties:
+      description:
+        type: string
+      domain:
+        type: string
+      id:
+        type: string
+      is_joined:
+        type: boolean
+      member_count:
+        type: integer
+      name:
+        type: string
+      recommendation_reason:
+        type: string
+    type: object
+  model.RecommendedCirclesResponse:
+    properties:
+      circles:
+        items:
+          $ref: '#/definitions/model.RecommendedCircle'
+        type: array
+    type: object
+  model.RecommendedCourse:
+    properties:
+      cover_image:
+        type: string
+      description:
+        type: string
+      difficulty:
+        type: string
+      duration_hours:
+        type: integer
+      id:
+        type: string
+      mentor:
+        $ref: '#/definitions/model.MentorInfo'
+      price:
+        type: number
+      rating:
+        type: number
+      recommendation_reason:
+        type: string
+      student_count:
+        type: integer
+      title:
+        type: string
+    type: object
+  model.RecommendedCoursesResponse:
+    properties:
+      courses:
+        items:
+          $ref: '#/definitions/model.RecommendedCourse'
+        type: array
+    type: object
+  model.RecommendedLearningPathResponse:
+    properties:
+      confidence:
+        type: number
+      reasons:
+        items:
+          type: string
+        type: array
+      recommended_path:
+        type: string
+    type: object
+  model.RecommendedMentor:
+    properties:
+      avatar:
+        type: string
+      bio:
+        type: string
+      domain:
+        type: string
+      hourly_rate:
+        type: number
+      id:
+        type: string
+      identity_id:
+        type: string
+      is_online:
+        type: boolean
+      name:
+        type: string
+      rating:
+        type: number
+      recommendation_reason:
+        type: string
+      skills:
+        items:
+          type: string
+        type: array
+      student_count:
+        type: integer
+    type: object
+  model.RecommendedMentorsResponse:
+    properties:
+      mentors:
+        items:
+          $ref: '#/definitions/model.RecommendedMentor'
+        type: array
+    type: object
+  model.RegisterRequest:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 8
+        type: string
+      phone:
+        type: string
+      primary_identity:
+        $ref: '#/definitions/model.PrimaryIdentity'
+    required:
+    - email
+    - password
+    - primary_identity
+    type: object
+  model.ReplyInfo:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      is_liked:
+        type: boolean
+      like_count:
+        type: integer
+      user:
+        $ref: '#/definitions/model.UserInfo'
+    type: object
+  model.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+      timestamp:
+        type: string
+    type: object
+  model.ReviewDetail:
+    properties:
+      appointment_id:
+        type: string
+      content:
+        type: string
+      course_id:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      rating:
+        type: integer
+      review_type:
+        type: string
+      reviewed_id:
+        type: string
+      reviewer:
+        $ref: '#/definitions/model.UserInfo'
+      updated_at:
+        type: string
+    type: object
+  model.ReviewDetailResponse:
+    properties:
+      review:
+        $ref: '#/definitions/model.ReviewDetail'
+    type: object
+  model.ReviewInfo:
+    properties:
+      appointment_id:
+        type: string
+      content:
+        type: string
+      course_id:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      rating:
+        type: integer
+      review_type:
+        type: string
+      reviewed_id:
+        type: string
+      reviewer:
+        $ref: '#/definitions/model.UserInfo'
+    type: object
+  model.ReviewListResponse:
+    properties:
+      pagination:
+        $ref: '#/definitions/model.PaginationResponse'
+      reviews:
+        items:
+          $ref: '#/definitions/model.ReviewInfo'
+        type: array
+    type: object
+  model.ReviewStats:
+    properties:
+      average_rating:
+        type: number
+      rating_distribution:
+        $ref: '#/definitions/model.RatingDistribution'
+      total_reviews:
+        type: integer
+    type: object
+  model.ReviewStatsResponse:
+    properties:
+      stats:
+        $ref: '#/definitions/model.ReviewStats'
+    type: object
+  model.SearchResult:
+    properties:
+      courses:
+        items:
+          $ref: '#/definitions/model.CourseSearchItem'
+        type: array
+      mentors:
+        items:
+          $ref: '#/definitions/model.MentorSearchItem'
+        type: array
+      posts:
+        items:
+          $ref: '#/definitions/model.PostSearchItem'
+        type: array
+      total_results:
+        type: integer
+    type: object
+  model.SendMessageRequest:
+    properties:
+      content:
+        type: string
+      type:
+        enum:
+        - text
+        - image
+        - file
+        type: string
+    required:
+    - content
+    - type
+    type: object
+  model.SendMessageResponse:
+    properties:
+      message_id:
+        type: string
+    type: object
+  model.SendNotificationRequest:
+    properties:
+      content:
+        type: string
+      related_data:
+        additionalProperties: true
+        type: object
+      sender_id:
+        type: string
+      title:
+        type: string
+      type:
+        type: string
+      user_ids:
+        items:
+          type: string
+        type: array
+    required:
+    - content
+    - title
+    - type
+    - user_ids
+    type: object
+  model.SendNotificationResponse:
+    properties:
+      notification_ids:
+        items:
+          type: string
+        type: array
+      sent_count:
+        type: integer
+    type: object
+  model.StudentAppointmentInfo:
+    properties:
+      appointment_time:
+        type: string
+      id:
+        type: string
+      status:
+        type: string
+      topic:
+        type: string
+    type: object
+  model.StudentAssignmentInfo:
+    properties:
+      id:
+        type: string
+      score:
+        type: number
+      status:
+        type: string
+      submitted_at:
+        type: string
+      title:
+        type: string
+    type: object
+  model.StudentCourseDetail:
+    properties:
+      assignments:
+        items:
+          $ref: '#/definitions/model.StudentAssignmentInfo'
+        type: array
+      course_id:
+        type: string
+      enrollment_date:
+        type: string
+      last_study_date:
+        type: string
+      progress_percentage:
+        type: number
+      status:
+        type: string
+      title:
+        type: string
+      total_study_time:
+        type: integer
+    type: object
+  model.StudentCourseInfo:
+    properties:
+      course_id:
+        type: string
+      progress_percentage:
+        type: number
+      status:
+        type: string
+      title:
+        type: string
+    type: object
+  model.StudentCourseStats:
+    properties:
+      average_progress:
+        type: number
+      course_id:
+        type: string
+      course_title:
+        type: string
+      student_count:
+        type: integer
+    type: object
+  model.StudentDetail:
+    properties:
+      appointments:
+        items:
+          $ref: '#/definitions/model.StudentAppointmentInfo'
+        type: array
+      avatar:
+        type: string
+      bio:
+        type: string
+      courses:
+        items:
+          $ref: '#/definitions/model.StudentCourseDetail'
+        type: array
+      email:
+        type: string
+      enrollment_date:
+        type: string
+      id:
+        type: string
+      learning_goals:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+      phone:
+        type: string
+      preferred_learning_style:
+        type: string
+      reviews:
+        items:
+          $ref: '#/definitions/model.StudentReviewInfo'
+        type: array
+      status:
+        type: string
+    type: object
+  model.StudentDetailResponse:
+    properties:
+      student:
+        $ref: '#/definitions/model.StudentDetail'
+    type: object
+  model.StudentInfo:
+    properties:
+      avatar:
+        type: string
+      average_progress:
+        type: number
+      completed_courses:
+        type: integer
+      current_courses:
+        items:
+          $ref: '#/definitions/model.StudentCourseInfo'
+        type: array
+      email:
+        type: string
+      enrollment_date:
+        type: string
+      id:
+        type: string
+      last_activity:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      status:
+        type: string
+      total_courses:
+        type: integer
+      total_study_hours:
+        type: number
+    type: object
+  model.StudentListResponse:
+    properties:
+      pagination:
+        $ref: '#/definitions/model.PaginationResponse'
+      students:
+        items:
+          $ref: '#/definitions/model.StudentInfo'
+        type: array
+    type: object
+  model.StudentProgressRequest:
+    properties:
+      notes:
+        type: string
+      progress_percentage:
+        maximum: 100
+        minimum: 0
+        type: number
+    required:
+    - progress_percentage
+    type: object
+  model.StudentProgressResponse:
+    properties:
+      course_id:
+        type: string
+      progress_percentage:
+        type: number
+      student_id:
+        type: string
+    type: object
+  model.StudentReport:
+    properties:
+      areas_for_improvement:
+        items:
+          type: string
+        type: array
+      courses_progress:
+        items:
+          $ref: '#/definitions/model.CourseProgressInfo'
+        type: array
+      period:
+        type: string
+      recommendations:
+        items:
+          type: string
+        type: array
+      strengths:
+        items:
+          type: string
+        type: array
+      student_id:
+        type: string
+      student_name:
+        type: string
+      study_time:
+        type: number
+    type: object
+  model.StudentReportResponse:
+    properties:
+      report:
+        $ref: '#/definitions/model.StudentReport'
+    type: object
+  model.StudentReviewInfo:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      rating:
+        type: integer
+    type: object
+  model.StudentStats:
+    properties:
+      active_students:
+        type: integer
+      average_progress:
+        type: number
+      average_rating:
+        type: number
+      graduated_students:
+        type: integer
+      inactive_students:
+        type: integer
+      new_students_this_month:
+        type: integer
+      students_by_course:
+        items:
+          $ref: '#/definitions/model.StudentCourseStats'
+        type: array
+      top_performing_students:
+        type: integer
+      total_students:
+        type: integer
+    type: object
+  model.StudentStatsResponse:
+    properties:
+      stats:
+        $ref: '#/definitions/model.StudentStats'
+    type: object
+  model.StudySessionInfo:
+    properties:
+      chapter:
+        type: string
+      duration_minutes:
+        type: integer
+      end_time:
+        type: string
+      id:
+        type: string
+      notes:
+        type: string
+      start_time:
+        type: string
+    type: object
+  model.SubmitAssignmentRequest:
+    properties:
+      attachment_urls:
+        items:
+          type: string
+        type: array
+      content:
+        type: string
+      title:
+        type: string
+    required:
+    - content
+    - title
+    type: object
+  model.SubmitAssignmentResponse:
+    properties:
+      assignment_id:
+        type: string
+    type: object
+  model.SwitchIdentityRequest:
+    properties:
+      identity_id:
+        type: string
+    required:
+    - identity_id
+    type: object
+  model.TeachingStatsResponse:
+    properties:
+      average_rating:
+        type: number
+      completed_sessions:
+        type: integer
+      total_earnings:
+        type: number
+      total_hours:
+        type: integer
+      total_students:
+        type: integer
+      upcoming_sessions:
+        type: integer
+    type: object
+  model.TokenResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  model.TopCourseIncome:
+    properties:
+      course_id:
+        type: string
+      enrollment_count:
+        type: integer
+      income:
+        type: number
+      title:
+        type: string
+    type: object
+  model.UnreadCountResponse:
+    properties:
+      count_by_type:
+        additionalProperties:
+          type: integer
+        type: object
+      unread_count:
+        type: integer
+    type: object
+  model.UpdateAppointmentStatusRequest:
+    properties:
+      status:
+        enum:
+        - pending
+        - confirmed
+        - completed
+        - cancelled
+        type: string
+    required:
+    - status
+    type: object
+  model.UpdateAppointmentStatusResponse:
+    properties:
+      appointment_id:
+        type: string
+      status:
+        type: string
+    type: object
+  model.UpdateIdentityRequest:
+    properties:
+      bio:
+        type: string
+      experience_years:
+        minimum: 0
+        type: integer
+      hourly_rate:
+        minimum: 0
+        type: number
+      name:
+        type: string
+      skills:
+        items:
+          type: string
+        type: array
+    required:
+    - name
+    type: object
+  model.UpdateProfileRequest:
+    properties:
+      avatar:
+        type: string
+      bio:
+        type: string
+      experience_years:
+        minimum: 0
+        type: integer
+      hourly_rate:
+        minimum: 0
+        type: number
+      name:
+        type: string
+      skills:
+        items:
+          type: string
+        type: array
+    required:
+    - name
+    type: object
+  model.UpdateProgressRequest:
+    properties:
+      current_chapter:
+        type: string
+      progress_percentage:
+        maximum: 100
+        minimum: 0
+        type: number
+      study_time_minutes:
+        type: integer
+    required:
+    - progress_percentage
+    type: object
+  model.UpdateProgressResponse:
+    properties:
+      progress_percentage:
+        type: number
+      record_id:
+        type: string
+    type: object
+  model.UpdateReviewRequest:
+    properties:
+      content:
+        type: string
+      rating:
+        maximum: 5
+        minimum: 1
+        type: integer
+    required:
+    - content
+    - rating
+    type: object
+  model.UpdateReviewResponse:
+    properties:
+      review_id:
+        type: string
+    type: object
+  model.UpdateSettingsResponse:
+    properties:
+      settings_updated:
+        type: boolean
+    type: object
+  model.UploadFileResponse:
+    properties:
+      file_id:
+        type: string
+      file_url:
+        type: string
+    type: object
+  model.UserInfo:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      phone:
+        type: string
+      status:
+        type: string
+    type: object
+  model.UserLearningStats:
+    properties:
+      average_progress:
+        type: number
+      certificates_earned:
+        type: integer
+      completed_courses:
+        type: integer
+      current_courses:
+        type: integer
+      enrolled_courses:
+        type: integer
+      total_study_hours:
+        type: number
+    type: object
+  model.UserPreferencesRequest:
+    properties:
+      budget_range:
+        enum:
+        - low
+        - medium
+        - high
+        type: string
+      experience_level:
+        enum:
+        - beginner
+        - intermediate
+        - advanced
+        type: string
+      learning_goals:
+        items:
+          type: string
+        type: array
+      learning_style:
+        enum:
+        - one-on-one
+        - structured
+        - browse
+        type: string
+      preferred_domains:
+        items:
+          type: string
+        type: array
+      time_preference:
+        enum:
+        - flexible
+        - fixed
+        type: string
+    required:
+    - budget_range
+    - experience_level
+    - learning_style
+    - time_preference
+    type: object
+  model.UserPreferencesResponse:
+    properties:
+      budget_range:
+        type: string
+      experience_level:
+        type: string
+      learning_goals:
+        items:
+          type: string
+        type: array
+      learning_style:
+        type: string
+      preferred_domains:
+        items:
+          type: string
+        type: array
+      time_preference:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  model.UserProfileInfo:
+    properties:
+      avatar:
+        type: string
+      bio:
+        type: string
+      experience_years:
+        type: integer
+      hourly_rate:
+        type: number
+      name:
+        type: string
+      skills:
+        items:
+          type: string
+        type: array
+    type: object
+  model.UserProfileResponse:
+    properties:
+      current_identity:
+        $ref: '#/definitions/model.IdentityWithProfile'
+      user:
+        $ref: '#/definitions/model.UserInfo'
+    type: object
+  model.UserStatsResponse:
+    properties:
+      learning_stats:
+        $ref: '#/definitions/model.UserLearningStats'
+      teaching_stats:
+        $ref: '#/definitions/model.UserTeachingStats'
+    type: object
+  model.UserTeachingStats:
+    properties:
+      active_students:
+        type: integer
+      average_rating:
+        type: number
+      completed_lessons:
+        type: integer
+      total_courses:
+        type: integer
+      total_income:
+        type: number
+      total_students:
+        type: integer
+    type: object
+  model.Withdrawal:
+    properties:
+      amount:
+        type: number
+      bank_account:
+        type: string
+      completed_at:
+        type: string
+      created_at:
+        type: string
+      fee:
+        type: number
+      id:
+        type: string
+      net_amount:
+        type: number
+      status:
+        type: string
+    type: object
+  model.WithdrawalsResponse:
+    properties:
+      pagination:
+        $ref: '#/definitions/model.PaginationResponse'
+      withdrawals:
+        items:
+          $ref: '#/definitions/model.Withdrawal'
+        type: array
+    type: object
+info:
+  contact: {}
+paths:
+  /appointments:
+    get:
+      consumes:
+      - application/json
+      description: 获取预约列表，支持分页和筛选
+      parameters:
+      - description: 预约状态
+        in: query
+        name: status
+        type: string
+      - description: 预约类型
+        enum:
+        - student
+        - mentor
+        in: query
+        name: type
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.AppointmentListResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 获取预约列表
+      tags:
+      - 预约管理
+    post:
+      consumes:
+      - application/json
+      description: 学生创建预约大师
+      parameters:
+      - description: 预约信息
+        in: body
+        name: appointment
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateAppointmentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CreateAppointmentResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 创建预约
+      tags:
+      - 预约管理
+  /appointments/{appointment_id}:
+    delete:
+      consumes:
+      - application/json
+      description: 取消指定预约
+      parameters:
+      - description: 预约ID
+        in: path
+        name: appointment_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CancelAppointmentResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 取消预约
+      tags:
+      - 预约管理
+    get:
+      consumes:
+      - application/json
+      description: 获取指定预约的详细信息
+      parameters:
+      - description: 预约ID
+        in: path
+        name: appointment_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.AppointmentDetailResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 获取预约详情
+      tags:
+      - 预约管理
+  /appointments/{appointment_id}/status:
+    put:
+      consumes:
+      - application/json
+      description: 更新预约状态（确认、完成等）
+      parameters:
+      - description: 预约ID
+        in: path
+        name: appointment_id
+        required: true
+        type: string
+      - description: 状态信息
+        in: body
+        name: status
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateAppointmentStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.UpdateAppointmentStatusResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 更新预约状态
+      tags:
+      - 预约管理
+  /appointments/mentor-stats:
+    get:
+      consumes:
+      - application/json
+      description: 获取大师的预约统计信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.MentorAppointmentStatsResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 获取大师预约统计
+      tags:
+      - 预约管理
+  /auth/change-password:
+    post:
+      consumes:
+      - application/json
+      description: 用户修改密码接口
+      parameters:
+      - description: 修改密码请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.ChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: 修改密码
+      tags:
+      - 认证
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: 用户登录接口
+      parameters:
+      - description: 登录请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.AuthResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 用户登录
+      tags:
+      - 认证
+  /auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: 刷新JWT Token接口
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.TokenResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: 刷新Token
+      tags:
+      - 认证
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: 用户注册接口
+      parameters:
+      - description: 注册请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.AuthResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 用户注册
+      tags:
+      - 认证
+  /auth/switch-identity:
+    post:
+      consumes:
+      - application/json
+      description: 用户身份切换接口
+      parameters:
+      - description: 身份切换请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.SwitchIdentityRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.AuthResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: 身份切换
+      tags:
+      - 认证
+  /chat/messages:
+    get:
+      consumes:
+      - application/json
+      description: 获取私聊或圈子聊天记录
+      parameters:
+      - description: 目标用户ID（私聊时使用）
+        in: query
+        name: target_id
+        type: string
+      - description: 圈子ID（圈子聊天时使用）
+        in: query
+        name: circle_id
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 50
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.ChatMessagesResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 获取聊天记录
+      tags:
+      - 聊天
+  /chat/online-users:
+    get:
+      consumes:
+      - application/json
+      description: 获取当前在线用户列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.OnlineUsersResponse'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 获取在线用户
+      tags:
+      - 聊天
+  /circles:
+    get:
+      consumes:
+      - application/json
+      description: 获取圈子列表，支持分页和领域筛选
+      parameters:
+      - description: 领域筛选
+        in: query
+        name: domain
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CircleListResponse'
+              type: object
+      summary: 获取圈子列表
+      tags:
+      - 圈子管理
+  /circles/{circle_id}/join:
+    delete:
+      consumes:
+      - application/json
+      description: 用户退出指定圈子
+      parameters:
+      - description: 圈子ID
+        in: path
+        name: circle_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.LeaveCircleResponse'
+              type: object
+      summary: 退出圈子
+      tags:
+      - 圈子管理
+    post:
+      consumes:
+      - application/json
+      description: 用户加入指定圈子
+      parameters:
+      - description: 圈子ID
+        in: path
+        name: circle_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.JoinCircleResponse'
+              type: object
+      summary: 加入圈子
+      tags:
+      - 圈子管理
+  /circles/{circle_id}/posts:
+    get:
+      consumes:
+      - application/json
+      description: 获取指定圈子的动态列表
+      parameters:
+      - description: 圈子ID
+        in: path
+        name: circle_id
+        required: true
+        type: string
+      - description: 动态类型
+        in: query
+        name: post_type
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.PostListResponse'
+              type: object
+      summary: 获取圈子动态
+      tags:
+      - 动态管理
+    post:
+      consumes:
+      - application/json
+      description: 在指定圈子发布动态
+      parameters:
+      - description: 圈子ID
+        in: path
+        name: circle_id
+        required: true
+        type: string
+      - description: 动态内容
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreatePostRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CreatePostResponse'
+              type: object
+      summary: 发布动态
+      tags:
+      - 动态管理
+  /circles/recommended:
+    get:
+      consumes:
+      - application/json
+      description: 获取推荐圈子列表
+      parameters:
+      - description: 用户ID
+        in: query
+        name: user_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.RecommendedCirclesResponse'
+              type: object
+      summary: 获取推荐圈子
+      tags:
+      - 圈子管理
+  /comments/{comment_id}:
+    delete:
+      consumes:
+      - application/json
+      description: 删除指定评论
+      parameters:
+      - description: 评论ID
+        in: path
+        name: comment_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.DeleteCommentResponse'
+              type: object
+      summary: 删除评论
+      tags:
+      - 评论管理
+  /comments/{comment_id}/like:
+    delete:
+      consumes:
+      - application/json
+      description: 取消点赞指定评论
+      parameters:
+      - description: 评论ID
+        in: path
+        name: comment_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.LikeCommentResponse'
+              type: object
+      summary: 取消点赞评论
+      tags:
+      - 评论管理
+    post:
+      consumes:
+      - application/json
+      description: 点赞指定评论
+      parameters:
+      - description: 评论ID
+        in: path
+        name: comment_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.LikeCommentResponse'
+              type: object
+      summary: 点赞评论
+      tags:
+      - 评论管理
+  /comments/{comment_id}/replies:
+    post:
+      consumes:
+      - application/json
+      description: 回复指定评论
+      parameters:
+      - description: 评论ID
+        in: path
+        name: comment_id
+        required: true
+        type: string
+      - description: 回复内容
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateReplyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CreateReplyResponse'
+              type: object
+      summary: 回复评论
+      tags:
+      - 评论管理
+  /courses:
+    get:
+      consumes:
+      - application/json
+      description: 获取课程列表，支持分页和筛选
+      parameters:
+      - description: 专业领域
+        in: query
+        name: domain
+        type: string
+      - description: 难度级别
+        in: query
+        name: difficulty
+        type: string
+      - description: 最低价格
+        in: query
+        name: min_price
+        type: number
+      - description: 最高价格
+        in: query
+        name: max_price
+        type: number
+      - description: 排序方式
+        enum:
+        - rating
+        - price
+        - created_at
+        in: query
+        name: sort_by
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CourseListResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 获取课程列表
+      tags:
+      - 课程管理
+    post:
+      consumes:
+      - application/json
+      description: 大师创建新课程
+      parameters:
+      - description: 课程信息
+        in: body
+        name: course
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateCourseRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CreateCourseResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 创建课程
+      tags:
+      - 课程管理
+  /courses/{course_id}:
+    get:
+      consumes:
+      - application/json
+      description: 获取指定课程的详细信息
+      parameters:
+      - description: 课程ID
+        in: path
+        name: course_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CourseDetailResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 获取课程详情
+      tags:
+      - 课程管理
+  /courses/{course_id}/enroll:
+    post:
+      consumes:
+      - application/json
+      description: 用户报名指定课程
+      parameters:
+      - description: 课程ID
+        in: path
+        name: course_id
+        required: true
+        type: string
+      - description: 报名信息
+        in: body
+        name: enrollment
+        required: true
+        schema:
+          $ref: '#/definitions/model.EnrollCourseRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.EnrollCourseResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 报名课程
+      tags:
+      - 课程管理
+  /courses/{course_id}/progress:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户在指定课程中的学习进度
+      parameters:
+      - description: 课程ID
+        in: path
+        name: course_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CourseProgressResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 获取课程进度
+      tags:
+      - 课程管理
+  /courses/enrolled:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户已报名的课程列表
+      parameters:
+      - description: 课程状态
+        enum:
+        - learning
+        - completed
+        - paused
+        in: query
+        name: status
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.EnrolledCoursesResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 获取已报名课程
+      tags:
+      - 课程管理
+  /courses/recommended:
+    get:
+      consumes:
+      - application/json
+      description: 获取推荐课程列表
+      parameters:
+      - description: 用户ID（用于个性化推荐）
+        in: query
+        name: user_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.RecommendedCoursesResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 获取推荐课程
+      tags:
+      - 课程管理
+  /courses/search:
+    get:
+      consumes:
+      - application/json
+      description: 根据关键词搜索课程
+      parameters:
+      - description: 搜索关键词
+        in: query
+        name: q
+        type: string
+      - description: 专业领域
+        in: query
+        name: domain
+        type: string
+      - description: 难度级别
+        in: query
+        name: difficulty
+        type: string
+      - description: 最低价格
+        in: query
+        name: min_price
+        type: number
+      - description: 最高价格
+        in: query
+        name: max_price
+        type: number
+      - description: 排序方式
+        enum:
+        - rating
+        - price
+        - created_at
+        in: query
+        name: sort_by
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CourseSearchResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 搜索课程
+      tags:
+      - 课程管理
+  /income/available:
+    get:
+      consumes:
+      - application/json
+      description: 获取大师的可提现金额信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.AvailableIncomeResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 获取可提现金额
+      tags:
+      - 收入管理
+  /income/export:
+    get:
+      consumes:
+      - application/json
+      description: 导出大师的收入报告
+      parameters:
+      - description: 导出格式
+        enum:
+        - csv
+        - excel
+        - pdf
+        in: query
+        name: format
+        required: true
+        type: string
+      - description: 开始日期
+        format: date
+        in: query
+        name: start_date
+        required: true
+        type: string
+      - description: 结束日期
+        format: date
+        in: query
+        name: end_date
+        required: true
+        type: string
+      - description: 收入类型
+        enum:
+        - all
+        - course_enrollment
+        - appointment
+        in: query
+        name: type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.IncomeExportResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 导出收入报告
+      tags:
+      - 收入管理
+  /income/stats:
+    get:
+      consumes:
+      - application/json
+      description: 获取大师的收入统计信息，包括总收入、交易数、平均收入等
+      parameters:
+      - description: 统计周期
+        enum:
+        - week
+        - month
+        - quarter
+        - year
+        - all
+        in: query
+        name: period
+        type: string
+      - description: 开始日期
+        format: date
+        in: query
+        name: start_date
+        type: string
+      - description: 结束日期
+        format: date
+        in: query
+        name: end_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.IncomeStatsResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 获取收入统计
+      tags:
+      - 收入管理
+  /income/transactions:
+    get:
+      consumes:
+      - application/json
+      description: 获取大师的收入交易明细记录
+      parameters:
+      - description: 收入类型
+        enum:
+        - course_enrollment
+        - appointment
+        - refund
+        in: query
+        name: type
+        type: string
+      - description: 交易状态
+        enum:
+        - completed
+        - pending
+        - failed
+        in: query
+        name: status
+        type: string
+      - description: 开始日期
+        format: date
+        in: query
+        name: start_date
+        type: string
+      - description: 结束日期
+        format: date
+        in: query
+        name: end_date
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.IncomeTransactionsResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 获取收入明细
+      tags:
+      - 收入管理
+  /income/trends:
+    get:
+      consumes:
+      - application/json
+      description: 获取大师的收入趋势数据
+      parameters:
+      - description: 趋势周期
+        enum:
+        - daily
+        - weekly
+        - monthly
+        in: query
+        name: period
+        required: true
+        type: string
+      - description: 开始日期
+        format: date
+        in: query
+        name: start_date
+        required: true
+        type: string
+      - description: 结束日期
+        format: date
+        in: query
+        name: end_date
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.IncomeTrendsResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 获取收入趋势
+      tags:
+      - 收入管理
+  /income/withdrawals:
+    get:
+      consumes:
+      - application/json
+      description: 获取大师的提现记录
+      parameters:
+      - description: 提现状态
+        enum:
+        - pending
+        - completed
+        - failed
+        in: query
+        name: status
+        type: string
+      - description: 开始日期
+        format: date
+        in: query
+        name: start_date
+        type: string
+      - description: 结束日期
+        format: date
+        in: query
+        name: end_date
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.WithdrawalsResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 获取提现记录
+      tags:
+      - 收入管理
+    post:
+      consumes:
+      - application/json
+      description: 大师申请提现
+      parameters:
+      - description: 提现申请信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateWithdrawalRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CreateWithdrawalResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 申请提现
+      tags:
+      - 收入管理
+  /learning-records:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户的学习记录列表，支持分页和筛选
+      parameters:
+      - description: 课程ID
+        in: query
+        name: course_id
+        type: string
+      - description: 学习状态
+        enum:
+        - learning
+        - completed
+        - paused
+        in: query
+        name: status
+        type: string
+      - description: 开始日期
+        format: date
+        in: query
+        name: start_date
+        type: string
+      - description: 结束日期
+        format: date
+        in: query
+        name: end_date
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.LearningRecordListResponse'
+              type: object
+      summary: 获取学习记录列表
+      tags:
+      - 学习记录管理
+  /learning-records/{record_id}:
+    get:
+      consumes:
+      - application/json
+      description: 根据学习记录ID获取详细信息
+      parameters:
+      - description: 学习记录ID
+        in: path
+        name: record_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.LearningRecordDetailResponse'
+              type: object
+      summary: 获取学习记录详情
+      tags:
+      - 学习记录管理
+  /learning-records/{record_id}/assignments:
+    post:
+      consumes:
+      - application/json
+      description: 为指定学习记录提交作业
+      parameters:
+      - description: 学习记录ID
+        in: path
+        name: record_id
+        required: true
+        type: string
+      - description: 作业信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.SubmitAssignmentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.SubmitAssignmentResponse'
+              type: object
+      summary: 提交作业
+      tags:
+      - 学习记录管理
+  /learning-records/{record_id}/progress:
+    put:
+      consumes:
+      - application/json
+      description: 更新指定学习记录的进度
+      parameters:
+      - description: 学习记录ID
+        in: path
+        name: record_id
+        required: true
+        type: string
+      - description: 进度更新信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateProgressRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.UpdateProgressResponse'
+              type: object
+      summary: 更新学习进度
+      tags:
+      - 学习记录管理
+  /learning-records/recommended-path:
+    get:
+      consumes:
+      - application/json
+      description: 获取基于用户学习进度的推荐学习路径
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.LearningPathResponse'
+              type: object
+      summary: 获取学习路径推荐
+      tags:
+      - 学习记录管理
+  /learning-records/stats:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户的学习统计数据
+      parameters:
+      - description: 统计周期
+        enum:
+        - week
+        - month
+        - year
+        - all
+        in: query
+        name: period
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.LearningStatsResponse'
+              type: object
+      summary: 获取学习统计
+      tags:
+      - 学习记录管理
+  /mentors:
+    get:
+      consumes:
+      - application/json
+      description: 获取大师列表，支持分页和筛选
+      parameters:
+      - description: 专业领域
+        in: query
+        name: domain
+        type: string
+      - description: 最低评分
+        in: query
+        name: min_rating
+        type: number
+      - description: 最高价格
+        in: query
+        name: max_price
+        type: number
+      - description: 是否在线
+        in: query
+        name: is_online
+        type: boolean
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.MentorListResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 获取大师列表
+      tags:
+      - 大师管理
+  /mentors/{mentor_id}:
+    get:
+      consumes:
+      - application/json
+      description: 获取指定大师的详细信息
+      parameters:
+      - description: 大师ID
+        in: path
+        name: mentor_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.MentorDetailResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 获取大师详情
+      tags:
+      - 大师管理
+  /mentors/{mentor_id}/reviews:
+    get:
+      consumes:
+      - application/json
+      description: 获取指定大师的评价列表
+      parameters:
+      - description: 大师ID
+        in: path
+        name: mentor_id
+        required: true
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.MentorReviewsResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 获取大师评价
+      tags:
+      - 大师管理
+  /mentors/recommended:
+    get:
+      consumes:
+      - application/json
+      description: 获取推荐的大师列表
+      parameters:
+      - description: 用户ID（用于个性化推荐）
+        in: query
+        name: user_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.RecommendedMentorsResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 获取推荐大师
+      tags:
+      - 大师管理
+  /mentors/search:
+    get:
+      consumes:
+      - application/json
+      description: 根据关键词搜索大师
+      parameters:
+      - description: 搜索关键词
+        in: query
+        name: q
+        type: string
+      - description: 专业领域
+        in: query
+        name: domain
+        type: string
+      - description: 最低评分
+        in: query
+        name: min_rating
+        type: number
+      - description: 最高价格
+        in: query
+        name: max_price
+        type: number
+      - description: 是否在线
+        in: query
+        name: is_online
+        type: boolean
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.MentorSearchResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 搜索大师
+      tags:
+      - 大师管理
+  /notifications:
+    delete:
+      consumes:
+      - application/json
+      description: 批量删除通知
+      parameters:
+      - description: 批量删除请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.DeleteNotificationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.BatchDeleteResponse'
+              type: object
+      summary: 批量删除通知
+      tags:
+      - 通知管理
+    get:
+      consumes:
+      - application/json
+      description: 获取用户的通知列表，支持分页和筛选
+      parameters:
+      - description: 通知类型
+        in: query
+        name: type
+        type: string
+      - description: 通知状态
+        enum:
+        - unread
+        - read
+        - all
+        in: query
+        name: status
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.NotificationListResponse'
+              type: object
+      summary: 获取通知列表
+      tags:
+      - 通知管理
+  /notifications/{notification_id}:
+    delete:
+      consumes:
+      - application/json
+      description: 删除指定通知
+      parameters:
+      - description: 通知ID
+        in: path
+        name: notification_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.DeleteNotificationResponse'
+              type: object
+      summary: 删除通知
+      tags:
+      - 通知管理
+  /notifications/{notification_id}/read:
+    put:
+      consumes:
+      - application/json
+      description: 标记指定通知为已读状态
+      parameters:
+      - description: 通知ID
+        in: path
+        name: notification_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.MarkNotificationReadResponse'
+              type: object
+      summary: 标记通知为已读
+      tags:
+      - 通知管理
+  /notifications/read:
+    put:
+      consumes:
+      - application/json
+      description: 批量标记通知为已读状态
+      parameters:
+      - description: 批量标记请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.MarkNotificationReadRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.BatchMarkReadResponse'
+              type: object
+      summary: 批量标记通知为已读
+      tags:
+      - 通知管理
+  /notifications/send:
+    post:
+      consumes:
+      - application/json
+      description: 系统发送通知给指定用户
+      parameters:
+      - description: 发送通知请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.SendNotificationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.SendNotificationResponse'
+              type: object
+      summary: 发送通知
+      tags:
+      - 通知管理
+  /notifications/settings:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户的通知设置
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.NotificationSettingsResponse'
+              type: object
+      summary: 获取通知设置
+      tags:
+      - 通知管理
+    put:
+      consumes:
+      - application/json
+      description: 更新用户的通知设置
+      parameters:
+      - description: 通知设置
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.NotificationSettingsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.UpdateSettingsResponse'
+              type: object
+      summary: 更新通知设置
+      tags:
+      - 通知管理
+  /notifications/unread-count:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户的未读通知数量和分类统计
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.UnreadCountResponse'
+              type: object
+      summary: 获取未读通知数量
+      tags:
+      - 通知管理
+  /payments/history:
+    get:
+      consumes:
+      - application/json
+      description: 获取支付历史记录，支持分页和筛选
+      parameters:
+      - description: 支付类型
+        enum:
+        - course_enrollment
+        - appointment
+        - refund
+        in: query
+        name: type
+        type: string
+      - description: 支付状态
+        enum:
+        - pending
+        - completed
+        - failed
+        - cancelled
+        in: query
+        name: status
+        type: string
+      - description: 开始日期
+        format: date
+        in: query
+        name: start_date
+        type: string
+      - description: 结束日期
+        format: date
+        in: query
+        name: end_date
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.PaymentHistoryResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 获取支付历史
+      tags:
+      - 支付管理
+  /payments/methods:
+    get:
+      consumes:
+      - application/json
+      description: 获取可用的支付方式列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.PaymentMethodListResponse'
+              type: object
+      summary: 获取支付方式列表
+      tags:
+      - 支付管理
+  /payments/orders:
+    post:
+      consumes:
+      - application/json
+      description: 创建支付订单，返回支付URL和二维码
+      parameters:
+      - description: 支付订单信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreatePaymentOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CreatePaymentOrderResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 创建支付订单
+      tags:
+      - 支付管理
+  /payments/orders/{order_id}/status:
+    get:
+      consumes:
+      - application/json
+      description: 查询指定订单的支付状态
+      parameters:
+      - description: 订单ID
+        in: path
+        name: order_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.QueryPaymentStatusResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 查询支付状态
+      tags:
+      - 支付管理
+  /payments/refunds:
+    post:
+      consumes:
+      - application/json
+      description: 申请支付退款
+      parameters:
+      - description: 退款申请信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateRefundRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CreateRefundResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 申请退款
+      tags:
+      - 支付管理
+  /payments/refunds/{refund_id}/status:
+    get:
+      consumes:
+      - application/json
+      description: 查询指定退款的处理状态
+      parameters:
+      - description: 退款ID
+        in: path
+        name: refund_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.QueryRefundStatusResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 查询退款状态
+      tags:
+      - 支付管理
+  /payments/stats:
+    get:
+      consumes:
+      - application/json
+      description: 获取支付统计数据
+      parameters:
+      - description: 统计周期
+        enum:
+        - day
+        - week
+        - month
+        - quarter
+        - year
+        in: query
+        name: period
+        type: string
+      - description: 开始日期
+        format: date
+        in: query
+        name: start_date
+        type: string
+      - description: 结束日期
+        format: date
+        in: query
+        name: end_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.PaymentStatsResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 获取支付统计
+      tags:
+      - 支付管理
+  /payments/webhook/{gateway}:
+    post:
+      consumes:
+      - application/json
+      description: 处理支付网关回调
+      parameters:
+      - description: 支付网关
+        in: path
+        name: gateway
+        required: true
+        type: string
+      - description: 回调数据
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.PaymentWebhookRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.PaymentWebhookResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 支付回调处理
+      tags:
+      - 支付管理
+  /posts/{post_id}/comments:
+    get:
+      consumes:
+      - application/json
+      description: 获取指定动态的评论列表
+      parameters:
+      - description: 动态ID
+        in: path
+        name: post_id
+        required: true
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CommentListResponse'
+              type: object
+      summary: 获取评论列表
+      tags:
+      - 评论管理
+    post:
+      consumes:
+      - application/json
+      description: 对指定动态发表评论
+      parameters:
+      - description: 动态ID
+        in: path
+        name: post_id
+        required: true
+        type: string
+      - description: 评论内容
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateCommentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CreateCommentResponse'
+              type: object
+      summary: 发表评论
+      tags:
+      - 评论管理
+  /posts/{post_id}/like:
+    delete:
+      consumes:
+      - application/json
+      description: 取消点赞指定动态
+      parameters:
+      - description: 动态ID
+        in: path
+        name: post_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.LikePostResponse'
+              type: object
+      summary: 取消点赞动态
+      tags:
+      - 动态管理
+    post:
+      consumes:
+      - application/json
+      description: 点赞指定动态
+      parameters:
+      - description: 动态ID
+        in: path
+        name: post_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.LikePostResponse'
+              type: object
+      summary: 点赞动态
+      tags:
+      - 动态管理
+  /reviews:
+    get:
+      consumes:
+      - application/json
+      description: 获取评价列表，支持分页和筛选
+      parameters:
+      - description: 被评价对象ID
+        in: query
+        name: reviewed_id
+        type: string
+      - description: 评价类型
+        in: query
+        name: review_type
+        type: string
+      - description: 评分筛选
+        in: query
+        name: rating
+        type: integer
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.ReviewListResponse'
+              type: object
+      summary: 获取评价列表
+      tags:
+      - 评价管理
+    post:
+      consumes:
+      - application/json
+      description: 创建新的评价
+      parameters:
+      - description: 评价信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateReviewRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CreateReviewResponse'
+              type: object
+      summary: 创建评价
+      tags:
+      - 评价管理
+  /reviews/{review_id}:
+    delete:
+      consumes:
+      - application/json
+      description: 删除指定评价
+      parameters:
+      - description: 评价ID
+        in: path
+        name: review_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.DeleteReviewResponse'
+              type: object
+      summary: 删除评价
+      tags:
+      - 评价管理
+    get:
+      consumes:
+      - application/json
+      description: 根据评价ID获取评价详情
+      parameters:
+      - description: 评价ID
+        in: path
+        name: review_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.ReviewDetailResponse'
+              type: object
+      summary: 获取评价详情
+      tags:
+      - 评价管理
+    put:
+      consumes:
+      - application/json
+      description: 更新指定评价
+      parameters:
+      - description: 评价ID
+        in: path
+        name: review_id
+        required: true
+        type: string
+      - description: 更新信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateReviewRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.UpdateReviewResponse'
+              type: object
+      summary: 更新评价
+      tags:
+      - 评价管理
+  /reviews/stats:
+    get:
+      consumes:
+      - application/json
+      description: 获取指定对象的评价统计信息
+      parameters:
+      - description: 被评价对象ID
+        in: query
+        name: reviewed_id
+        required: true
+        type: string
+      - description: 评价类型
+        in: query
+        name: review_type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.ReviewStatsResponse'
+              type: object
+      summary: 获取评价统计
+      tags:
+      - 评价管理
+  /search:
+    get:
+      consumes:
+      - application/json
+      description: 搜索导师、课程、帖子等内容
+      parameters:
+      - description: 搜索关键词
+        in: query
+        name: q
+        required: true
+        type: string
+      - description: 搜索类型
+        enum:
+        - mentors
+        - courses
+        - posts
+        in: query
+        name: type
+        type: string
+      - description: 专业领域
+        in: query
+        name: domain
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.SearchResult'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 全局搜索
+      tags:
+      - 搜索
+  /stats/user/{user_id}:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户的学习和教学统计数据
+      parameters:
+      - description: 用户ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.UserStatsResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 获取用户统计
+      tags:
+      - 统计
+  /students:
+    get:
+      consumes:
+      - application/json
+      description: 获取导师的学生列表，支持分页、搜索和筛选
+      parameters:
+      - description: 学生状态 (active, inactive, graduated)
+        in: query
+        name: status
+        type: string
+      - description: 课程ID
+        in: query
+        name: course_id
+        type: string
+      - description: 搜索关键词（姓名、邮箱）
+        in: query
+        name: search
+        type: string
+      - description: 排序方式 (name, enrollment_date, progress)
+        in: query
+        name: sort_by
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.StudentListResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: 获取学生列表
+      tags:
+      - 学生管理
+  /students/{student_id}:
+    get:
+      consumes:
+      - application/json
+      description: 根据学生ID获取学生详细信息
+      parameters:
+      - description: 学生ID
+        in: path
+        name: student_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.StudentDetailResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: 获取学生详情
+      tags:
+      - 学生管理
+  /students/{student_id}/assignments/{assignment_id}/grade:
+    post:
+      consumes:
+      - application/json
+      description: 导师评价学生的作业
+      parameters:
+      - description: 学生ID
+        in: path
+        name: student_id
+        required: true
+        type: string
+      - description: 作业ID
+        in: path
+        name: assignment_id
+        required: true
+        type: string
+      - description: 评价作业请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.GradeAssignmentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.GradeAssignmentResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: 评价学生作业
+      tags:
+      - 学生管理
+  /students/{student_id}/courses/{course_id}/progress:
+    put:
+      consumes:
+      - application/json
+      description: 导师更新学生的学习进度
+      parameters:
+      - description: 学生ID
+        in: path
+        name: student_id
+        required: true
+        type: string
+      - description: 课程ID
+        in: path
+        name: course_id
+        required: true
+        type: string
+      - description: 更新进度请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.StudentProgressRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.StudentProgressResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: 更新学生学习进度
+      tags:
+      - 学生管理
+  /students/{student_id}/messages:
+    get:
+      consumes:
+      - application/json
+      description: 获取导师与学生的聊天记录
+      parameters:
+      - description: 学生ID
+        in: path
+        name: student_id
+        required: true
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 50
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.MessageListResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: 获取与学生聊天记录
+      tags:
+      - 学生管理
+    post:
+      consumes:
+      - application/json
+      description: 导师向学生发送消息
+      parameters:
+      - description: 学生ID
+        in: path
+        name: student_id
+        required: true
+        type: string
+      - description: 发送消息请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.SendMessageRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.SendMessageResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: 发送消息给学生
+      tags:
+      - 学生管理
+  /students/{student_id}/report:
+    get:
+      consumes:
+      - application/json
+      description: 获取学生的学习报告
+      parameters:
+      - description: 学生ID
+        in: path
+        name: student_id
+        required: true
+        type: string
+      - description: 报告周期 (week, month, quarter, year)
+        in: query
+        name: period
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.StudentReportResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: 获取学生学习报告
+      tags:
+      - 学生管理
+  /students/stats:
+    get:
+      consumes:
+      - application/json
+      description: 获取导师的学生统计数据
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.StudentStatsResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: 获取学生统计
+      tags:
+      - 学生管理
+  /upload/file:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 上传文件到服务器，支持头像、课程封面、帖子图片等类型
+      parameters:
+      - description: 要上传的文件
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: 文件类型
+        enum:
+        - avatar
+        - course_cover
+        - post_image
+        in: formData
+        name: type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.UploadFileResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      summary: 上传文件
+      tags:
+      - 文件上传
+  /users/achievements:
+    get:
+      consumes:
+      - application/json
+      description: 获取当前用户的成就列表
+      parameters:
+      - description: 身份类型
+        in: query
+        name: identity_type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.AchievementsResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: 获取用户成就
+      tags:
+      - 用户管理
+  /users/identities:
+    get:
+      consumes:
+      - application/json
+      description: 获取当前用户的所有身份信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.IdentityListResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: 获取用户身份列表
+      tags:
+      - 用户管理
+    post:
+      consumes:
+      - application/json
+      description: 为当前用户创建新的身份
+      parameters:
+      - description: 创建身份请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateIdentityRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.CreateIdentityResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: 创建用户身份
+      tags:
+      - 用户管理
+  /users/identities/{identity_id}:
+    put:
+      consumes:
+      - application/json
+      description: 更新指定身份的信息
+      parameters:
+      - description: 身份ID
+        in: path
+        name: identity_id
+        required: true
+        type: string
+      - description: 更新身份请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateIdentityRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: 更新用户身份
+      tags:
+      - 用户管理
+  /users/learning-path-stats:
+    get:
+      consumes:
+      - application/json
+      description: 获取学习路径的统计数据
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.LearningPathStatsResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: 获取学习路径统计
+      tags:
+      - 用户管理
+  /users/preferences:
+    get:
+      consumes:
+      - application/json
+      description: 获取当前用户的偏好设置
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.UserPreferencesResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: 获取用户偏好
+      tags:
+      - 用户管理
+    put:
+      consumes:
+      - application/json
+      description: 保存当前用户的偏好设置
+      parameters:
+      - description: 用户偏好请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserPreferencesRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: 保存用户偏好
+      tags:
+      - 用户管理
+  /users/profile:
+    get:
+      consumes:
+      - application/json
+      description: 获取当前用户的档案信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.UserProfileResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: 获取用户档案
+      tags:
+      - 用户管理
+    put:
+      consumes:
+      - application/json
+      description: 更新当前用户的档案信息
+      parameters:
+      - description: 更新档案请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: 更新用户档案
+      tags:
+      - 用户管理
+  /users/recommended-learning-path:
+    get:
+      consumes:
+      - application/json
+      description: 获取基于用户偏好的推荐学习路径
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.RecommendedLearningPathResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: 获取推荐学习路径
+      tags:
+      - 用户管理
+  /users/stats/general:
+    get:
+      consumes:
+      - application/json
+      description: 获取当前用户的通用统计数据
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.GeneralStatsResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: 获取通用统计
+      tags:
+      - 用户管理
+  /users/stats/learning:
+    get:
+      consumes:
+      - application/json
+      description: 获取当前用户的学习统计数据
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.LearningStatsResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: 获取学习统计
+      tags:
+      - 用户管理
+  /users/stats/teaching:
+    get:
+      consumes:
+      - application/json
+      description: 获取当前用户的教学统计数据
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.TeachingStatsResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: 获取教学统计
+      tags:
+      - 用户管理
+  /ws:
+    get:
+      consumes:
+      - application/json
+      description: 建立 WebSocket 连接，支持实时消息和在线状态
+      produces:
+      - application/json
+      responses:
+        "101":
+          description: Switching Protocols
+          schema:
+            type: string
+      summary: WebSocket 连接
+      tags:
+      - WebSocket
+securityDefinitions:
+  Bearer:
+    description: Type "Bearer" followed by a space and JWT token
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
